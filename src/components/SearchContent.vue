@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visible" :closable="false" :footer="null">
+  <a-modal v-model:visible="visible" :closable="false" :footer="null" :align-center="false">
     <a-tabs default-active-key="1" size="small">
       <a-tab-pane key="1" title="站内">
         <div class="p-4">
