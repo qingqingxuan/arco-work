@@ -319,7 +319,7 @@
     "@vue/compiler-dom" "3.2.26"
     "@vue/shared" "3.2.26"
 
-"@vue/devtools-api@^6.0.0-beta.11", "@vue/devtools-api@^6.0.0-beta.18", "@vue/devtools-api@^6.0.0-beta.21":
+"@vue/devtools-api@^6.0.0-beta.18", "@vue/devtools-api@^6.0.0-beta.21":
   "integrity" "sha512-FqC4s3pm35qGVeXRGOjTsRzlkJjrBLriDS9YXbflHLsfA9FrcKzIyWnLXoNm+/7930E8rRakXuAc2QkC50swAw=="
   "resolved" "https://registry.npmjs.org/@vue/devtools-api/-/devtools-api-6.0.0-beta.21.1.tgz"
   "version" "6.0.0-beta.21.1"
@@ -4194,7 +4194,7 @@
   dependencies:
     "vscode-vue-languageservice" "^0.27.0"
 
-"vue@^2.6.0 || ^3.2.0", "vue@^2.6.14 || ^3.2.0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.1", "vue@^3.0.2", "vue@^3.1.0", "vue@^3.2.26", "vue@3.2.26":
+"vue@^2.6.0 || ^3.2.0", "vue@^2.6.14 || ^3.2.0", "vue@^3.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@^3.0.1", "vue@^3.1.0", "vue@^3.2.26", "vue@3.2.26":
   "integrity" "sha512-KD4lULmskL5cCsEkfhERVRIOEDrfEL9CwAsLYpzptOGjaGFNWo3BQ9g8MAb7RaIO71rmVOziZ/uEN/rHwcUIhg=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.2.26.tgz"
   "version" "3.2.26"
@@ -4211,13 +4211,6 @@
   "version" "4.1.0"
   dependencies:
     "sortablejs" "1.14.0"
-
-"vuex@^4.0.2":
-  "integrity" "sha512-M6r8uxELjZIK8kTKDGgZTYX/ahzblnzC4isU1tpmEuOIIKmV+TRdc+H4s8ds2NuZ7wpUTdGRzJRtoj+lI+pc0Q=="
-  "resolved" "https://registry.npmjs.org/vuex/-/vuex-4.0.2.tgz"
-  "version" "4.0.2"
-  dependencies:
-    "@vue/devtools-api" "^6.0.0-beta.11"
 
 "which-module@^2.0.0":
   "integrity" "sha1-2e8H3Od7mQK4o6j6SzHD4/fm6Ho="
