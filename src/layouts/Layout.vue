@@ -22,7 +22,6 @@
       @click="closeMenu"
     ></div>
   </div>
-  <WaterMark />
   <Setting ref="settingRef" />
   <SearchContent ref="searchContentRef" />
 </template>

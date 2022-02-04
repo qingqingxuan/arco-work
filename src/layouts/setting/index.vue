@@ -100,20 +100,6 @@
         <span>全屏</span>
         <a-switch v-model="state.actionItem.showFullScreen" />
       </div>
-      <a-divider dashed>水印功能</a-divider>
-      <div class="setting-item-wrapper">
-        <span>开启水印</span>
-        <a-switch v-model="state.isOpenWaterMark" @change="isOpenWater" />
-      </div>
-      <div class="p-2">
-        <div>水印内容</div>
-        <a-input @input="onWaterMarkChange" class="mt-1" size="small" v-model="state.waterMark" />
-      </div>
-      <a-divider dashed>颜色模式</a-divider>
-      <div class="setting-item-wrapper">
-        <span>灰色模式</span>
-        <a-switch v-model="state.isGray" @change="onIsGray" />
-      </div>
       <a-divider />
     </Scrollbar>
   </a-drawer>
@@ -347,17 +333,8 @@
         usePrimaryColor(item.value)
         store.changePrimaryColor(item)
       }
-      function isOpenWater(val: boolean) {
-        store.changeOpenWaterMark(val)
-      }
-      function onIsGray(val: boolean) {
-        store.changeGray(val)
-      }
       function onShowTabbar(val: boolean) {
         store.changeShowTabbar(val)
-      }
-      function onWaterMarkChange(val: string) {
-        store.setWaterMark(val)
       }
       function openAppInfo() {
         appInfoDialog.value?.toggle()
@@ -383,16 +360,13 @@
         openDrawer,
         themeClick,
         exampleClick,
-        isOpenWater,
         onShowTabbar,
-        onWaterMarkChange,
         layoutExampleClick,
         onAnimUpdate,
         colorClick,
         openAppInfo,
         animOptions,
         menuWidth,
-        onIsGray,
       }
     },
   })

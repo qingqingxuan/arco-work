@@ -29,9 +29,6 @@ const originState = {
   sideBarBgColor: Setting.sideTheme,
   pageAnim: Setting.pageAnim,
   isShowTabbar: Setting.isShowTabbar,
-  waterMark: Setting.waterMark,
-  isOpenWaterMark: Setting.isOpenWaterMark,
-  isGray: Setting.isGray,
   permissionRoutes: [],
   visitedView: [],
   cachedView: [],
@@ -109,22 +106,6 @@ const store = {
   isShowHeader() {
     return this.state.device === 'pc' && this.state.layoutMode === 'ttb'
   },
-  setWaterMark(waterMark: string) {
-    this.state.waterMark = waterMark
-    presistSettingInfo(
-      Object.assign(Setting, {
-        waterMark,
-      })
-    )
-  },
-  changeOpenWaterMark(isOpen: boolean) {
-    this.state.isOpenWaterMark = isOpen
-    presistSettingInfo(
-      Object.assign(Setting, {
-        isOpenWaterMark: isOpen,
-      })
-    )
-  },
   changeShowTabbar(showTabbar: boolean) {
     this.state.isShowTabbar = showTabbar
     presistSettingInfo(
@@ -132,17 +113,6 @@ const store = {
         showTabbar: showTabbar,
       })
     )
-  },
-  changeGray(isGray: boolean) {
-    this.state.isGray = isGray
-    presistSettingInfo(
-      Object.assign(Setting, {
-        isGray,
-      })
-    )
-    setTimeout(() => {
-      useGray(isGray)
-    }, 100)
   },
   getSplitTabs() {
     return this.state.permissionRoutes.filter((it) => {

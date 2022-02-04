@@ -62,9 +62,6 @@ export interface StateType {
   sideBarBgColor: string
   pageAnim: string
   isShowTabbar: boolean
-  waterMark: string
-  isOpenWaterMark: boolean
-  isGray: boolean
   permissionRoutes: Array<RouteRecordRawWithHidden>
   visitedView: Array<RouteRecordRawWithHidden>
   cachedView: Array<string>
@@ -88,9 +85,6 @@ export interface StoreType extends CacheView, VisitedView {
   changeSideBarBgColor: (colorName: SideTheme) => void
   changePageAnim: (pageAnim: string) => void
   changePrimaryColor: (color: string) => void
-  setWaterMark: (waterMark: string) => void
-  changeOpenWaterMark: (isOpen: boolean) => void
-  changeGray: (isGray: boolean) => void
   changeShowTabbar: (tabbar: boolean) => void
   isShowHeader: () => boolean
   getSplitTabs: () => Array<RouteRecordRawWithHidden>
