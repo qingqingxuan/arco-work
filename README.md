@@ -6,7 +6,7 @@
 <img src="http://qingqingxuan.gitee.io/img/logo.png" align="center" style="zoom: 50%"/>
 </div>
 
-<h1 align = "center">Admin Work</h1>
+<h1 align = "center">Arco Work</h1>
 
 ## 简介：
 
@@ -16,9 +16,9 @@ Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，
 
 ## 项目地址：
 
-- [🎉 官网&文档&授权--地址](http://www.vueadminwork.com)
+- [🎉 官网&文档](http://www.vueadminwork.com)
 
-- [🎉 Admin Work 演示地址（Vuex.x + Typescript + Navie UI + Vite2)](http://qingqingxuan.gitee.io/admin-work)
+- [🎉 Arco Work 演示地址（Vuex.x + Typescript + Arco Design + Vite2)](http://qingqingxuan.gitee.io/arco-work)
 
 ## Vue Admin Work 系列中其它项目的演示地址
 
@@ -30,7 +30,7 @@ Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，
 
 - [🎉 Vue Admin Work A 演示地址（Vue3.x + Typescript + Antd + Vite2)](http://qingqingxuan.gitee.io/vue-admin-work-a)
 
-- [🎉 Arco Work 演示地址（Vue3.x + Typescript + Arco Design + Vite2)](http://qingqingxuan.gitee.io/arco-admin)
+- [🎉 Admin Work 演示地址（Vue3.x + Typescript + NaiveUI + Vite2)](http://qingqingxuan.gitee.io/admin-work)
 
 ## Vue Admin Work 微信群
 
