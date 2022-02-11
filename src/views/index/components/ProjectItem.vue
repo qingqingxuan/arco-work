@@ -12,7 +12,7 @@
           <template #content>
             <img style="width: 150px" :src="WeiXin" />
           </template>
-          <a-button shape="round" status="danger" size="small"> 授权客服 </a-button>
+          <a-button shape="round" status="danger" size="small"> 获取源码 </a-button>
         </a-popover>
       </a-space>
     </div>
@@ -63,14 +63,13 @@
       right: 0;
       padding: 0;
       z-index: 2;
-      font-size: 16px;
+      font-size: 22px;
       font-weight: bold;
-      color: #fff;
+      color: rgb(var(--primary-5));
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-shadow: 0px 0px 5px #1890ff, 0px 0px 15px #1890ff, 0px 0px 25px #1890ff;
       &::after {
         content: '';
         display: block;

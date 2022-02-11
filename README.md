@@ -18,7 +18,7 @@ Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，
 
 - [🎉 官网&文档](http://www.vueadminwork.com)
 
-- [🎉 Arco Work 演示地址（Vue3 + Typescript + Arco Design + Vite2)](http://qingqingxuan.gitee.io/arco-work)
+- [🎉 Arco Work 演示地址（Vue3 + Typescript + Arco Design + Vite2)](http://arco.vueadminwork.com)
 
 ## Vue Admin Work 系列中其它项目的演示地址
 

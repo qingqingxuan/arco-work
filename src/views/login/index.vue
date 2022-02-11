@@ -190,10 +190,9 @@
           justify-content: center;
           align-items: center;
           color: #fff;
+          font-weight: bold;
           font-weight: 500;
           font-size: 30px;
-          text-shadow: 0 0 5px var(--color-primary-light-1), 0 0 15px var(--color-primary-light-1),
-            0 0 50px var(--color-primary-light-1), 0 0 150px var(--color-primary-light-1);
           animation: scale-to 1s linear;
         }
         .bottom {
