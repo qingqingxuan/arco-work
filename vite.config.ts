@@ -3,6 +3,8 @@ import viteSvgIcons from 'vite-plugin-svg-icons'
 import path from 'path'
 import { defineConfig } from 'vite'
 import dotenv from 'dotenv'
+import Components from 'unplugin-vue-components/vite'
+import { ArcoResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig(({ mode }) => {
   const dotenvConfig = dotenv.config({ path: `./.env.${mode}` })
@@ -11,12 +13,24 @@ export default defineConfig(({ mode }) => {
     base: dotenvObj.BUILD_PATH,
     build: {
       outDir: dotenvObj.BUILD_OUT_DIR || 'dist',
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString()
+            }
+          },
+        },
+      },
     },
     plugins: [
       vue(),
       viteSvgIcons({
         iconDirs: [path.resolve(process.cwd(), 'src/icons')],
         symbolId: 'icon-[dir]-[name]',
+      }),
+      Components({
+        resolvers: [ArcoResolver()],
       }),
     ],
     css: {
@@ -40,8 +54,14 @@ export default defineConfig(({ mode }) => {
       open: true,
     },
     optimizeDeps: {
-      include: [],
-      exclude: ['vue-demi'],
+      include: [
+        'vue',
+        'lodash',
+        '@arco-design/web-vue',
+        '@arco-design/web-vue/es/icon',
+        'pinia',
+        'vue-router',
+      ],
     },
   }
 })

@@ -5,7 +5,6 @@ import './styles/index.css'
 import router from './router'
 import { DeviceType } from './types/store'
 import './utils/router'
-import ArcoVue from '@arco-design/web-vue'
 import ArcoVueIcon from '@arco-design/web-vue/es/icon'
 import '@arco-design/web-vue/dist/arco.css'
 import pinia from './store/pinia'
@@ -26,7 +25,7 @@ function getScreenType() {
 }
 
 const app = createApp(App)
-app.use(ArcoVue).use(ArcoVueIcon)
+app.use(ArcoVueIcon)
 app.use(LayoutStore, {
   state: {
     device: getScreenType(),

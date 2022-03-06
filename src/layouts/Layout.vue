@@ -31,6 +31,9 @@
   import { DeviceType } from '../types/store'
   import { useLayoutStore } from './index'
   import useEmit from '@/hooks/useEmit'
+  import { AxiosResponse } from 'axios'
+  import UserTokenExpiredInterceptor from '@/api/interceptors/UserTokenExpiredInterceptor'
+  import useAxios from '@/hooks/useAxios'
   export default defineComponent({
     name: 'Layout',
     setup() {
@@ -39,6 +42,10 @@
       const store = useLayoutStore()
       const isShowHeader = computed(() => store?.isShowHeader())
       const emitter = useEmit()
+      const axios = useAxios()
+      axios.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
+        return UserTokenExpiredInterceptor(response, store)
+      })
       emitter?.on('show-setting', () => {
         settingRef.value?.openDrawer()
       })

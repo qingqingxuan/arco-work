@@ -1,3 +1,13 @@
+## 2022-3-6(v: 1.0.0)
+
+- 升级：升级 `arco-design-vue`组件库到版本：2.18.0
+
+- 升级: 升级`arco-design-vue`组件由原来的全部引入改成按需引入，新增第三方依赖：`unplugin-vue-components`，删除 `main.ts` 引入 `arco-design-vue`组件库的全局代码
+
+- 新增: 添加 在用户状态失效时的拦截器，`UserTokenExpiredInterceptor`，当加载某个接口返回 400 状态时，判定用户状态失效，会自动跳转到登录页面
+
+- 优化: 优化打包时某文件体积过大，新增 `vite.config.ts` 配置文件中 `rollup` 配置项，把`node_modules`中的依赖单独打成独立的文件
+
 ## 2022-1-16(v: 0.0.2)
 
 - 升级：升级美化 `带有 表格 的页面` 功能，增加更多的配置

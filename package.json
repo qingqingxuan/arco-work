@@ -1,6 +1,6 @@
 {
   "name": "arco-work",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -26,8 +26,6 @@
     "qrcode": "^1.5.0",
     "qs": "^6.10.1",
     "quill": "^1.3.7",
-    "sass": "^1.43.5",
-    "sass-loader": "^12.3.0",
     "simplemde": "^1.11.2",
     "tiny-emitter": "^2.1.0",
     "vue": "^3.2.26",
@@ -37,7 +35,7 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.15.1",
+    "@arco-design/web-vue": "^2.18.0",
     "@types/js-cookie": "^3.0.1",
     "@types/lodash": "^4.14.178",
     "@types/nprogress": "^0.2.0",
@@ -59,6 +57,7 @@
     "prettier": "^2.3.2",
     "tailwindcss": "^2.2.19",
     "typescript": "^4.5.3",
+    "unplugin-vue-components": "^0.17.21",
     "vite": "^2.6.4",
     "vite-plugin-components": "^0.13.3",
     "vite-plugin-svg-icons": "^1.0.5",
