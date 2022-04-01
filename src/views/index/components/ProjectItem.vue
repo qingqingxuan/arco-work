@@ -4,6 +4,16 @@
       <span class="title">
         {{ item.title }}
       </span>
+      <a-space>
+        <a-tag
+          size="small"
+          v-for="(tag, index) of item.tags"
+          :key="tag"
+          :color="index % 2 === 0 ? 'blue' : 'gold'"
+        >
+          {{ tag }}
+        </a-tag>
+      </a-space>
       <a-space class="mt-8">
         <a-button class="mr-1" status="success" shape="round" size="small" @click="preView">
           预览地址
@@ -12,7 +22,7 @@
           <template #content>
             <img style="width: 150px" :src="WeiXin" />
           </template>
-          <a-button shape="round" status="danger" size="small"> 获取源码 </a-button>
+          <a-button shape="round" status="danger" size="small"> 获取源码（关注公众号） </a-button>
         </a-popover>
       </a-space>
     </div>
@@ -21,10 +31,26 @@
 
 <script lang="ts">
   import { defineComponent, PropType, toRef } from 'vue'
-  import WeiXin from '@/assets/custom_weixin.jpg'
+  import WeiXin from '@/assets/qrcode.jpg'
+  const colors = [
+    'red',
+    'orangered',
+    'orange',
+    'gold',
+    'lime',
+    'green',
+    'cyan',
+    'blue',
+    'arcoblue',
+    'purple',
+    'pinkpurple',
+    'magenta',
+    'gray',
+  ]
   interface ItemData {
     title: string
     target?: string
+    tags: string[]
   }
 
   export default defineComponent({
@@ -41,6 +67,7 @@
       const item = toRef(props, 'item')
       return {
         WeiXin,
+        colors,
         preView: function () {
           window.open(item.value.target)
         },

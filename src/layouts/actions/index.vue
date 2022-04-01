@@ -39,7 +39,7 @@
     IconRefresh as RefreshIcon,
     IconNotification as NotificationsIcon,
   } from '@arco-design/web-vue/es/icon'
-  import { useFullscreen } from '@vueuse/core'
+  import { useDebounce, useDebounceFn, useFullscreen } from '@vueuse/core'
   import useEmit from '@/hooks/useEmit'
   export default defineComponent({
     name: 'ActionItems',
@@ -70,8 +70,11 @@
         }
         enter()
       }
-      function onRefrehRoute() {
+      const debouncedFn = useDebounceFn(() => {
         router.replace({ path: '/redirect' + route.path })
+      }, 200)
+      function onRefrehRoute() {
+        debouncedFn()
       }
       function onShowSetting() {
         emitter?.emit('show-setting')

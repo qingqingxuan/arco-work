@@ -240,3 +240,9 @@
     },
   })
 </script>
+
+<style lang="scss" scoped>
+  :deep(.arco-table-cell-expand-icon) {
+    justify-content: center;
+  }
+</style>

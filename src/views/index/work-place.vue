@@ -222,15 +222,33 @@
         dataItems: [
           {
             title: 'Vue Admin Work A',
-            target: 'http://qingqingxuan.gitee.io/vue-admin-work-a',
+            target: 'http://a.vueadminwork.com',
+            tags: ['Vue3', 'Vite2', 'Typescript', 'Antd'],
           },
           {
             title: 'Vue Admin Work P',
-            target: 'http://qingqingxuan.gitee.io/vue-admin-work-p',
+            target: 'http://p.vueadminwork.com',
+            tags: ['Vue3', 'Vite2', 'Typescript', 'NaiveUI'],
           },
           {
             title: 'Arco Work',
+            target: 'http://arco.vueadminwork.com',
+            tags: ['Vue3', 'Vite2', 'Typescript', 'ArcoDesign'],
+          },
+          {
+            title: 'Vue Admin Work X',
+            target: 'http://x.vueadminwork.com',
+            tags: ['Vue3', 'Webpack', 'Typescript', 'ElementPlus'],
+          },
+          {
+            title: 'Admin Work',
+            target: 'http://aw.vueadminwork.com',
+            tags: ['Vue3', 'Vite2', 'Typescript', 'NaiveUI'],
+          },
+          {
+            title: 'Vue Admin Work',
             target: 'http://qingqingxuan.gitee.io/arco-work',
+            tags: ['Vue2', 'Webpack', 'Javsscript', 'ElementUI'],
           },
         ],
         fastActions: [
