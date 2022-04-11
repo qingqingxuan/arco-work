@@ -8,7 +8,7 @@
       </a-space>
     </template>
     <div class="form-wrapper">
-      <a-form :model="{}" :label-col-props="{ span: '3' }">
+      <a-form :model="{}" :label-col-props="{ span: 3 }">
         <a-form-item
           :row-class="[item.required ? 'form-item__require' : 'form-item__no_require']"
           v-for="item of formItems"

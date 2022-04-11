@@ -41,7 +41,7 @@
                 {{ record.gender === 1 ? '男' : '女' }}
               </template>
               <template v-else-if="item.key === 'avatar'" #cell="{ record }">
-                <a-avatar size="30" :style="{ backgroundColor: 'var(--color-primary-light-1)' }">
+                <a-avatar :size="30" :style="{ backgroundColor: 'var(--color-primary-light-1)' }">
                   {{ record.nickName.substring(0, 1) }}
                 </a-avatar>
               </template>

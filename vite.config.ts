@@ -53,15 +53,15 @@ export default defineConfig(({ mode }) => {
     server: {
       open: true,
     },
-    optimizeDeps: {
-      include: [
-        'vue',
-        'lodash',
-        '@arco-design/web-vue',
-        '@arco-design/web-vue/es/icon',
-        'pinia',
-        'vue-router',
-      ],
-    },
+    // optimizeDeps: {
+    //   include: [
+    //     'vue',
+    //     'lodash',
+    //     '@arco-design/web-vue',
+    //     '@arco-design/web-vue/es/icon',
+    //     'pinia',
+    //     'vue-router',
+    //   ],
+    // },
   }
 })

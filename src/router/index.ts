@@ -70,7 +70,7 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: '',
+        path: 'info',
         component: () => import('@/views/personal/index.vue'),
         meta: {
           title: '个人中心',

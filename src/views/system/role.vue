@@ -57,7 +57,7 @@
     </TableBody>
     <ModalDialog ref="modalDialogRef" :title="actionTitle" @confirm="onDataFormConfirm">
       <template #content>
-        <a-form>
+        <a-form :model="formModel">
           <a-form-item
             :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
             :label="item.label"
@@ -109,6 +109,7 @@
       type: 'input',
       key: 'name',
       value: ref(''),
+
       required: true,
       placeholder: '请输入角色名称',
       validator: function () {
@@ -205,6 +206,7 @@
       ])
       const defaultCheckedKeys = ref([] as Array<string>)
       const defaultExpandedKeys = ref([] as Array<string>)
+      const formModel = ref({})
       function doRefresh() {
         post({
           url: getRoleList,
@@ -292,6 +294,7 @@
         modalDialogRef,
         menuModalDialogRef,
         rowKey,
+        formModel,
         menuData,
         tableColumns,
         formItems,

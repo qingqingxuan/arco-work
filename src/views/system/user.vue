@@ -53,7 +53,7 @@
                   </a-tag>
                 </template>
                 <template v-else-if="item.key === 'avatar'" #cell="{}">
-                  <a-avatar size="30" :style="{ backgroundColor: 'var(--color-primary-light-1)' }">
+                  <a-avatar :size="30" :style="{ backgroundColor: 'var(--color-primary-light-1)' }">
                     <IconUser />
                   </a-avatar>
                 </template>

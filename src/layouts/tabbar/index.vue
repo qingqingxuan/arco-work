@@ -119,13 +119,15 @@
           this.currentTab = ''
           return
         }
-        store.addVisitedView(newVal).then((route) => {
+        store.addVisitedView(newVal).then(({ route, isNewRoute }) => {
           this.currentTab = route.fullPath || ''
-          const scrollbar = unref((this.$refs.scrollbar as any).getWrapContainer())
-          scrollbar.scrollTo({
-            left: 1000000000,
-            behavior: 'smooth',
-          })
+          if (isNewRoute) {
+            const scrollbar = unref((this.$refs.scrollbar as any).getWrapContainer())
+            scrollbar.scrollTo({
+              left: 1000000000,
+              behavior: 'smooth',
+            })
+          }
         })
       },
       showContextMenu(val) {
@@ -162,7 +164,7 @@
             fullPath: this.$route.fullPath,
             meta: this.$route.meta,
           } as RouteRecordRawWithHidden)
-          .then((route) => {
+          .then(({ route }) => {
             this.currentTab = route.fullPath as string
             this.$nextTick(() => {
               const elements = document.querySelectorAll('.tab-item')
@@ -194,12 +196,13 @@
         )
       },
       handleTabClick(el: HTMLElement, path: string) {
-        const scrollbar = unref((this.$refs.scrollbar as any).getWrapContainer())
-        scrollbar.scrollTo({
-          left: el.offsetLeft,
-          behavior: 'smooth',
+        this.$router.push(path).then(() => {
+          const scrollbar = unref((this.$refs.scrollbar as any).getWrapContainer())
+          scrollbar.scrollTo({
+            left: el.offsetLeft,
+            behavior: 'smooth',
+          })
         })
-        this.$router.push(path)
       },
       iconClick(fullPath: string | undefined) {
         this.removeTab(fullPath || '/')
