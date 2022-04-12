@@ -75,20 +75,25 @@ export function mapTwoLevelRouter(srcRoutes: Array<RouteRecordRaw>) {
 
 export function transfromRoutes(
   originRoutes: Array<RouteRecordRaw>,
-  parentPath = '/'
+  parentPath = '/',
+  cacheViews: string[] = []
 ): Array<RouteRecordRawWithHidden> | undefined {
   if (!originRoutes) {
     return undefined
   }
   const tempRoutes: Array<RouteRecordRawWithHidden> = []
   originRoutes.forEach((it) => {
+    if (it.name && it.meta && it.meta.cacheable) {
+      const humName = toHump(it.name as string)
+      cacheViews.push(humName)
+    }
     const tempRoute = {
       ...it,
       hidden: (it as any).hidden ? !!(it as any).hidden : false,
       fullPath: isExternal(it.path) ? it.path : path.resolve(parentPath, it.path),
     } as RouteRecordRawWithHidden
     if (tempRoute.children) {
-      tempRoute.children = transfromRoutes(tempRoute.children, tempRoute.fullPath)
+      tempRoute.children = transfromRoutes(tempRoute.children, tempRoute.fullPath, cacheViews)
     }
     tempRoutes.push(tempRoute)
   })

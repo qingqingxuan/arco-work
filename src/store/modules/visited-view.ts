@@ -13,7 +13,7 @@ export default {
         ;(this as StoreType).state.visitedView.push(route)
         this.persistentVisitedView()
       }
-      ;(this as StoreType).addCachedView && (this as StoreType).addCachedView(route)
+      // ;(this as StoreType).addCachedView && (this as StoreType).addCachedView(route)
       resolve({ route, isNewRoute })
     })
   },
@@ -24,7 +24,7 @@ export default {
         1
       )
       ;(this as StoreType).persistentVisitedView()
-      ;(this as StoreType).removeCachedView && (this as StoreType).removeCachedView(route)
+      // ;(this as StoreType).removeCachedView && (this as StoreType).removeCachedView(route)
       resolve(route)
     })
   },
@@ -39,7 +39,7 @@ export default {
         )
         this.persistentVisitedView()
       }
-      ;(this as StoreType).resetCachedView && (this as StoreType).resetCachedView()
+      // ;(this as StoreType).resetCachedView && (this as StoreType).resetCachedView()
       resolve(selectRoute)
     })
   },
@@ -54,7 +54,7 @@ export default {
         )
         this.persistentVisitedView()
       }
-      ;(this as StoreType).resetCachedView && (this as StoreType).resetCachedView()
+      // ;(this as StoreType).resetCachedView && (this as StoreType).resetCachedView()
       resolve(selectRoute)
     })
   },
@@ -66,7 +66,7 @@ export default {
         }
       )
       ;(this as StoreType).persistentVisitedView()
-      ;(this as StoreType).resetCachedView && (this as StoreType).resetCachedView()
+      // ;(this as StoreType).resetCachedView && (this as StoreType).resetCachedView()
       resolve()
     })
   },

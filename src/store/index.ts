@@ -2,7 +2,6 @@ import { SideTheme, RouteRecordRawWithHidden } from './../types/store'
 import { reactive } from 'vue'
 import { DeviceType, LayoutMode, StateType, ThemeMode } from '../types/store'
 import { transfromRoutes } from '../utils'
-import CachedViewAction from './modules/cached-view'
 import VisitedViewAction from './modules/visited-view'
 import { RouteRecordRaw } from 'vue-router'
 import Setting from '../setting'
@@ -120,7 +119,7 @@ const store = {
     }) as Array<RouteRecordRawWithHidden>
   },
   initPermissionRoute(routes: Array<RouteRecordRaw>) {
-    const tempRoutes = transfromRoutes(routes) || []
+    const tempRoutes = transfromRoutes(routes, '/', this.state.cachedView) || []
     this.state.permissionRoutes.length = 0
     this.state.permissionRoutes.push(...tempRoutes)
   },
@@ -130,7 +129,6 @@ const store = {
   reset() {
     this.state = reactive<StateType>(originState)
   },
-  ...CachedViewAction,
   ...VisitedViewAction,
 }
 
