@@ -226,7 +226,7 @@
             tags: ['Vue3', 'Vite2', 'Typescript', 'Antd'],
           },
           {
-            title: 'Vue Admin Work P',
+            title: 'Admin Work Pro',
             target: 'http://p.vueadminwork.com',
             tags: ['Vue3', 'Vite2', 'Typescript', 'NaiveUI'],
           },

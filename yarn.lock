@@ -16,10 +16,10 @@
   dependencies:
     "color" "^3.1.3"
 
-"@arco-design/web-vue@^2.21.2":
-  "integrity" "sha512-sMeHVF/PCMx8yWJDvmr1y7fsCwyK3GQtEVWQEp72/eG7wpqTmDOKUb07xtEVA3TQ2OhNbvHS5RBMmB4fWtDHCg=="
-  "resolved" "https://registry.npmjs.org/@arco-design/web-vue/-/web-vue-2.21.2.tgz"
-  "version" "2.21.2"
+"@arco-design/web-vue@^2.25.0":
+  "integrity" "sha512-tpLZ1oweqFYKa8SzKAEJxKDScfi5WMVmT9XVM8x1WkJTlhZ2B5iA7W8CAJaJlBU1kYmwsWVp0LVP9Yk9cfnrlg=="
+  "resolved" "https://registry.npmjs.org/@arco-design/web-vue/-/web-vue-2.25.0.tgz"
+  "version" "2.25.0"
   dependencies:
     "@arco-design/color" "^0.4.0"
     "b-tween" "^0.3.3"
@@ -200,6 +200,11 @@
   "integrity" "sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA=="
   "resolved" "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz"
   "version" "4.0.0"
+
+"@types/path-browserify@^1.0.0":
+  "integrity" "sha512-XMCcyhSvxcch8b7rZAtFAaierBYdeHXVvg2iYnxOV0MCQHmPuRRmGZPFDRzPayxcGiiSL1Te9UIO+f3cuj0tfw=="
+  "resolved" "https://registry.npmjs.org/@types/path-browserify/-/path-browserify-1.0.0.tgz"
+  "version" "1.0.0"
 
 "@types/qrcode@^1.4.1":
   "integrity" "sha512-vxMyr7JM7tYPxu8vUE83NiosWX5DZieCyYeJRoOIg0pAkyofCBzknJ2ycUZkPGDFis2RS8GN/BeJLnRnAPxeCA=="
@@ -1389,11 +1394,6 @@
 "esbuild-darwin-64@0.13.15":
   "integrity" "sha512-ihOQRGs2yyp7t5bArCwnvn2Atr6X4axqPpEdCFPVp7iUj4cVSdisgvEKdNR7yH3JDjW6aQDw40iQFoTqejqxvQ=="
   "resolved" "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-0.13.15.tgz"
-  "version" "0.13.15"
-
-"esbuild-darwin-arm64@0.13.15":
-  "integrity" "sha512-i1FZssTVxUqNlJ6cBTj5YQj4imWy3m49RZRnHhLpefFIh0To05ow9DTrXROTE1urGTQCloFUXTX8QfGJy1P8dQ=="
-  "resolved" "https://registry.npmjs.org/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.13.15.tgz"
   "version" "0.13.15"
 
 "esbuild@^0.13.2", "esbuild@>=0.13":

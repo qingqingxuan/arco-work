@@ -194,11 +194,6 @@
           dataIndex: 'createTime',
         },
         {
-          title: '角色编号',
-          key: 'roleCode',
-          dataIndex: 'roleCode',
-        },
-        {
           title: '操作',
           key: 'actions',
           dataIndex: 'actions',

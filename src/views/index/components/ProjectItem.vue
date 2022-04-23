@@ -4,7 +4,7 @@
       <span class="title">
         {{ item.title }}
       </span>
-      <a-space>
+      <!-- <a-space>
         <a-tag
           size="small"
           v-for="(tag, index) of item.tags"
@@ -13,7 +13,7 @@
         >
           {{ tag }}
         </a-tag>
-      </a-space>
+      </a-space> -->
       <a-space class="mt-8">
         <a-button class="mr-1" status="success" shape="round" size="small" @click="preView">
           预览地址
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, PropType, toRef } from 'vue'
+  import { defineComponent, PropType, ref, toRef } from 'vue'
   import WeiXin from '@/assets/qrcode.jpg'
   const colors = [
     'red',

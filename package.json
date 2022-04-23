@@ -35,8 +35,9 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.21.2",
+    "@arco-design/web-vue": "^2.25.0",
     "@types/js-cookie": "^3.0.1",
+    "@types/path-browserify": "^1.0.0",
     "@types/lodash": "^4.14.178",
     "@types/nprogress": "^0.2.0",
     "@types/qrcode": "^1.4.1",

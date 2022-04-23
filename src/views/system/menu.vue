@@ -29,6 +29,9 @@
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                 {{ rowIndex + 1 }}
               </template>
+              <template v-else-if="item.key === 'routeName'" #cell="{ record }">
+                {{ record.routeName ?? '系统默认  ' }}
+              </template>
               <template v-else-if="item.key === 'icon'" #cell="{ record }">
                 <component :is="record.icon || 'IconMenu'" style="font-size: 18px" />
               </template>
@@ -108,7 +111,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref, Ref } from 'vue'
+  import { defineComponent, h, onMounted, ref, Ref } from 'vue'
   import { post } from '@/api/http'
   import { getMenuList } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
@@ -139,6 +142,11 @@
           title: '菜单地址',
           key: 'menuUrl',
           dataIndex: 'menuUrl',
+        },
+        {
+          title: '路由name',
+          key: 'routeName',
+          dataIndex: 'routeName',
         },
         {
           title: '菜单图标',
@@ -215,6 +223,16 @@
           },
         },
         {
+          label: '路由名称',
+          key: 'routeName',
+          type: 'input',
+          placeholder: '请输入路由名称',
+          value: ref(''),
+          reset: function () {
+            this.value.value = ''
+          },
+        },
+        {
           label: '外链地址',
           key: 'redirect',
           type: 'input',
@@ -278,7 +296,6 @@
           })
         return list
       }
-
       function doRefresh() {
         post({
           url: getMenuList,
@@ -294,6 +311,9 @@
         actionModel.value = 'add'
         itemFormOptions.forEach((it) => {
           it.reset && it.reset()
+          if (it.key === 'menuUrl') {
+            ;(it.disabled as Ref<boolean>).value = false
+          }
         })
         modalDialog.value?.show()
       }
@@ -366,3 +386,8 @@
     },
   })
 </script>
+<style lang="less" scoped>
+  :deep(.arco-table-cell-expand-icon) {
+    justify-content: space-around;
+  }
+</style>

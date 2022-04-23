@@ -24,6 +24,7 @@ NProgress.configure({
 interface OriginRoute {
   menuUrl: string
   menuName?: string
+  routeName?: string
   hidden?: boolean
   outLink?: string
   affix?: boolean
@@ -32,6 +33,7 @@ interface OriginRoute {
   icon?: string
   badge?: string | number
   isSingle: boolean
+  localFilePath?: string
   children: Array<OriginRoute>
 }
 
@@ -61,9 +63,17 @@ function loadComponents() {
 
 const asynComponents = loadComponents()
 
+function getFilePath(it: OriginRoute) {
+  if (!it.localFilePath) {
+    it.localFilePath = it.menuUrl
+  }
+  it.localFilePath = resolve('/', it.localFilePath)
+  return '../views' + it.localFilePath + '.vue'
+}
+
 function getComponent(it: OriginRoute) {
   return defineAsyncComponent({
-    loader: asynComponents['../views' + it.menuUrl + '.vue'],
+    loader: asynComponents[getFilePath(it)],
     loadingComponent: LoadingComponent,
   })
 }
@@ -121,7 +131,7 @@ function generatorRoutes(res: Array<OriginRoute>) {
     } else {
       const route: RouteRecordRawWithHidden = {
         path: it.outLink && isExternal(it.outLink) ? it.outLink : it.menuUrl,
-        name: getNameByUrl(it.menuUrl),
+        name: it.routeName || getNameByUrl(it.menuUrl),
         hidden: !!it.hidden,
         component: isMenuFlag ? Layout : getComponent(it),
         meta: {

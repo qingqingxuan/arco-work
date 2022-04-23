@@ -1,9 +1,9 @@
 import { reactive, Ref, ref, shallowReactive } from 'vue'
 
 import { TableFooterType, TableHeaderType } from '@/types/components'
-import { TableColumn } from '@arco-design/web-vue/es/table/interface'
+import { TableColumnData } from '@arco-design/web-vue/es/table/interface'
 
-type TableColumnPops = TableColumn & { key: string | number }
+type TableColumnPops = TableColumnData & { key: string | number }
 
 interface Table {
   dataList: Array<any>

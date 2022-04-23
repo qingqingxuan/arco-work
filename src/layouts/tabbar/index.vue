@@ -337,6 +337,20 @@
 </style>
 
 <style lang="less" scoped>
+  :deep(.arco-btn-outline) {
+    border: 1px solid rgba(var(--primary-5), 0.7) !important;
+    color: rgba(var(--primary-5), 0.7) !important;
+    &:hover {
+      border: 1px solid rgba(var(--primary-5), 1) !important;
+      color: rgba(var(--primary-5), 1) !important;
+    }
+  }
+  :deep(.arco-btn-primary) {
+    background-color: rgba(var(--primary-5), 0.8) !important;
+    &:hover {
+      background-color: rgba(var(--primary-5), 1) !important;
+    }
+  }
   .vaw-tab-bar-container {
     :deep(.arco-btn-size-small) {
       padding: 0 8px;

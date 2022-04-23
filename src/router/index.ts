@@ -68,6 +68,35 @@ export const constantRoutes = [
   },
 ]
 
+export const externalRoutes = [
+  {
+    path: '/params-info',
+    name: 'paramsInfo',
+    component: Layout,
+    hidden: true,
+    meta: {
+      title: '路由参数',
+    },
+    children: [
+      {
+        path: 'query',
+        component: () => import('@/views/route-params/query-details.vue'),
+        meta: {
+          title: 'query参数详情',
+        },
+      },
+      {
+        path: 'params/:id',
+        name: 'paramsDetails',
+        component: () => import('@/views/route-params/params-details.vue'),
+        meta: {
+          title: 'params参数详情',
+        },
+      },
+    ],
+  },
+]
+
 export const asyncRoutes = [
   {
     path: '/index',
@@ -99,36 +128,10 @@ export const asyncRoutes = [
       },
     ],
   },
-  {
-    path: '/params-info',
-    name: 'paramsInfo',
-    component: Layout,
-    hidden: true,
-    meta: {
-      title: '路由参数',
-    },
-    children: [
-      {
-        path: 'query',
-        component: () => import('@/views/route-params/query-details.vue'),
-        meta: {
-          title: 'query参数详情',
-        },
-      },
-      {
-        path: 'params/:id',
-        name: 'paramsDetails',
-        component: () => import('@/views/route-params/params-details.vue'),
-        meta: {
-          title: 'params参数详情',
-        },
-      },
-    ],
-  },
 ]
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: mapTwoLevelRouter(constantRoutes),
+  routes: mapTwoLevelRouter([...constantRoutes, ...externalRoutes]),
 })
 
 export default router
