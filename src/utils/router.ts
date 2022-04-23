@@ -1,4 +1,4 @@
-import router, { constantRoutes } from '../router'
+import router, { constantRoutes, asyncRoutes } from '../router'
 import Cookies from 'js-cookie'
 import { post } from '@/api/http'
 import { getMenuListByRoleId } from '@/api/url'
@@ -10,6 +10,7 @@ import { defineAsyncComponent } from 'vue'
 import LoadingComponent from '@/layouts/loading/index.vue'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { resolve } from 'path-browserify'
 import { USER_TOKEN_KEY } from '@/store/keys'
 import useUserStore from '@/store/modules/user'
 import pinia from '@/store/pinia'
@@ -36,16 +37,22 @@ interface OriginRoute {
 
 type RouteRecordRawWithHidden = RouteRecordRaw & { hidden: boolean }
 
-function getRoutes() {
-  return post({
-    url: getMenuListByRoleId,
-    data: {
-      userId: userStore.userId,
-      roleId: userStore.roleId,
-    },
-  }).then((res: any) => {
+async function getRoutes() {
+  try {
+    const res = await post({
+      url: getMenuListByRoleId,
+      data: {
+        userId: userStore.userId,
+        roleId: userStore.roleId,
+      },
+    })
     return generatorRoutes(res.data)
-  })
+  } catch (error) {
+    console.log(
+      '请检查是否清空Cookie 和 localStorage 里面的数据；如果已经对接真实接口，请检查菜单接口是否可用'
+    )
+    return []
+  }
 }
 
 function loadComponents() {
@@ -77,27 +84,60 @@ function getNameByUrl(menuUrl: string) {
   return toHump(temp[temp.length - 1])
 }
 
+function filterRoutesFromLocalRoutes(
+  route: OriginRoute,
+  localRoutes: Array<RouteRecordRaw>,
+  path = '/'
+) {
+  const filterRoute = localRoutes.find((it) => {
+    return resolve(path, it.path) === route.menuUrl
+  })
+  if (filterRoute) {
+    const parentPath = resolve(path, filterRoute.path)
+    if (
+      Array.isArray(route.children) &&
+      route.children.length > 0 &&
+      Array.isArray(filterRoute.children) &&
+      filterRoute.children.length > 0
+    ) {
+      const tempChildren: RouteRecordRaw[] = []
+      route.children.forEach((it) => {
+        const childFilterRoute = filterRoutesFromLocalRoutes(it, filterRoute.children!, parentPath)
+        childFilterRoute && tempChildren.push(childFilterRoute)
+      })
+      filterRoute.children = tempChildren
+    }
+  }
+  return filterRoute
+}
+
 function generatorRoutes(res: Array<OriginRoute>) {
   const tempRoutes: Array<RouteRecordRawWithHidden> = []
   res.forEach((it) => {
-    const route: RouteRecordRawWithHidden = {
-      path: it.outLink && isExternal(it.outLink) ? it.outLink : it.menuUrl,
-      name: getNameByUrl(it.menuUrl),
-      hidden: !!it.hidden,
-      component: isMenu(it.menuUrl) ? Layout : getComponent(it),
-      meta: {
-        title: it.menuName,
-        affix: !!it.affix,
-        cacheable: !!it.cacheable,
-        icon: it.icon || 'icon-menu',
-        badge: it.badge,
-        isSingle: !!it.isSingle,
-      },
+    const isMenuFlag = isMenu(it.menuUrl)
+    const localRoute = isMenuFlag ? filterRoutesFromLocalRoutes(it, asyncRoutes) : null
+    if (localRoute) {
+      tempRoutes.push(localRoute as RouteRecordRawWithHidden)
+    } else {
+      const route: RouteRecordRawWithHidden = {
+        path: it.outLink && isExternal(it.outLink) ? it.outLink : it.menuUrl,
+        name: getNameByUrl(it.menuUrl),
+        hidden: !!it.hidden,
+        component: isMenuFlag ? Layout : getComponent(it),
+        meta: {
+          title: it.menuName,
+          affix: !!it.affix,
+          cacheable: !!it.cacheable,
+          icon: it.icon || 'icon-menu',
+          badge: it.badge,
+          isSingle: !!it.isSingle,
+        },
+      }
+      if (it.children) {
+        route.children = generatorRoutes(it.children)
+      }
+      tempRoutes.push(route)
     }
-    if (it.children) {
-      route.children = generatorRoutes(it.children)
-    }
-    tempRoutes.push(route)
   })
   return tempRoutes
 }
@@ -122,9 +162,7 @@ router.beforeEach(async (to) => {
       const isEmptyRoute = layoutStore.isEmptyPermissionRoute()
       if (isEmptyRoute) {
         // 加载路由
-        const accessRoutes: Array<RouteRecordRaw> = []
-        const tempRoutes = await getRoutes()
-        accessRoutes.push(...tempRoutes)
+        const accessRoutes = await getRoutes()
         const mapRoutes = mapTwoLevelRouter(accessRoutes)
         mapRoutes.forEach((it: any) => {
           router.addRoute(it)

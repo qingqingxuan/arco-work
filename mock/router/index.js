@@ -3,6 +3,25 @@ import Mock from 'mockjs'
 
 export const adminRoutes = [
   {
+    menuUrl: '/index',
+    menuName: 'Dashborad',
+    iconPrefix: 'iconfont',
+    icon: 'icon-settings',
+    parentPath: '',
+    children: [
+      {
+        parentPath: '/index',
+        menuUrl: '/index/home',
+        menuName: '主控台',
+      },
+      {
+        parentPath: '/index',
+        menuUrl: '/index/work-place',
+        menuName: '工作台',
+      },
+    ],
+  },
+  {
     menuUrl: '/system',
     menuName: '系统管理',
     iconPrefix: 'iconfont',
