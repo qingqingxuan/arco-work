@@ -1,4 +1,3 @@
-import { path } from 'path-browserify'
 import { mapTwoLevelRouter } from '@/utils'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
@@ -10,11 +9,6 @@ export const constantRoutes = [
     name: 'Login',
     hidden: true,
     component: () => import('@/views/login/index.vue'),
-  },
-  {
-    path: '/',
-    redirect: '/index/home',
-    hidden: true,
   },
   {
     path: '/redirect',
@@ -68,7 +62,7 @@ export const constantRoutes = [
   },
 ]
 
-export const externalRoutes = [
+export const extraRoutes = [
   {
     path: '/params-info',
     name: 'paramsInfo',
@@ -131,7 +125,7 @@ export const asyncRoutes = [
 ]
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: mapTwoLevelRouter([...constantRoutes, ...externalRoutes]),
+  routes: mapTwoLevelRouter([...constantRoutes, ...extraRoutes]),
 })
 
 export default router

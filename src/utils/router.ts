@@ -17,11 +17,8 @@ import pinia from '@/store/pinia'
 
 const userStore = useUserStore(pinia)
 
-NProgress.configure({
-  showSpinner: false,
-})
-
 interface OriginRoute {
+  parentPath?: string
   menuUrl: string
   menuName?: string
   routeName?: string
@@ -29,26 +26,96 @@ interface OriginRoute {
   outLink?: string
   affix?: boolean
   cacheable?: boolean
+  isRootPath?: boolean
   iconPrefix?: string
   icon?: string
   badge?: string | number
-  isSingle: boolean
+  isSingle?: boolean
   localFilePath?: string
-  children: Array<OriginRoute>
+  children?: Array<OriginRoute>
 }
 
 type RouteRecordRawWithHidden = RouteRecordRaw & { hidden: boolean }
 
+/**
+ * 这里的 defaultRoutes 是为了在一开始对接项目的时候，后端人员还没有准备好菜单接口，导致前端开发者不能进入主页面。
+ * 所以这里返回默认的菜单数据，同时也向大家说明菜单数据的数据结构。后端的菜单接口一定要按这个格式去返回json数据，否则会解析菜单失败
+ */
+const defaultRoutes: OriginRoute[] = [
+  {
+    menuUrl: '/index',
+    menuName: 'Dashborad',
+    routeName: 'dashborad',
+    icon: 'icon-dashboard',
+    parentPath: '',
+    children: [
+      {
+        parentPath: '/index',
+        menuUrl: '/index/home',
+        menuName: '主控台',
+        routeName: 'home',
+      },
+      {
+        parentPath: '/index',
+        menuUrl: '/index/work-place',
+        menuName: '工作台',
+        routeName: 'workPlace',
+      },
+    ],
+  },
+  {
+    menuUrl: '/system',
+    menuName: '系统管理',
+    icon: 'icon-settings',
+    parentPath: '',
+    routeName: 'system',
+    children: [
+      {
+        parentPath: '/system',
+        menuUrl: '/system/department',
+        menuName: '部门管理',
+        routeName: 'department',
+        localFilePath: '/system/local-path/department',
+      },
+      {
+        parentPath: '/system',
+        menuUrl: '/system/user',
+        menuName: '用户管理',
+        routeName: 'user',
+        isRootPath: true,
+      },
+      {
+        parentPath: '/system',
+        menuUrl: '/system/role',
+        menuName: '角色管理',
+      },
+      {
+        parentPath: '/system',
+        menuUrl: '/system/menu',
+        menuName: '菜单管理',
+      },
+    ],
+  },
+]
+
+NProgress.configure({
+  showSpinner: false,
+})
+
 async function getRoutes() {
   try {
-    const res = await post({
-      url: getMenuListByRoleId,
-      data: {
-        userId: userStore.userId,
-        roleId: userStore.roleId,
-      },
-    })
-    return generatorRoutes(res.data)
+    if (getMenuListByRoleId) {
+      const res = await post({
+        url: getMenuListByRoleId,
+        data: {
+          userId: userStore.userId,
+          roleId: userStore.roleId,
+        },
+      })
+      return generatorRoutes(res.data)
+    } else {
+      return generatorRoutes(defaultRoutes)
+    }
   } catch (error) {
     console.log(
       '请检查是否清空Cookie 和 localStorage 里面的数据；如果已经对接真实接口，请检查菜单接口是否可用'
@@ -78,20 +145,26 @@ function getComponent(it: OriginRoute) {
   })
 }
 
-function getCharCount(str: string, char: string) {
-  const regex = new RegExp(char, 'g')
-  const result = str.match(regex)
-  const count = !result ? 0 : result.length
-  return count
-}
-
-function isMenu(path: string) {
-  return getCharCount(path, '/') === 1
+function isMenu(route: OriginRoute) {
+  return route.children && route.children.length > 0
 }
 
 function getNameByUrl(menuUrl: string) {
   const temp = menuUrl.split('/')
   return toHump(temp[temp.length - 1])
+}
+
+function findRootPathRoute(routes: RouteRecordRawWithHidden[]) {
+  for (let index = 0; index < routes.length; index++) {
+    const route = routes[index]
+    const rootRoute = route.children?.find((it) => it.meta && it.meta.isRootPath)
+    if (rootRoute) {
+      return rootRoute.path
+    }
+  }
+  return routes && routes.length > 0 && routes[0].children && routes[0].children.length > 0
+    ? routes[0].children![0].path
+    : '/'
 }
 
 function filterRoutesFromLocalRoutes(
@@ -103,6 +176,16 @@ function filterRoutesFromLocalRoutes(
     return resolve(path, it.path) === route.menuUrl
   })
   if (filterRoute) {
+    filterRoute.meta = {
+      title: route.menuName,
+      affix: !!route.affix,
+      cacheable: !!route.cacheable,
+      icon: route.icon || 'icon-menu',
+      badge: route.badge,
+      isRootPath: !!route.isRootPath,
+      isSingle: !!route.isSingle,
+      ...filterRoute.meta,
+    }
     const parentPath = resolve(path, filterRoute.path)
     if (
       Array.isArray(route.children) &&
@@ -124,7 +207,7 @@ function filterRoutesFromLocalRoutes(
 function generatorRoutes(res: Array<OriginRoute>) {
   const tempRoutes: Array<RouteRecordRawWithHidden> = []
   res.forEach((it) => {
-    const isMenuFlag = isMenu(it.menuUrl)
+    const isMenuFlag = isMenu(it)
     const localRoute = isMenuFlag ? filterRoutesFromLocalRoutes(it, asyncRoutes) : null
     if (localRoute) {
       tempRoutes.push(localRoute as RouteRecordRawWithHidden)
@@ -140,6 +223,7 @@ function generatorRoutes(res: Array<OriginRoute>) {
           cacheable: !!it.cacheable,
           icon: it.icon || 'icon-menu',
           badge: it.badge,
+          isRootPath: !!it.isRootPath,
           isSingle: !!it.isSingle,
         },
       }
@@ -177,11 +261,18 @@ router.beforeEach(async (to) => {
         mapRoutes.forEach((it: any) => {
           router.addRoute(it)
         })
+        // 配置 `/` 路由的默认跳转地址
+        router.addRoute({
+          path: '/',
+          redirect: findRootPathRoute(accessRoutes),
+          hidden: true,
+        } as RouteRecordRawWithHidden)
+        // 这个路由一定要放在最后
         router.addRoute({
           path: '/:pathMatch(.*)*',
           redirect: '/404',
           hidden: true,
-        } as RouteRecordRaw)
+        } as RouteRecordRawWithHidden)
         layoutStore.initPermissionRoute([...constantRoutes, ...accessRoutes])
         return { ...to, replace: true }
       } else {

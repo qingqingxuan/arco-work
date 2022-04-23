@@ -1,6 +1,6 @@
 {
   "name": "arco-work",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -37,9 +37,9 @@
   "devDependencies": {
     "@arco-design/web-vue": "^2.25.0",
     "@types/js-cookie": "^3.0.1",
-    "@types/path-browserify": "^1.0.0",
     "@types/lodash": "^4.14.178",
     "@types/nprogress": "^0.2.0",
+    "@types/path-browserify": "^1.0.0",
     "@types/qrcode": "^1.4.1",
     "@types/qs": "^6.9.7",
     "@types/quill": "^2.0.9",
