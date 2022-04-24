@@ -21,9 +21,9 @@
               v-for="item of tableColumns"
               :key="item.key"
               :align="item.align"
-              :title="item.title"
+              :title="(item.title as string)"
               :width="item.width"
-              :data-index="item.key"
+              :data-index="(item.key as string)"
               :fixed="item.fixed"
             >
               <template v-if="item.key === 'actions'" #cell="{ record }">
@@ -55,8 +55,8 @@
             label="部门名称"
             field="name"
             :rules="[
-              { required: true, message: '请输入部门名称', trigger: 'blur' },
-              { min: 3, max: 10, message: '长度在 3 - 10个字符', trigger: 'blur' },
+              { required: true, message: '请输入部门名称' },
+              { min: 3, max: 10, message: '长度在 3 - 10个字符' },
             ]"
             :validate-trigger="['change', 'input']"
           >
@@ -66,8 +66,8 @@
             label="部门编号"
             field="depCode"
             :rules="[
-              { required: true, message: '请输入部门编号', trigger: 'blur' },
-              { min: 3, max: 10, message: '长度在 3 - 30个字符', trigger: 'blur' },
+              { required: true, message: '请输入部门编号' },
+              { min: 3, max: 10, message: '长度在 3 - 30个字符' },
             ]"
             :validate-trigger="['change', 'input']"
           >
@@ -241,7 +241,7 @@
   })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
   :deep(.arco-table-cell-expand-icon) {
     justify-content: center;
   }
