@@ -4,12 +4,14 @@
       <template #header>
         <TableHeader :show-filter="false">
           <template #table-config>
-            <SortableTable class="ml-4" :columns="tableColumns" @update="onUpdateTable" />
-            <TableConfig
-              @update-border="onUpdateBorder"
-              @update-striped="onUpdateStriped"
-              @refresh="doRefresh"
-            />
+            <a-space>
+              <SortableTable class="ml-4" :columns="tableColumns" @update="onUpdateTable" />
+              <TableConfig
+                @update-border="onUpdateBorder"
+                @update-striped="onUpdateStriped"
+                @refresh="doRefresh"
+              />
+            </a-space>
           </template>
         </TableHeader>
       </template>

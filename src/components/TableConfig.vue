@@ -1,7 +1,25 @@
 <template>
   <a-space align="center">
-    <a-checkbox v-model="border" @change="updateBorder">表格边框</a-checkbox>
-    <a-checkbox v-model="striped" @change="updateStriped">斑马纹</a-checkbox>
+    <a-tooltip content="开启/关闭表格边框" class="item" trigger="hover" placement="top">
+      <a-button
+        shape="circle"
+        size="small"
+        :status="border ? 'success' : 'normal'"
+        @click="updateBorder"
+      >
+        B
+      </a-button>
+    </a-tooltip>
+    <a-tooltip content="开启/关闭斑马纹" class="item" trigger="hover" placement="top">
+      <a-button
+        shape="circle"
+        size="small"
+        :status="striped ? 'success' : 'normal'"
+        @click="updateStriped"
+      >
+        S
+      </a-button>
+    </a-tooltip>
     <a-tooltip content="刷新页面" class="item" trigger="hover" placement="top">
       <a-button shape="circle" size="small" @click="doRefresh">
         <template #icon>
@@ -25,9 +43,11 @@
       const border = ref(false)
       const striped = ref(false)
       function updateBorder() {
+        border.value = !border.value
         emit('update-border', border.value)
       }
       function updateStriped() {
+        striped.value = !striped.value
         emit('update-striped', striped.value)
       }
       return {
