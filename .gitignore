@@ -2,5 +2,5 @@ node_modules
 .DS_Store
 dist-ssr
 *.local
-/dist
-/dist-staging
+dist
+dist-staging
