@@ -1,41 +1,16 @@
 <template>
   <div id="tableHeaderContainer" class="relative" :style="{ zIndex: 9 }">
-    <a-card
-      :title="title"
-      size="small"
-      :header-style="{ borderBottom: '0px' }"
-      :bodyStyle="{ padding: '0px' }"
-      :bordered="isBordered"
-    >
-      <template #extra>
+    <a-card :title="title" size="small" :bordered="isBordered">
+      <template #extra v-if="showFilter">
         <a-space>
-          <slot name="table-config"></slot>
-          <a-tooltip content="展开筛选条件" class="ml-2 mr-2" trigger="hover" v-if="showFilter">
-            <a-button type="primary" size="small" @click="showSearchContent = !showSearchContent">
-              <template #icon>
-                <icon-filter />
-              </template>
-              筛选条件
-            </a-button>
-          </a-tooltip>
-          <slot name="top-right"></slot>
+          <a-button type="primary" size="small" @click="doSearch">搜索</a-button>
+          <a-button status="danger" size="small" @click="doResetSearch">重置</a-button>
         </a-space>
       </template>
-      <a-drawer
-        v-model:visible="showSearchContent"
-        placement="top"
-        popup-container="#tableHeaderContainer"
-        title="搜索条件"
-        :height="searchContentHeight"
-      >
-        <slot name="search-content"></slot>
-        <template #footer>
-          <a-space>
-            <a-button status="danger" size="small" @click="doResetSearch">重置</a-button>
-            <a-button type="primary" size="small" @click="doSearch">搜索</a-button>
-          </a-space>
-        </template>
-      </a-drawer>
+      <slot name="search-content"></slot>
+      <div class="flex justify-end">
+        <slot name="table-config"></slot>
+      </div>
     </a-card>
   </div>
 </template>
@@ -48,15 +23,7 @@
     props: {
       title: {
         type: String,
-        default: '基本操作',
-      },
-      showFilter: {
-        type: Boolean,
-        default: true,
-      },
-      searchContentHeight: {
-        type: String,
-        default: '300px',
+        default: '',
       },
       bordered: {
         type: Boolean,
@@ -64,7 +31,8 @@
       },
     },
     emits: ['search', 'reset-search'],
-    setup(props, { emit }) {
+    setup(props, { emit, slots }) {
+      const showFilter = computed(() => !!slots['search-content'])
       const showSearchContent = ref(false)
       const target = ref<HTMLElement | null>(null)
       const isBordered = computed(() => props.bordered)
@@ -81,6 +49,7 @@
         emit('reset-search')
       }
       return {
+        showFilter,
         isBordered,
         showSearchContent,
         target,

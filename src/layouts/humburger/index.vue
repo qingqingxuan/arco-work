@@ -1,7 +1,7 @@
 <template>
   <span
     class="fold-wrapper"
-    :class="[state.isCollapse ? 'fold-close-status' : 'fold-open-status']"
+    :class="[state.isCollapse ? 'fold-open-status' : 'fold-close-status']"
     @click="toggleFold"
   >
     <MenuFoldOutlined />

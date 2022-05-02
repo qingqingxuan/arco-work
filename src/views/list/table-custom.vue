@@ -5,7 +5,6 @@
         <TableHeader :show-filter="false">
           <template #table-config>
             <SortableTable class="ml-4" :columns="tableColumns" @update="onUpdateTable" />
-            <a-divider type="vertical" style="background-color: #f5f5f5" />
             <TableConfig
               @update-border="onUpdateBorder"
               @update-striped="onUpdateStriped"
@@ -18,7 +17,7 @@
         <a-table
           :loading="tableLoading"
           :bordered="{ wrapper: bordered, cell: bordered }"
-          :stripe="striped"
+          :stripe="(striped as boolean)"
           :data="dataList"
           :pagination="false"
           :row-key="rowKey"

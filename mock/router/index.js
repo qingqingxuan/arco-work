@@ -61,7 +61,7 @@ export const adminRoutes = [
   },
   {
     menuUrl: '/list',
-    menuName: '列表页面',
+    menuName: '表格demo',
     icon: 'icon-list',
     parentPath: '',
     children: [
@@ -89,7 +89,7 @@ export const adminRoutes = [
   },
   {
     menuUrl: '/form',
-    menuName: '表单页面',
+    menuName: '表单demo',
     badge: 'dot',
     icon: 'icon-edit',
     parentPath: '',

@@ -4,43 +4,48 @@
       <template #header>
         <TableHeader
           :show-filter="true"
-          title="查询条件"
+          title="表格搜索"
           @search="onSearch"
           @reset-search="onResetSearch"
         >
           <template #search-content>
             <a-form layout="inline">
               <a-form-item v-for="item of conditionItems" :key="item.key" :label="item.label">
-                <template v-if="item.type === 'input'">
-                  <a-input v-model="item.value.value" :placeholder="item.placeholder" />
+                <template v-if="item.render">
+                  <FormRender :render="item.render" :formItem="item" />
                 </template>
-                <template v-if="item.type === 'select'">
-                  <a-select
-                    v-model="item.value.value"
-                    style="width: 150px"
-                    :placeholder="item.placeholder"
-                  >
-                    <a-option
-                      v-for="optionItem of item.optionItems"
-                      :key="optionItem.value"
-                      :value="optionItem.value"
+                <template v-else>
+                  <template v-if="item.type === 'input'">
+                    <a-input v-model="item.value.value" :placeholder="item.placeholder" />
+                  </template>
+                  <template v-if="item.type === 'select'">
+                    <a-select
+                      v-model="item.value.value"
+                      style="width: 150px"
+                      :placeholder="item.placeholder"
                     >
-                      {{ optionItem.label }}
-                    </a-option>
-                  </a-select>
-                </template>
-                <template v-if="item.type === 'date'">
-                  <a-date-picker v-model="item.value.value" />
-                </template>
-                <template v-if="item.type === 'time'">
-                  <a-time-picker v-model="item.value.value" value-format="HH:mm:ss" />
-                </template>
-                <template v-if="item.type === 'check-group'">
-                  <a-checkbox-group v-model="item.value.value">
-                    <a-checkbox v-for="it of item.optionItems" :value="it.value" :key="it.value">
-                      {{ item.label }}
-                    </a-checkbox>
-                  </a-checkbox-group>
+                      <a-option
+                        v-for="optionItem of item.optionItems"
+                        :key="optionItem.value"
+                        :value="optionItem.value"
+                      >
+                        {{ optionItem.label }}
+                      </a-option>
+                    </a-select>
+                  </template>
+                  <template v-if="item.type === 'date'">
+                    <a-date-picker v-model="item.value.value" />
+                  </template>
+                  <template v-if="item.type === 'time'">
+                    <a-time-picker v-model="item.value.value" value-format="HH:mm:ss" />
+                  </template>
+                  <template v-if="item.type === 'check-group'">
+                    <a-checkbox-group v-model="item.value.value">
+                      <a-checkbox v-for="it of item.optionItems" :value="it.value" :key="it.value">
+                        {{ item.label }}
+                      </a-checkbox>
+                    </a-checkbox-group>
+                  </template>
                 </template>
               </a-form-item>
             </a-form>
@@ -63,9 +68,9 @@
               v-for="item of tableColumns"
               :key="item.key"
               :align="item.align"
-              :title="item.title"
+              :title="(item.title as string)"
               :width="item.width"
-              :data-index="item.key"
+              :data-index="(item.key as string)"
               :fixed="item.fixed"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
@@ -108,8 +113,8 @@
     useTableColumn,
   } from '@/hooks/table'
   import { FormItem } from '@/types/components'
-  import { Message } from '@arco-design/web-vue'
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { Input, Message } from '@arco-design/web-vue'
+  import { defineComponent, h, onMounted, ref } from 'vue'
   import type { Dayjs } from 'dayjs'
   const conditionItems: Array<FormItem> = [
     {
@@ -121,11 +126,26 @@
       reset: function () {
         this.value.value = ''
       },
+      render: (formItem: FormItem) => {
+        return h(Input, {
+          placeholder: '这是render渲染的',
+          modelValue: formItem.value.value,
+          'onUpdate:modelValue': (value) => {
+            formItem.value.value = value
+          },
+        })
+      },
+    },
+    {
+      key: 'date',
+      label: '创建日期',
+      type: 'date',
+      value: ref<Dayjs>(),
     },
     {
       key: 'sex',
       label: '用户姓别',
-      value: ref(undefined),
+      value: ref(),
       type: 'select',
       placeholder: '请选择用户姓别',
       optionItems: [
@@ -143,32 +163,10 @@
       },
     },
     {
-      key: 'date',
-      label: '日期',
-      type: 'date',
-      value: ref<Dayjs>(),
-    },
-    {
       key: 'time',
-      label: '时间',
+      label: '创建时间',
       type: 'time',
       value: ref<string>(''),
-    },
-    {
-      key: 'checkbox',
-      label: '复选',
-      type: 'check-group',
-      value: ref([]),
-      optionItems: [
-        {
-          label: '选项1',
-          value: 0,
-        },
-        {
-          label: '选项2',
-          value: 1,
-        },
-      ],
     },
   ]
   export default defineComponent({
