@@ -9,7 +9,7 @@
     <a href="https://v3.cn.vuejs.org/">
         <img src="https://img.shields.io/badge/vue.js-3.0-green" alt="Vue3.0">
     </a>
-    <a href="http://p.vueadminwork.com">
+    <a href="http://arco.vueadminwork.com">
         <img src="https://img.shields.io/badge/🚀-open--in--browser-blueviolet" alt="Live Demo">
     </a>
 </p>
