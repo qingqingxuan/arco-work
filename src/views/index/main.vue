@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <a-row :gutter="[10, 10]">
+    <a-row :gutter="10">
       <a-col
         :xs="24"
         :sm="12"

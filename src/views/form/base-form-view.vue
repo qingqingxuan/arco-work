@@ -100,7 +100,7 @@
             },
           ],
           reset: function () {
-            this.value.vlue = undefined
+            this.value.value = undefined
           },
         },
         {

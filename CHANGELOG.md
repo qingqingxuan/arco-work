@@ -1,4 +1,4 @@
-## 2022-5-2(v: 1.1.2)
+## 2022-5-3(v: 1.1.2)
 
 - 升级：网络操作 api `post、get` 支持泛型功能
 
@@ -7,6 +7,53 @@
 - 调整：调整 `TableHeader.vue` 中的组件布局样式
 
 - 修复：修复 `Humburger.vue` 组件中 `展开和闭合`图标指示器显示不正确的 bug
+
+- 修复：修复 `演示`页面部分 bug
+
+- 新增：新增 `jsx` 编写组件的功能
+
+  ```ts
+  plugins: [
+     ...
+      vueJsx(),
+     ...
+    ],
+  ```
+
+- 新增：`FormRender` 中 添加常用的 `表单元素` 快捷渲染方式，如下：
+
+  ```ts
+  import {
+    Checkbox,
+    Input,
+    InputNumber,
+    Option,
+    Select,
+    SelectOptionData,
+    SelectProps,
+  } from '@arco-design/web-vue'
+  import { AllowedComponentProps, h, Ref } from 'vue'
+
+  export default function Render(props: any) {
+    if (!props || !props.formItem) {
+      throw new Error('miss formItem prop and check it')
+    }
+    return props.render(props.formItem, h)
+  }
+
+  export function renderInput(value: Ref<string>, props = {}) {
+    return (
+      <Input
+        onUpdate:modelValue={(newValue) => {
+          value.value = newValue
+        }}
+        modelValue={value.value}
+        {...props}
+      />
+    )
+  }
+  ...
+  ```
 
 ## 2022-4-23(v: 1.1.1)
 
