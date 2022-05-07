@@ -7,6 +7,10 @@ import { TinyEmitter } from 'tiny-emitter'
 import { toHump } from '../utils'
 import components from '../components'
 
+import ArcoVueIcon from '@arco-design/web-vue/es/icon'
+import '@arco-design/web-vue/dist/arco.css'
+import ArcoVue from '@arco-design/web-vue/es/arco-vue'
+
 function getComponentName(key: string) {
   if (!key) {
     return ''
@@ -33,9 +37,8 @@ const key = Symbol('layout_store')
 export const emitKey = Symbol('tiny-emit')
 
 function install(app: App, options?: any) {
-  if (import.meta.env.MODE === 'development') {
-    console.warn('install layout store start')
-  }
+  app.use(ArcoVue)
+  app.use(ArcoVueIcon)
   registerComponents(app)
   app.use(components, { getComponentName })
   delete options?.registerElement
@@ -43,9 +46,6 @@ function install(app: App, options?: any) {
   app.config.globalProperties.$layoutStore = store
   app.provide(key, store)
   app.provide(emitKey, new TinyEmitter())
-  if (import.meta.env.MODE === 'development') {
-    console.warn('install layout store end')
-  }
 }
 
 export function useLayoutStore() {
@@ -54,8 +54,6 @@ export function useLayoutStore() {
 
 export { default as Layout } from './Layout.vue'
 
-export { mapTwoLevelRouter } from '../utils'
-
-export default {
-  install,
+export function setupGlobalComponent(app: App, options?: any) {
+  install(app, options)
 }

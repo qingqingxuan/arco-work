@@ -11,6 +11,19 @@ import { APP_SETTING_INFO } from './keys'
 import usePrimaryColor from '@/hooks/usePrimaryColor'
 import useTheme from '@/hooks/useTheme'
 
+function getScreenType() {
+  const width = document.body.clientWidth
+  if (width <= 768) {
+    return DeviceType.MOBILE
+  } else if (width < 992 && width > 768) {
+    return DeviceType.PAD
+  } else if (width < 1200 && width >= 992) {
+    return DeviceType.PC
+  } else {
+    return DeviceType.PC
+  }
+}
+
 function presistSettingInfo(setting: any) {
   localStorage.setItem(APP_SETTING_INFO, JSON.stringify(setting))
 }
@@ -23,7 +36,7 @@ const originState = {
   isCollapse: false,
   isFixedNavBar: Setting.isFixedNavBar,
   layoutMode: Setting.layoutMode,
-  device: DeviceType.PC,
+  device: getScreenType(),
   theme: Setting.theme,
   sideBarBgColor: Setting.sideTheme,
   pageAnim: Setting.pageAnim,

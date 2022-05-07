@@ -1,50 +1,35 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import LayoutStore from './layouts'
-import './styles/index.css'
-import router from './router'
-import { DeviceType } from './types/store'
+
+import router, { setupRouter } from './router'
 import './utils/router'
-import ArcoVueIcon from '@arco-design/web-vue/es/icon'
-import '@arco-design/web-vue/dist/arco.css'
-import ArcoVue from '@arco-design/web-vue/es/arco-vue'
-import pinia from './store/pinia'
 
-import '../mock'
+import './styles'
+import { setupGlobalComponent } from '@/layouts'
+import { setupPinia } from '@/store/pinia'
+// 如果需要对接正式的接口，需要下面代码注释或者删除
+import { setupMock } from '../mock'
 
-function getScreenType() {
-  const width = document.body.clientWidth
-  if (width <= 768) {
-    return DeviceType.MOBILE
-  } else if (width < 992 && width > 768) {
-    return DeviceType.PAD
-  } else if (width < 1200 && width >= 992) {
-    return DeviceType.PC
-  } else {
-    return DeviceType.PC
-  }
+function setup() {
+  const app = createApp(App)
+  setupPinia(app)
+  setupRouter(app)
+  setupGlobalComponent(app, {
+    actions: {
+      onPersonalCenter() {
+        router.push('/personal')
+      },
+      onLogout() {
+        router.replace({ path: '/login', query: { redirect: '/' } }).then(() => {
+          window.location.reload()
+        })
+      },
+    },
+  })
+  // 如果需要对接正式的接口，需要下面代码注释或者删除
+  setupMock()
+  app.mount('#app')
 }
 
-const app = createApp(App)
-app.use(ArcoVue)
-app.use(ArcoVueIcon)
-app.use(LayoutStore, {
-  state: {
-    device: getScreenType(),
-  },
-  actions: {
-    onPersonalCenter() {
-      router.push('/personal')
-    },
-    onLogout() {
-      router.replace({ path: '/login', query: { redirect: '/' } }).then(() => {
-        window.location.reload()
-      })
-    },
-  },
-})
-app.use(pinia)
-app.use(router)
-router.isReady().then(() => {
-  app.mount('#app')
-})
+// 启动项目
+setup()

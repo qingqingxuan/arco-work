@@ -1,4 +1,5 @@
 import { mapTwoLevelRouter } from '@/utils'
+import { App } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const Layout = () => import('@/layouts/Layout.vue')
@@ -129,3 +130,7 @@ const router = createRouter({
 })
 
 export default router
+
+export function setupRouter(app: App) {
+  app.use(router)
+}
