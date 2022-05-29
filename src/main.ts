@@ -9,11 +9,13 @@ import { setupGlobalComponent } from '@/layouts'
 import { setupPinia } from '@/store/pinia'
 // 如果需要对接正式的接口，需要下面代码注释或者删除
 import { setupMock } from '../mock'
+import setupRouterGuard from './router/guard'
 
 function setup() {
   const app = createApp(App)
   setupPinia(app)
   setupRouter(app)
+  setupRouterGuard()
   setupGlobalComponent(app, {
     actions: {
       onPersonalCenter() {

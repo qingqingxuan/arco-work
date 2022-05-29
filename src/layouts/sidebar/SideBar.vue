@@ -7,15 +7,15 @@
     <transition name="logo">
       <Logo v-if="showLogo" />
     </transition>
-    <ScrollerMenu :routes="routes" />
+    <ScrollerMenu :routes="permissionStore.getPermissionSideBar" />
   </div>
 </template>
 
 <script lang="ts">
   import useAppConfigStore from '@/store/modules/app-config'
+  import usePermissionStore from '@/store/modules/permission'
   import { SideTheme } from '@/store/types'
   import { computed, defineComponent } from 'vue'
-  import { useLayoutStore } from '../index'
   export default defineComponent({
     name: 'SideBar',
     props: {
@@ -25,11 +25,8 @@
       },
     },
     setup() {
-      const store = useLayoutStore()
+      const permissionStore = usePermissionStore()
       const appStore = useAppConfigStore()
-      const routes = computed(() => {
-        return store?.state.permissionRoutes.filter((it) => !!it.name)
-      })
       const bgColor = computed(() => {
         if (appStore.sideTheme === SideTheme.IMAGE) {
           return 'sidebar-bg-img'
@@ -41,8 +38,7 @@
       })
       return {
         appStore,
-        state: store?.state,
-        routes,
+        permissionStore,
         bgColor,
       }
     },

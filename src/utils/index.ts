@@ -116,7 +116,7 @@ export function transfromMenu(originRoutes: Array<RouteRecordRawWithHidden>): Ar
     .filter((it) => !it.hidden)
     .forEach((it) => {
       const tempMenu: MenuOption = {
-        key: it.fullPath,
+        key: it.path,
         label: it.meta?.title as string,
         icon: it.meta?.icon as string,
         children: null,
@@ -124,7 +124,7 @@ export function transfromMenu(originRoutes: Array<RouteRecordRawWithHidden>): Ar
       if (it.children) {
         if (it.meta && it.meta.isSingle && it.children.length === 1) {
           const lastItem = it.children[0] as RouteRecordRawWithHidden
-          tempMenu.key = lastItem.fullPath || tempMenu.key
+          tempMenu.key = lastItem.path || tempMenu.key
           tempMenu.label = (
             lastItem.meta && lastItem.meta.title ? lastItem.meta?.title : tempMenu.label
           ) as string

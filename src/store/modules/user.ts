@@ -1,62 +1,63 @@
 import { defineStore } from 'pinia'
 import { UserState } from '../types'
-import layoutStore from '../index'
+import store from '../pinia'
 
 import Avatar from '@/assets/img_avatar.gif'
-import Cookies from 'js-cookie'
-import { USER_INFO_KEY, USER_TOKEN_KEY } from '../keys'
+import usePermissionStore from './permission'
 
 const defaultAvatar = Avatar
 
-const userInfo: UserState = JSON.parse(localStorage.getItem(USER_INFO_KEY) || '{}')
-
-const useUserStore = defineStore('user', {
+const useUserStore = defineStore('user-info', {
   state: () => {
     return {
-      userId: userInfo.userId || 0,
-      roleId: userInfo.roleId || 0,
-      roles: userInfo.roles || null,
-      token: userInfo.token || '',
-      userName: userInfo.userName || '',
-      nickName: userInfo.nickName || '',
-      avatar: userInfo.avatar || defaultAvatar,
+      userId: 0,
+      roleId: 0,
+      token: '',
+      userName: '',
+      nickName: '',
+      avatar: defaultAvatar,
     }
   },
   actions: {
     saveUser(userInfo: UserState) {
-      return new Promise<void>((res) => {
+      return new Promise<UserState>((resolve) => {
         this.userId = userInfo.userId
-        this.userId = userInfo.userId
-        this.token = userInfo.token
         this.roleId = userInfo.roleId
-        this.roles = userInfo.roles
+        this.token = userInfo.token
         this.userName = userInfo.userName
         this.nickName = userInfo.nickName
         this.avatar = userInfo.avatar || defaultAvatar
-        Cookies.set(USER_TOKEN_KEY, userInfo.token)
-        localStorage.setItem(USER_INFO_KEY, JSON.stringify(userInfo))
-        res()
+        resolve(userInfo)
       })
+    },
+    isTokenExpire() {
+      return !this.token
     },
     changeNickName(newNickName: string) {
       this.nickName = newNickName
     },
     logout() {
+      const permissionStore = usePermissionStore()
       return new Promise<void>((resolve) => {
-        this.userId = 0
-        this.avatar = ''
-        this.roleId = 0
-        this.roles = []
-        this.userName = ''
-        this.nickName = ''
-        this.token = ''
-        Cookies.remove(USER_TOKEN_KEY)
+        this.$reset()
+        permissionStore.$reset()
         localStorage.clear()
-        layoutStore.reset()
+        sessionStorage.clear()
         resolve()
       })
+    },
+  },
+  presist: {
+    enable: true,
+    resetToState: true,
+    option: {
+      exclude: ['userName'],
     },
   },
 })
 
 export default useUserStore
+
+export function useUserStoreContext() {
+  return useUserStore(store)
+}

@@ -1,3 +1,6 @@
+import { RouteRecordRawWithHidden } from '@/types/store'
+import { Ref, UnwrapRef } from 'vue'
+
 export interface UserState {
   userId: number
   token: string
@@ -55,4 +58,38 @@ export interface AppConfigState {
     isShowRefresh: boolean
     isShowFullScreen: boolean
   }
+}
+
+export interface MenuOption {
+  key: string | undefined
+  label: string | undefined
+  icon: string | undefined
+  children: Array<MenuOption> | null
+}
+
+export interface SplitTab {
+  label: string
+  iconPrefix?: string | unknown
+  icon: string
+  fullPath: string
+  children?: Array<RouteRecordRawWithHidden>
+  checked: Ref<UnwrapRef<boolean>>
+}
+
+export interface OriginRoute {
+  parentPath?: string
+  menuUrl: string
+  menuName?: string
+  routeName?: string
+  hidden?: boolean
+  outLink?: string
+  affix?: boolean
+  cacheable?: boolean
+  isRootPath?: boolean
+  iconPrefix?: string
+  icon?: string
+  badge?: string | number
+  isSingle?: boolean
+  localFilePath?: string
+  children?: Array<OriginRoute>
 }
