@@ -13,7 +13,7 @@
       :bordered="false"
     >
       <div class="flex justify-end items-center h-full">
-        <template v-if="state.device !== 'mobile'">
+        <template v-if="appStore.deviceType !== 'mobile'">
           <ActionItems />
         </template>
         <div class="avatar-wrapper">
@@ -25,16 +25,19 @@
 </template>
 
 <script lang="ts">
+  import useAppConfigStore from '@/store/modules/app-config'
   import { defineComponent, computed } from 'vue'
   import { useLayoutStore } from '../index'
   export default defineComponent({
     name: 'VAWHeader',
     setup() {
+      const appStore = useAppConfigStore()
       const store = useLayoutStore()
       const routes = computed(() => {
         return store?.state.permissionRoutes.filter((it) => !!it.name)
       })
       return {
+        appStore,
         state: store?.state,
         routes,
       }

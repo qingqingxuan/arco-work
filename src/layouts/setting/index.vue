@@ -4,7 +4,7 @@
     placement="right"
     title="系统设置"
     closable
-    :width="state.device === 'mobile' ? '75%' : '280px'"
+    :width="appStore.deviceType === 'mobile' ? '75%' : '280px'"
   >
     <Scrollbar class="wrapper">
       <a-divider dashed>主题设置</a-divider>
@@ -54,7 +54,7 @@
       <a-divider dashed>页签显示</a-divider>
       <div class="setting-item-wrapper">
         <span>显示页签</span>
-        <a-switch v-model="state.isShowTabbar" @change="onShowTabbar" />
+        <!-- <a-switch v-model="appStore.isShowTabbar" @change="onShowTabbar" /> -->
       </div>
       <a-divider dashed>主题颜色</a-divider>
       <a-row :gutter="[10, 10]">
@@ -77,28 +77,28 @@
       <a-divider dashed>页面切换动画</a-divider>
       <div class="setting-item-wrapper">
         <span style="width: 100px">动画效果</span>
-        <a-select v-model="state.pageAnim" :options="animOptions" @select="onAnimUpdate" />
+        <a-select v-model="appStore.pageAnim" :options="animOptions" @select="onAnimUpdate" />
       </div>
       <a-divider dashed>按钮显示</a-divider>
       <div class="setting-item-wrapper">
         <span>固定顶部导航</span>
-        <a-switch v-model="state.isFixedNavBar" :disabled="state.layoutMode === 'ttb'" />
+        <a-switch v-model="appStore.isFixedNavBar" :disabled="appStore.layoutMode === 'ttb'" />
       </div>
       <div class="setting-item-wrapper">
         <span>搜索</span>
-        <a-switch v-model="state.actionItem.showSearch" />
+        <a-switch v-model="appStore.actionBar.isShowSearch" />
       </div>
       <div class="setting-item-wrapper">
         <span>消息</span>
-        <a-switch v-model="state.actionItem.showMessage" />
+        <a-switch v-model="appStore.actionBar.isShowMessage" />
       </div>
       <div class="setting-item-wrapper">
         <span>刷新</span>
-        <a-switch v-model="state.actionItem.showRefresh" />
+        <a-switch v-model="appStore.actionBar.isShowRefresh" />
       </div>
       <div class="setting-item-wrapper">
         <span>全屏</span>
-        <a-switch v-model="state.actionItem.showFullScreen" />
+        <a-switch v-model="appStore.actionBar.isShowFullScreen" />
       </div>
       <a-divider />
     </Scrollbar>
@@ -107,21 +107,19 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
-  import { useLayoutStore } from '../index'
   import { Message } from '@arco-design/web-vue'
   import { ModalDialogType } from '@/types/components'
-  import { useChangeMenuWidth, useMenuWidth } from '@/hooks/useMenuWidth'
+  import { useMenuWidth } from '@/hooks/useMenuWidth'
   import LeftBg from '@/assets/bg_img.webp'
-  import useTheme from '@/hooks/useTheme'
-  import usePrimaryColor from '@/hooks/usePrimaryColor'
-  import Setting from '@/setting'
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { PageAnim } from '@/store/types'
+  import { ThemeMode } from '@/types/store'
   export default defineComponent({
     name: 'Setting',
     setup() {
       const appInfoDialog = ref<ModalDialogType | null>()
       const opened = ref(false)
-      const store = useLayoutStore()
-      const state = store?.state
+      const appStore = useAppConfigStore()
       const showContact = ref(false)
       const menuWidth = ref(useMenuWidth())
       const themeList = reactive([
@@ -264,6 +262,26 @@
           value: '#1427df',
           checked: false,
         },
+        {
+          name: 'D022FF',
+          value: '#D022FF',
+          checked: false,
+        },
+        {
+          name: 'BB59F0',
+          value: '#BB59F0',
+          checked: false,
+        },
+        {
+          name: 'B6DAF0',
+          value: '#B6DAF0',
+          checked: false,
+        },
+        {
+          name: '14DAF0',
+          value: '#14DAF0',
+          checked: false,
+        },
       ])
       const animOptions = reactive([
         {
@@ -285,16 +303,16 @@
       ])
       onMounted(() => {
         themeList.forEach((it) => {
-          it.checked = state?.theme === it.themeId
+          it.checked = appStore.theme === it.themeId
         })
         sideExampleList.forEach((it) => {
-          it.checked = state?.sideBarBgColor === it.themeId
+          it.checked = appStore.sideTheme === it.themeId
         })
         layoutExampleList.forEach((it) => {
-          it.checked = state?.layoutMode === it.layoutId
+          it.checked = appStore.layoutMode === it.layoutId
         })
         primartyColorList.forEach((it) => {
-          it.checked = Setting.themeColor.split('@')[1] === it.value
+          it.checked = appStore.themeColor === it.value
         })
       })
       function openDrawer() {
@@ -304,51 +322,50 @@
         themeList.forEach((it) => {
           it.checked = it === item
         })
-        if (item.themeId === 'dark') {
+        if (item.themeId === ThemeMode.DARK) {
           exampleClick(sideExampleList[0])
         }
-        useTheme(item.themeId)
-        store.changeTheme(item.themeId)
+        appStore.changeTheme(item.themeId)
       }
       function exampleClick(item: any) {
-        if (store?.state.theme === 'dark') {
+        if (appStore.theme === ThemeMode.DARK) {
           Message.error('深色模式下不能更改侧边栏颜色')
           return
         }
         sideExampleList.forEach((it) => {
           it.checked = it === item
         })
-        store.changeSideBarBgColor(item.themeId)
+        appStore.changeSideBarTheme(item.themeId)
       }
       function layoutExampleClick(item: any) {
         layoutExampleList.forEach((it) => {
           it.checked = it === item
         })
-        store.changeLayoutMode(item.layoutId)
+        appStore.changeLayoutMode(item.layoutId)
       }
       function colorClick(item: any) {
         primartyColorList.forEach((it) => {
           it.checked = it === item
         })
-        usePrimaryColor(item.value)
-        store.changePrimaryColor(item)
+        appStore.changePrimaryColor(item.value)
       }
       function onShowTabbar(val: boolean) {
-        store.changeShowTabbar(val)
+        // appStore.changeShowTabbar(val)
       }
       function openAppInfo() {
         appInfoDialog.value?.toggle()
       }
-      function onAnimUpdate(val: any) {
-        store.changePageAnim(val as string)
+      function onAnimUpdate(val: PageAnim) {
+        appStore.changePageAnim(val)
       }
       watch(
         () => menuWidth.value,
         (newVal) => {
-          useChangeMenuWidth(newVal)
+          appStore.changeSideWidth(newVal)
         }
       )
       return {
+        appStore,
         appInfoDialog,
         showContact,
         opened,
@@ -356,7 +373,6 @@
         sideExampleList,
         layoutExampleList,
         primartyColorList,
-        state,
         openDrawer,
         themeClick,
         exampleClick,

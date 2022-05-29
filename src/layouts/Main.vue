@@ -1,35 +1,29 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <transition :name="state.pageAnim + '-transform'" mode="out-in" appear>
+  <router-view v-slot="{ Component, route }">
+    <transition :name="appStore.pageAnim + '-transform'" mode="out-in" appear>
       <keep-alive :include="cachedViews">
-        <component :is="Component" :key="routeKey" />
+        <component :is="Component" :key="route.fullPath" />
       </keep-alive>
     </transition>
   </router-view>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref, watch } from 'vue'
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { computed, defineComponent } from 'vue'
   import { useRoute } from 'vue-router'
   import store from '../store'
   export default defineComponent({
     name: 'Main',
     setup() {
       const state = store.state
+      const appStore = useAppConfigStore()
       const route = useRoute()
-      const routeKey = ref(route.fullPath)
       const cachedViews = computed(() => {
         return state.cachedView.map((it) => it)
       })
-      watch(
-        () => route.fullPath,
-        () => {
-          routeKey.value = route.fullPath
-        }
-      )
       return {
-        routeKey,
-        state,
+        appStore,
         cachedViews,
       }
     },

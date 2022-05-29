@@ -1,7 +1,7 @@
 <template>
   <span
     class="fold-wrapper"
-    :class="[state.isCollapse ? 'fold-open-status' : 'fold-close-status']"
+    :class="[appStore.isCollapse ? 'fold-open-status' : 'fold-close-status']"
     @click="toggleFold"
   >
     <MenuFoldOutlined />
@@ -12,16 +12,17 @@
   import { defineComponent } from 'vue'
   import { useLayoutStore } from '../index'
   import { IconMenuFold as MenuFoldOutlined } from '@arco-design/web-vue/es/icon'
+  import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'Humburger',
     components: { MenuFoldOutlined },
     setup() {
-      const store = useLayoutStore()
+      const appStore = useAppConfigStore()
       function toggleFold() {
-        store?.toggleCollapse(!store.state.isCollapse)
+        appStore.toggleCollapse(!appStore.isCollapse)
       }
       return {
-        state: store?.state,
+        appStore,
         toggleFold,
       }
     },

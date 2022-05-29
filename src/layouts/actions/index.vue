@@ -1,21 +1,21 @@
 <template>
   <div class="action-items-wrapper">
-    <span v-if="state.actionItem.showSearch" class="action-item" @click="onShowSearch">
+    <span v-if="appStore.actionBar.isShowSearch" class="action-item" @click="onShowSearch">
       <SearchIcon />
     </span>
     <a-popover placement="bottom" trigger="click" :width="300">
-      <a-badge v-if="state.actionItem.showMessage" :count="badgeValue" class="action-item">
+      <a-badge v-if="appStore.actionBar.isShowMessage" :count="badgeValue" class="action-item">
         <NotificationsIcon />
       </a-badge>
       <template #content>
         <MessageContent />
       </template>
     </a-popover>
-    <span v-if="state.actionItem.showRefresh" class="action-item" @click="onRefrehRoute">
+    <span v-if="appStore.actionBar.isShowRefresh" class="action-item" @click="onRefrehRoute">
       <RefreshIcon />
     </span>
     <span
-      v-if="state.actionItem.showFullScreen && state.device !== 'mobile'"
+      v-if="appStore.actionBar.isShowFullScreen && appStore.deviceType !== 'mobile'"
       class="action-item"
       @click="onScreenFull"
     >
@@ -31,7 +31,6 @@
   import { defineComponent, ref } from 'vue'
   import { Message } from '@arco-design/web-vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { useLayoutStore } from '../index'
   import {
     IconSettings as SettingIcon,
     IconSearch as SearchIcon,
@@ -39,8 +38,9 @@
     IconRefresh as RefreshIcon,
     IconNotification as NotificationsIcon,
   } from '@arco-design/web-vue/es/icon'
-  import { useDebounce, useDebounceFn, useFullscreen } from '@vueuse/core'
+  import { useDebounceFn, useFullscreen } from '@vueuse/core'
   import useEmit from '@/hooks/useEmit'
+  import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'ActionItems',
     components: {
@@ -55,7 +55,7 @@
       const searchContent = ref('')
       const settingRef = ref()
       const badgeValue = ref(3)
-      const store = useLayoutStore()
+      const appStore = useAppConfigStore()
       const router = useRouter()
       const route = useRoute()
       const emitter = useEmit()
@@ -84,7 +84,7 @@
         showSearchContent,
         searchContent,
         badgeValue,
-        state: store.state,
+        appStore,
         onShowSearch,
         onScreenFull,
         onRefrehRoute,

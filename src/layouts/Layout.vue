@@ -1,13 +1,13 @@
 <template>
   <div
     class="vaw-layout-container"
-    :class="[state.device === 'mobile' && 'is-mobile', state.theme]"
+    :class="[appStore.deviceType === 'mobile' && 'is-mobile', appStore.theme]"
   >
-    <template v-if="state.layoutMode === 'ttb'">
+    <template v-if="appStore.layoutMode === 'ttb'">
       <VAWHeader />
       <MainLayout :show-nav-bar="false" />
     </template>
-    <template v-else-if="state.layoutMode === 'lcr'">
+    <template v-else-if="appStore.layoutMode === 'lcr'">
       <TabSplitSideBar />
       <MainLayout />
     </template>
@@ -16,9 +16,9 @@
       <MainLayout />
     </template>
     <div
-      v-if="state.device === 'mobile'"
+      v-if="appStore.deviceType === 'mobile'"
       class="mobile-shadow"
-      :class="[state.isCollapse ? 'close-shadow' : 'show-shadow']"
+      :class="[appStore.isCollapse ? 'close-shadow' : 'show-shadow']"
       @click="closeMenu"
     ></div>
   </div>
@@ -34,13 +34,20 @@
   import { AxiosResponse } from 'axios'
   import UserTokenExpiredInterceptor from '@/api/interceptors/UserTokenExpiredInterceptor'
   import useAxios from '@/hooks/useAxios'
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { useChangeMenuWidth } from '@/hooks/useMenuWidth'
+  import usePrimaryColor from '@/hooks/usePrimaryColor'
+  import useTheme from '@/hooks/useTheme'
   export default defineComponent({
     name: 'Layout',
     setup() {
       const settingRef = ref()
       const searchContentRef = ref()
       const store = useLayoutStore()
-      const isShowHeader = computed(() => store?.isShowHeader())
+      const appStore = useAppConfigStore()
+      useTheme(appStore.theme as 'light' | 'dark')
+      useChangeMenuWidth(appStore.sideWidth)
+      usePrimaryColor(appStore.themeColor)
       const emitter = useEmit()
       const axios = useAxios()
       axios.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
@@ -62,27 +69,26 @@
       function handleScreenResize() {
         const width = document.body.clientWidth
         if (width <= 768) {
-          store?.changeDevice(DeviceType.MOBILE)
-          store?.toggleCollapse(true)
+          appStore.changeDevice(DeviceType.MOBILE)
+          appStore.toggleCollapse(true)
         } else if (width < 992 && width > 768) {
-          store?.changeDevice(DeviceType.PAD)
-          store?.toggleCollapse(true)
+          appStore.changeDevice(DeviceType.PAD)
+          appStore.toggleCollapse(true)
         } else if (width < 1200 && width >= 992) {
-          store?.changeDevice(DeviceType.PC)
-          store?.toggleCollapse(false)
+          appStore.changeDevice(DeviceType.PC)
+          appStore.toggleCollapse(false)
         } else {
-          store?.changeDevice(DeviceType.PC)
-          store?.toggleCollapse(false)
+          appStore.changeDevice(DeviceType.PC)
+          appStore.toggleCollapse(false)
         }
       }
       function closeMenu() {
-        store?.toggleCollapse(true)
+        appStore.toggleCollapse(true)
       }
       return {
         settingRef,
         searchContentRef,
-        state: store?.state,
-        isShowHeader,
+        appStore,
         closeMenu,
       }
     },

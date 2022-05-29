@@ -1,8 +1,8 @@
 <template>
   <div
     class="vaw-side-bar-wrapper"
-    :style="{ borderRadius: '0px', marginTop: state.layoutMode === 'ttb' ? '48px' : 0 }"
-    :class="[!state.isCollapse ? 'open-status' : 'close-status', bgColor]"
+    :style="{ borderRadius: '0px', marginTop: appStore.layoutMode === 'ttb' ? '48px' : 0 }"
+    :class="[!appStore.isCollapse ? 'open-status' : 'close-status', bgColor]"
   >
     <transition name="logo">
       <Logo v-if="showLogo" />
@@ -12,6 +12,8 @@
 </template>
 
 <script lang="ts">
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { SideTheme } from '@/store/types'
   import { computed, defineComponent } from 'vue'
   import { useLayoutStore } from '../index'
   export default defineComponent({
@@ -24,19 +26,21 @@
     },
     setup() {
       const store = useLayoutStore()
+      const appStore = useAppConfigStore()
       const routes = computed(() => {
         return store?.state.permissionRoutes.filter((it) => !!it.name)
       })
       const bgColor = computed(() => {
-        if (store.state.sideBarBgColor === 'image') {
+        if (appStore.sideTheme === SideTheme.IMAGE) {
           return 'sidebar-bg-img'
-        } else if (store.state.sideBarBgColor === 'dark') {
+        } else if (appStore.sideTheme === SideTheme.DARK) {
           return 'sidebar-bg-dark'
         } else {
           return 'sidebar-bg-light'
         }
       })
       return {
+        appStore,
         state: store?.state,
         routes,
         bgColor,

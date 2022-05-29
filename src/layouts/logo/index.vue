@@ -1,7 +1,10 @@
 <template>
   <div class="logo-wrapper">
     <img v-if="showLogo" class="logo-img" src="../../assets/logo.png" />
-    <div v-if="showTitle" :class="[!state.isCollapse || alwaysShow ? 'show-title' : 'close-title']">
+    <div
+      v-if="showTitle"
+      :class="[!appStore.isCollapse || alwaysShow ? 'show-title' : 'close-title']"
+    >
       <span class="logo-title">{{ projectName }}</span>
     </div>
   </div>
@@ -9,8 +12,9 @@
 
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
-  import { useLayoutStore } from '../index'
   import { projectName } from '../../setting'
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { SideTheme } from '@/store/types'
   export default defineComponent({
     name: 'Logo',
     props: {
@@ -28,27 +32,24 @@
       },
     },
     setup() {
-      const store = useLayoutStore()
+      const appStore = useAppConfigStore()
       const bgColor = computed(() => {
-        if (store.state.theme === 'dark') {
+        if (appStore.sideTheme === SideTheme.DARK) {
           return 'var(--color-menu-dark-bg)'
         }
-        if (store.state.theme === 'light') {
-          if (store.state.layoutMode !== 'ttb') {
-            switch (store.state.sideBarBgColor) {
-              case 'light':
-                return 'var(--color-white)'
-              case 'dark':
-                return 'var(--color-menu-dark-bg)'
-              case 'image':
-                return 'transparent'
-            }
+        if (appStore.sideTheme === SideTheme.WHITE) {
+          if (appStore.layoutMode !== 'ttb') {
+            return appStore.sideTheme === SideTheme.WHITE
+              ? 'var(--color-white)'
+              : appStore.sideTheme === SideTheme.DARK
+              ? 'var(--color-menu-dark-bg)'
+              : 'transparent'
           }
           return 'var(--color-white)'
         }
       })
       return {
-        state: store?.state,
+        appStore,
         projectName,
         bgColor,
       }

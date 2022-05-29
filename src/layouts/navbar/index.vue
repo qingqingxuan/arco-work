@@ -2,7 +2,7 @@
   <a-card :bordered="false" :body-style="{ padding: 0 }">
     <div class="vaw-nav-bar-wrapper">
       <Humburger />
-      <Breadcrumb v-if="state.device !== 'mobile'" />
+      <Breadcrumb v-if="appStore.deviceType !== 'mobile'" />
       <div style="flex: 1"></div>
       <div class="right-wrapper">
         <ActionItems />
@@ -15,14 +15,15 @@
 </template>
 
 <script lang="ts">
+  import useAppConfigStore from '@/store/modules/app-config'
   import { defineComponent } from 'vue'
   import { useLayoutStore } from '../index'
   export default defineComponent({
     name: 'NavBar',
     setup() {
-      const store = useLayoutStore()
+      const appStore = useAppConfigStore()
       return {
-        state: store?.state,
+        appStore,
       }
     },
   })

@@ -2,13 +2,13 @@
   <div
     class="vaw-main-layout-container scrollbar"
     :class="[
-      state.layoutMode == 'ttb'
+      appStore.layoutMode == 'ttb'
         ? ''
-        : !state.isCollapse
+        : !appStore.isCollapse
         ? 'main-layout-open-status'
         : 'main-layout-close-status',
-      state.isFixedNavBar ? 'main-layout_fixed-nav-bar' : 'main-layout',
-      !state.isFixedNavBar
+      appStore.isFixedNavBar ? 'main-layout_fixed-nav-bar' : 'main-layout',
+      !appStore.isFixedNavBar
         ? 'main-layout_padding-top__0'
         : isShowTabbar
         ? 'main-layout_padding-top__all'
@@ -17,12 +17,12 @@
   >
     <section
       :class="[
-        state.layoutMode == 'ttb'
+        appStore.layoutMode == 'ttb'
           ? 'nav-bar-open-status__ttb'
-          : !state.isCollapse
+          : !appStore.isCollapse
           ? 'nav-bar-open-status'
           : 'nav-bar-close-status',
-        state.isFixedNavBar ? 'fixed-nav-bar' : '',
+        appStore.isFixedNavBar ? 'fixed-nav-bar' : '',
         !showNavBar ? 'tab-bar-top' : '',
       ]"
     >
@@ -31,7 +31,7 @@
     </section>
     <div
       class="main-base-style scrollbar"
-      :class="[state.theme === 'light' ? 'main-base-light-theme' : 'main-base-dark-theme']"
+      :class="[appStore.theme === 'light' ? 'main-base-light-theme' : 'main-base-dark-theme']"
     >
       <section class="main-section">
         <Main />
@@ -51,6 +51,7 @@
   import { useLayoutStore } from './index'
   import { useTitle } from '@vueuse/core'
   import { projectName } from '@/setting'
+  import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'MainLayout',
     props: {
@@ -60,15 +61,15 @@
       },
     },
     setup() {
-      const store = useLayoutStore()
-      const isShowTabbar = computed(() => store.state.isShowTabbar)
+      const appStore = useAppConfigStore()
+      const isShowTabbar = computed(() => true)
       const router = useRouter()
       const route = useRoute()
       router.afterEach(() => {
         useTitle(projectName + ' | ' + (route.meta.title as string))
       })
       return {
-        state: store?.state,
+        appStore,
         isShowTabbar,
       }
     },

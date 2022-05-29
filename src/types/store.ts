@@ -54,39 +54,14 @@ export enum SideTheme {
 }
 
 export interface StateType {
-  isCollapse: boolean
-  isFixedNavBar: boolean
-  layoutMode: string
-  device: DeviceType
-  theme: string
-  sideBarBgColor: string
-  pageAnim: string
-  isShowTabbar: boolean
   permissionRoutes: Array<RouteRecordRawWithHidden>
   visitedView: Array<RouteRecordRawWithHidden>
   cachedView: Array<string>
-  actionItem: {
-    showSearch: boolean
-    showMessage: boolean
-    showFullScreen: boolean
-    showRefresh: boolean
-  }
 }
 
 export interface StoreType extends CacheView, VisitedView {
   state: UnwrapRef<StateType>
   start: (params: any) => void
-  randomLayouMode: () => void
-  toggleCollapse: (newStatus: boolean) => void
-  toggleFixedNavBar: (newStatus: boolean) => void
-  changeLayoutMode: (mode: LayoutMode) => void
-  changeDevice: (device: DeviceType) => void
-  changeTheme: (theme: ThemeMode) => void
-  changeSideBarBgColor: (colorName: SideTheme) => void
-  changePageAnim: (pageAnim: string) => void
-  changePrimaryColor: (color: string) => void
-  changeShowTabbar: (tabbar: boolean) => void
-  isShowHeader: () => boolean
   getSplitTabs: () => Array<RouteRecordRawWithHidden>
   initPermissionRoute: (routes: Array<RouteRecordRaw>) => void
   isEmptyPermissionRoute: () => boolean

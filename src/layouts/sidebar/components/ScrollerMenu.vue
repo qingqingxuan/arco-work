@@ -3,7 +3,7 @@
     <a-menu
       :mode="menuMode"
       :theme="theme"
-      :collapsed="state.isCollapse"
+      :collapsed="appStore.isCollapse"
       v-model:selectedKeys="defaultPath"
       v-model:openKeys="defaultExpandKeys"
       @menu-item-click="onMenuClick"
@@ -36,9 +36,10 @@
     watchEffect,
   } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { useLayoutStore } from '../../index'
   import { RouteRecordRawWithHidden } from '../../../types/store'
   import { isExternal, transfromMenu } from '../../../utils'
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { LayoutMode, SideTheme, ThemeMode } from '@/store/types'
 
   export default defineComponent({
     name: 'ScrollerMenu',
@@ -49,12 +50,12 @@
         default: () => [],
       },
       mode: {
-        type: String,
+        type: String as PropType<'vertical' | 'pop' | 'horizontal' | 'popButton' | undefined>,
         default: 'vertical',
       },
     },
     setup(props) {
-      const store = useLayoutStore()
+      const appStore = useAppConfigStore()
       const menuOptions = shallowReactive([] as Array<any>)
       const defaultPath = ref([] as Array<string>)
       const defaultExpandKeys = ref([] as Array<string>)
@@ -64,15 +65,15 @@
       defaultPath.value.push(currentRoute.fullPath)
       const tag = ref(menuMode.value === 'vertical' ? 'Scrollbar' : 'div')
       const theme = computed(() => {
-        if (store.state.theme === 'dark') {
+        if (appStore.theme === ThemeMode.DARK) {
           return 'dark'
         }
-        if (store.state.layoutMode === 'ttb') {
+        if (appStore.layoutMode === LayoutMode.TTB) {
           return 'light'
         }
-        return store.state.sideBarBgColor === 'image'
+        return appStore.sideTheme === SideTheme.IMAGE
           ? 'dark'
-          : store.state.sideBarBgColor === 'white'
+          : appStore.sideTheme === SideTheme.WHITE
           ? 'light'
           : 'dark'
       })
@@ -95,8 +96,8 @@
           window.open(key)
         } else {
           router.push(key)
-          if (store.state.device === 'mobile') {
-            store.toggleCollapse(true)
+          if (appStore.deviceType === 'mobile') {
+            appStore.toggleCollapse(true)
           }
         }
       }
@@ -118,12 +119,12 @@
         handleMenu(props.routes)
       })
       return {
+        appStore,
         tag,
         theme,
         menuMode,
         defaultPath,
         defaultExpandKeys,
-        state: store?.state,
         menuOptions,
         onMenuClick,
       }
