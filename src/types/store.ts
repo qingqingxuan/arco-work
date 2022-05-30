@@ -54,8 +54,6 @@ export enum SideTheme {
 }
 
 export interface StateType {
-  permissionRoutes: Array<RouteRecordRawWithHidden>
-  visitedView: Array<RouteRecordRawWithHidden>
   cachedView: Array<string>
 }
 

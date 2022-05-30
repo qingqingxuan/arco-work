@@ -1,4 +1,4 @@
-import { mapTwoLevelRouter } from '@/utils'
+import { mapTwoLevelRouter } from '@/store/help'
 import { App } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { constantRoutes } from './routes/constants'

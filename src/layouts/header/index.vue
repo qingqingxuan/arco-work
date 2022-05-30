@@ -4,7 +4,7 @@
       <Logo :always-show="true" :showTitle="false" />
     </div>
     <div class="menu-wrapper">
-      <ScrollerMenu :routes="routes" mode="horizontal" />
+      <ScrollerMenu :routes="permissionStore.getPermissionSideBar" mode="horizontal" />
     </div>
     <a-card
       class="right-wrapper"
@@ -26,20 +26,17 @@
 
 <script lang="ts">
   import useAppConfigStore from '@/store/modules/app-config'
+  import usePermissionStore from '@/store/modules/permission'
   import { defineComponent, computed } from 'vue'
   import { useLayoutStore } from '../index'
   export default defineComponent({
     name: 'VAWHeader',
     setup() {
       const appStore = useAppConfigStore()
-      const store = useLayoutStore()
-      const routes = computed(() => {
-        return store?.state.permissionRoutes.filter((it) => !!it.name)
-      })
+      const permissionStore = usePermissionStore()
       return {
+        permissionStore,
         appStore,
-        state: store?.state,
-        routes,
       }
     },
   })

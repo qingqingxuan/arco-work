@@ -10,7 +10,6 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import { useLayoutStore } from '../index'
   import { IconMenuFold as MenuFoldOutlined } from '@arco-design/web-vue/es/icon'
   import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({

@@ -1,7 +1,7 @@
 <template>
   <div
     class="vaw-tab-split-side-bar-wrapper"
-    :class="[!state.isCollapse ? 'open-status' : 'close-status', bgColor]"
+    :class="[!appStore.isCollapse ? 'open-status' : 'close-status', bgColor]"
   >
     <div class="tab-split-tab-wrapper">
       <Logo class="tab-split-logo-wrapper" :show-title="false" />
@@ -30,10 +30,12 @@
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref, shallowReactive, watch } from 'vue'
   import { RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
-  import { RouteRecordRawWithHidden, SplitTab } from '../../types/store'
-  import { isExternal, transformSplitTabMenu } from '../../utils'
-  import { useLayoutStore } from '..'
+  import { RouteRecordRawWithHidden, SideTheme, SplitTab } from '../../types/store'
+  import { isExternal } from '../../utils'
   import { IconMenu } from '@arco-design/web-vue/es/icon'
+  import usePermissionStore from '@/store/modules/permission'
+  import useAppConfigStore from '@/store/modules/app-config'
+  import { transformSplitTabMenu } from '@/store/help'
   export default defineComponent({
     name: 'TabSplitSideBar',
     components: { IconMenu },
@@ -44,9 +46,10 @@
       },
     },
     setup() {
-      const store = useLayoutStore()
-      const tabs = shallowReactive([] as Array<SplitTab>)
-      const routes = shallowReactive([] as Array<RouteRecordRawWithHidden>)
+      const appStore = useAppConfigStore()
+      const permissionStore = usePermissionStore()
+      const tabs = shallowReactive<Array<SplitTab>>([])
+      const routes = shallowReactive<Array<RouteRecordRawWithHidden>>([])
       const route = useRoute()
       const router = useRouter()
       watch(
@@ -57,7 +60,7 @@
       )
       onMounted(() => {
         tabs.length = 0
-        tabs.push(...transformSplitTabMenu(store?.getSplitTabs()))
+        tabs.push(...transformSplitTabMenu(permissionStore.getPermissionSplitTabs))
         doChangeTab(route)
       })
       function doChangeTab(route: RouteLocationNormalizedLoaded) {
@@ -85,24 +88,28 @@
       function findPath(item: SplitTab) {
         if (item.children && item.children.length > 0) {
           const firstItem = item.children[0]
+          console.log(firstItem)
           if (firstItem.children && firstItem.children.length > 0) {
             findPath({
               label: firstItem.meta?.title,
               iconPrefix: firstItem.meta?.iconPrefix,
               icon: firstItem.meta?.icon,
-              fullPath: firstItem.fullPath,
+              fullPath: firstItem.fullPath || firstItem.path,
               children: firstItem.children,
               checked: ref(false),
             } as SplitTab)
           } else {
-            if (isExternal(firstItem.fullPath as string)) {
+            if (isExternal((firstItem.fullPath || firstItem.path) as string)) {
               routes.length = 0
               routes.push(...(item.children as Array<RouteRecordRawWithHidden>))
-              window.open(firstItem.fullPath)
+              window.open(firstItem.fullPath || firstItem.path)
             } else {
-              router.push(firstItem.fullPath || '/').then((error) => {
+              router.push(firstItem.fullPath || firstItem.path || '/').then((error) => {
                 if (error) {
-                  if (firstItem.fullPath === route.path || firstItem.fullPath === route.fullPath) {
+                  if (
+                    (firstItem.fullPath || firstItem.path) === route.path ||
+                    (firstItem.fullPath || firstItem.path) === route.fullPath
+                  ) {
                     routes.length = 0
                     routes.push(...(item.children as Array<RouteRecordRawWithHidden>))
                   }
@@ -113,16 +120,16 @@
         }
       }
       const bgColor = computed(() => {
-        if (store.state.sideBarBgColor === 'image') {
+        if (appStore.sideTheme === SideTheme.IMAGE) {
           return 'sidebar-bg-img'
-        } else if (store.state.sideBarBgColor === 'dark') {
+        } else if (appStore.sideTheme === SideTheme.DARK) {
           return 'sidebar-bg-dark'
         } else {
           return 'sidebar-bg-light'
         }
       })
       return {
-        state: store?.state,
+        appStore,
         tabs,
         routes,
         changeTab,

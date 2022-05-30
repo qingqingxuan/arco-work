@@ -34,9 +34,8 @@
 </template>
 
 <script lang="ts">
-  import { useLayoutStore } from '@/layouts'
+  import usePermissionStore from '@/store/modules/permission'
   import { RouteRecordRawWithHidden } from '@/types/store'
-  import { Message } from '@arco-design/web-vue'
   import { defineComponent, onMounted, ref } from 'vue'
   import { useRouter } from 'vue-router'
   interface InnerSearchItem {
@@ -65,7 +64,7 @@
           window.open('https://www.baidu.com/s?wd=' + outValue.value)
         }
       }
-      const store = useLayoutStore()
+      const permissionStore = usePermissionStore()
       function transformRoutes(
         routes: RouteRecordRawWithHidden[],
         parentPath: string = '/'
@@ -96,7 +95,7 @@
         })
       }
       onMounted(() => {
-        searchList.value = transformRoutes(store.state.permissionRoutes)
+        searchList.value = transformRoutes(permissionStore.getPermissionSideBar)
       })
       return {
         visible,

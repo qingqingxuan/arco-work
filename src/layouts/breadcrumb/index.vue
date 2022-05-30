@@ -7,6 +7,7 @@
 </template>
 
 <script lang="ts">
+  import usePermissionStore from '@/store/modules/permission'
   import { RouteRecordRawWithHidden } from '@/types/store'
   import { isExternal } from '@/utils'
   import { defineComponent, onMounted, reactive, watch } from 'vue'
@@ -23,7 +24,7 @@
       const breadcrumbs = reactive<Array<DropItem>>([])
       const route = useRoute()
       const router = useRouter()
-      const store = useLayoutStore()
+      const permissionStore = usePermissionStore()
       function handlePath(path: string) {
         return path.split('/').reduce((pre: string[], cur: string) => {
           if (cur) {
@@ -66,7 +67,7 @@
       }
       function findRoute(paths: string[]) {
         const selectRoutes: Array<RouteRecordRawWithHidden> = []
-        let tempOrigin = store.state.permissionRoutes
+        let tempOrigin = permissionStore.permissionRoutes
         paths.forEach((it) => {
           const selectRoute = tempOrigin.find((pIt) => pIt.path === it)
           if (selectRoute) {
@@ -85,11 +86,6 @@
           }
         })
         breadcrumbs.push(...matchedPath)
-        // const findedRoutes = findRoute(handlePath(route.path))
-        // const aa = generatorDropdown(findedRoutes)
-        // if (aa) {
-        //   breadcrumbs.push(...aa)
-        // }
       }
       function handleSelect(key: string) {
         router.push(key)

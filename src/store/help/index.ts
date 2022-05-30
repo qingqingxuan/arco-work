@@ -134,10 +134,10 @@ export function mapTwoLevelRouter(srcRoutes: Array<RouteRecordRaw>) {
     })
   }
   if (srcRoutes && srcRoutes.length > 0) {
-    const tempRoutes = [] as Array<RouteRecordRaw>
+    const tempRoutes = [] as Array<any>
     srcRoutes.forEach((it) => {
       const route = { ...it }
-      const parentRoutes = [] as Array<RouteRecordRaw>
+      const parentRoutes = [] as Array<any>
       if (route.children && route.children.length > 0) {
         addParentRoute(route.children, parentRoutes, route.path)
       }
@@ -178,7 +178,7 @@ export function transfromMenu(originRoutes: Array<RouteRecordRawWithHidden>): Ar
     .filter((it) => !it.hidden)
     .forEach((it) => {
       const tempMenu: MenuOption = {
-        key: it.fullPath,
+        key: it.path,
         label: it.meta?.title as string,
         icon: it.meta?.icon as string,
         children: null,
@@ -186,7 +186,7 @@ export function transfromMenu(originRoutes: Array<RouteRecordRawWithHidden>): Ar
       if (it.children) {
         if (it.meta && it.meta.isSingle && it.children.length === 1) {
           const lastItem = it.children[0] as RouteRecordRawWithHidden
-          tempMenu.key = lastItem.fullPath || tempMenu.key
+          tempMenu.key = lastItem.path || tempMenu.key
           tempMenu.label = (
             lastItem.meta && lastItem.meta.title ? lastItem.meta?.title : tempMenu.label
           ) as string
@@ -219,7 +219,7 @@ export function transformSplitTabMenu(routes: Array<RouteRecordRaw>): Array<Spli
   return tempTabs
 }
 
-export function findRouteByUrl(routes: Array<any>, path: string): RouteRecordRaw | null {
+export function findRouteByUrl(routes: Array<any>, path: string): RouteRecordRawWithHidden | null {
   if (!path || !routes) {
     return null
   }

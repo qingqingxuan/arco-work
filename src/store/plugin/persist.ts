@@ -38,7 +38,6 @@ export default ({ options, store }: PiniaPluginContext) => {
         )
         if (json) {
           store.$patch(JSON.parse(json))
-          console.log(store.$state)
         }
       } else if (typeof presist.resetToState === 'function') {
         presist.resetToState.call(presist, store)

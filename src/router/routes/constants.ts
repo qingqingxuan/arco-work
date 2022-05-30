@@ -6,12 +6,15 @@ export const constantRoutes = [
     name: 'Login',
     hidden: true,
     component: () => import('@/views/login/index.vue'),
+    meta: {
+      hidden: true,
+    },
   },
   {
     path: '/redirect',
     component: LAYOUT,
-    hidden: true,
     meta: {
+      hidden: true,
       noShowTabbar: true,
     },
     children: [
@@ -25,9 +28,9 @@ export const constantRoutes = [
     path: '/personal',
     name: 'personal',
     component: LAYOUT,
-    hidden: true,
     meta: {
       title: '个人中心',
+      hidden: true,
     },
     children: [
       {
@@ -42,19 +45,25 @@ export const constantRoutes = [
   {
     path: '/404',
     name: '404',
-    hidden: true,
     component: () => import('@/views/exception/404.vue'),
+    meta: {
+      hidden: true,
+    },
   },
   {
     path: '/500',
     name: '500',
-    hidden: true,
     component: () => import('@/views/exception/500.vue'),
+    meta: {
+      hidden: true,
+    },
   },
   {
     path: '/403',
     name: '403',
-    hidden: true,
     component: () => import('@/views/exception/403.vue'),
+    meta: {
+      hidden: true,
+    },
   },
 ]

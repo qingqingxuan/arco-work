@@ -1,9 +1,5 @@
-import { RouteRecordRawWithHidden } from './../types/store'
 import { reactive } from 'vue'
 import { DeviceType, StateType } from '../types/store'
-import { transfromRoutes } from '../utils'
-import VisitedViewAction from './modules/visited-view'
-import { RouteRecordRaw } from 'vue-router'
 
 function getScreenType() {
   const width = document.body.clientWidth
@@ -19,8 +15,6 @@ function getScreenType() {
 }
 
 const originState = {
-  permissionRoutes: [],
-  visitedView: [],
   cachedView: [],
 }
 
@@ -33,25 +27,10 @@ const store = {
         ;(this as any)[key] = actions[key]
       }
     }
-    this.restoreVisitedView()
-  },
-  getSplitTabs() {
-    return this.state.permissionRoutes.filter((it) => {
-      return it.path && !it.hidden && it.children && it.children.length > 0
-    }) as Array<RouteRecordRawWithHidden>
-  },
-  initPermissionRoute(routes: Array<RouteRecordRaw>) {
-    const tempRoutes = transfromRoutes(routes, '/', this.state.cachedView) || []
-    this.state.permissionRoutes.length = 0
-    this.state.permissionRoutes.push(...tempRoutes)
-  },
-  isEmptyPermissionRoute() {
-    return !this.state.permissionRoutes || this.state.permissionRoutes.length === 0
   },
   reset() {
     this.state = reactive<StateType>(originState)
   },
-  ...VisitedViewAction,
 }
 
 export default store

@@ -37,9 +37,10 @@
   } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { RouteRecordRawWithHidden } from '../../../types/store'
-  import { isExternal, transfromMenu } from '../../../utils'
+  import { isExternal } from '../../../utils'
   import useAppConfigStore from '@/store/modules/app-config'
   import { LayoutMode, SideTheme, ThemeMode } from '@/store/types'
+  import { transfromMenu } from '@/store/help'
 
   export default defineComponent({
     name: 'ScrollerMenu',

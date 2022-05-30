@@ -18,7 +18,6 @@ export const asyncRoutes = [
         meta: {
           title: '主控台',
           affix: true,
-          cacheable: true,
         },
       },
       {
