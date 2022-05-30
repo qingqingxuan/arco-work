@@ -112,8 +112,7 @@
   import { useMenuWidth } from '@/hooks/useMenuWidth'
   import LeftBg from '@/assets/bg_img.webp'
   import useAppConfigStore from '@/store/modules/app-config'
-  import { PageAnim } from '@/store/types'
-  import { ThemeMode } from '@/types/store'
+  import { PageAnim, ThemeMode } from '@/store/types'
   export default defineComponent({
     name: 'Setting',
     setup() {

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router, { setupRouter } from './router'
+import { setupRouter } from './router'
 import './styles'
 import { setupGlobalComponent } from '@/layouts'
 import { setupPinia } from '@/store/pinia'
@@ -13,18 +13,7 @@ function setup() {
   setupPinia(app)
   setupRouter(app)
   setupRouterGuard()
-  setupGlobalComponent(app, {
-    actions: {
-      onPersonalCenter() {
-        router.push('/personal')
-      },
-      onLogout() {
-        router.replace({ path: '/login', query: { redirect: '/' } }).then(() => {
-          window.location.reload()
-        })
-      },
-    },
-  })
+  setupGlobalComponent(app)
   // 如果需要对接正式的接口，需要下面代码注释或者删除
   setupMock()
   app.mount('#app')

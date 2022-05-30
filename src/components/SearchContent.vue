@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visible" :closable="false" :footer="null" :align-center="false">
+  <a-modal v-model:visible="visible" :closable="false" :align-center="false">
     <a-tabs default-active-key="1" size="small">
       <a-tab-pane key="1" title="站内">
         <div class="p-4">
@@ -35,9 +35,8 @@
 
 <script lang="ts">
   import usePermissionStore from '@/store/modules/permission'
-  import { RouteRecordRawWithHidden } from '@/types/store'
   import { defineComponent, onMounted, ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { RouteRecordRaw, useRouter } from 'vue-router'
   interface InnerSearchItem {
     title: string
     key: string
@@ -66,12 +65,12 @@
       }
       const permissionStore = usePermissionStore()
       function transformRoutes(
-        routes: RouteRecordRawWithHidden[],
+        routes: RouteRecordRaw[],
         parentPath: string = '/'
       ): InnerSearchItem[] {
         const list: InnerSearchItem[] = []
         routes
-          .filter((it) => it.hidden !== true && it.fullPath !== parentPath)
+          .filter((it) => it.meta && it.meta.hidden !== true && it.path !== parentPath)
           .forEach((it) => {
             const searchItem: InnerSearchItem = {
               key: ((it.meta?.title as string) || '') + ':' + it.path,
@@ -79,7 +78,7 @@
               disabled: false,
             }
             if (it.children && it.children.length > 0) {
-              searchItem.children = transformRoutes(it.children, it.fullPath)
+              searchItem.children = transformRoutes(it.children, it.path)
               searchItem.disabled = true
             }
             list.push(searchItem)

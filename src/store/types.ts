@@ -1,5 +1,5 @@
-import { RouteRecordRawWithHidden } from '@/types/store'
 import { Ref, UnwrapRef } from 'vue'
+import { RouteRecordRaw } from 'vue-router'
 
 export interface UserState {
   userId: number
@@ -72,7 +72,7 @@ export interface SplitTab {
   iconPrefix?: string | unknown
   icon: string
   fullPath: string
-  children?: Array<RouteRecordRawWithHidden>
+  children?: Array<RouteRecordRaw>
   checked: Ref<UnwrapRef<boolean>>
 }
 

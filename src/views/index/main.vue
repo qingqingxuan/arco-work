@@ -68,7 +68,7 @@
   import FullYearSalesChart from './components/chart/FullYearSalesChart.vue'
   import DepartmentChart from './components/chart/DepartmentChart.vue'
   import { computed, defineComponent, ref, watch } from 'vue'
-  import { useLayoutStore } from '@/layouts'
+  import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'Home',
     components: {
@@ -81,7 +81,7 @@
       DepartmentChart,
     },
     setup() {
-      const layoutStore = useLayoutStore()
+      const appStore = useAppConfigStore()
       const mOrderChart = ref<InstanceType<typeof OrderChart>>()
       const salesChart = ref<InstanceType<typeof SalesChart>>()
       const enrollmentChannelsChart = ref<InstanceType<typeof EnrollmentChannelsChart>>()
@@ -99,7 +99,7 @@
         }, 500)
       }
       const collapse = computed(() => {
-        return layoutStore.state.isCollapse
+        return appStore.isCollapse
       })
       watch(collapse, () => {
         onResize()

@@ -1,3 +1,4 @@
+import useVisitedRouteStore from '@/store/modules/visited-routes'
 import { defineStore } from 'pinia'
 import { UserState } from '../types'
 import store from '../pinia'
@@ -37,10 +38,10 @@ const useUserStore = defineStore('user-info', {
       this.nickName = newNickName
     },
     logout() {
-      const permissionStore = usePermissionStore()
+      const visitedStore = useVisitedRouteStore()
       return new Promise<void>((resolve) => {
         this.$reset()
-        permissionStore.$reset()
+        visitedStore.$reset()
         localStorage.clear()
         sessionStorage.clear()
         resolve()

@@ -13,7 +13,6 @@
   import { Control, Menu, DndPanel, Snapshot, NodeResize } from '@logicflow/extension'
   import '@logicflow/core/dist/style/index.css'
   import '@logicflow/extension/lib/style/index.css'
-  import { useLayoutStore } from '@/layouts'
   const data = {
     // 节点
     nodes: [
@@ -62,16 +61,12 @@
       LogicFlow.use(DndPanel)
       LogicFlow.use(Snapshot)
       LogicFlow.use(NodeResize)
-      const store = useLayoutStore()
       const lf = ref<LogicFlow>()
       const options = computed(() => {
         return {
           container: lfConitanerRef.value as HTMLElement,
           stopScrollGraph: true,
           stopZoomGraph: true,
-          background: {
-            color: store.state.theme === 'dark' ? '#18181c' : '#ffffff',
-          },
           grid: {
             type: 'dot',
             size: 20,

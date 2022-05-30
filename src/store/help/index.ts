@@ -6,7 +6,6 @@ import { MenuOption, OriginRoute, SplitTab } from '../types'
 import LoadingComponent from '@/layouts/loading/index.vue'
 import { asyncRoutes } from '@/router/routes/async'
 import { LAYOUT } from '../keys'
-import { RouteRecordRawWithHidden } from '@/types/store'
 
 export function loadComponents() {
   return import.meta.glob('/src/views/**/*.vue')
@@ -169,13 +168,13 @@ export function findCachedRoutes(routes: Array<RouteRecordRaw>) {
   return temp
 }
 
-export function transfromMenu(originRoutes: Array<RouteRecordRawWithHidden>): Array<MenuOption> {
+export function transfromMenu(originRoutes: Array<RouteRecordRaw>): Array<MenuOption> {
   if (!originRoutes) {
     return []
   }
   const tempMenus = [] as Array<MenuOption>
   originRoutes
-    .filter((it) => !it.hidden)
+    .filter((it) => (it.meta ? !it.meta.hidden : true))
     .forEach((it) => {
       const tempMenu: MenuOption = {
         key: it.path,
@@ -185,7 +184,7 @@ export function transfromMenu(originRoutes: Array<RouteRecordRawWithHidden>): Ar
       }
       if (it.children) {
         if (it.meta && it.meta.isSingle && it.children.length === 1) {
-          const lastItem = it.children[0] as RouteRecordRawWithHidden
+          const lastItem = it.children[0] as RouteRecordRaw
           tempMenu.key = lastItem.path || tempMenu.key
           tempMenu.label = (
             lastItem.meta && lastItem.meta.title ? lastItem.meta?.title : tempMenu.label
@@ -219,7 +218,7 @@ export function transformSplitTabMenu(routes: Array<RouteRecordRaw>): Array<Spli
   return tempTabs
 }
 
-export function findRouteByUrl(routes: Array<any>, path: string): RouteRecordRawWithHidden | null {
+export function findRouteByUrl(routes: Array<any>, path: string): RouteRecordRaw | null {
   if (!path || !routes) {
     return null
   }

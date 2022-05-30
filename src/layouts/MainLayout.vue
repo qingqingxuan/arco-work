@@ -48,7 +48,6 @@
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
-  import { useLayoutStore } from './index'
   import { useTitle } from '@vueuse/core'
   import { projectName } from '@/setting'
   import useAppConfigStore from '@/store/modules/app-config'

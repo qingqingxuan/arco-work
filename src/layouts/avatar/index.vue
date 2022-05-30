@@ -27,19 +27,18 @@
 <script lang="ts">
   import { Modal } from '@arco-design/web-vue'
   import { defineComponent } from 'vue'
-  import { useLayoutStore } from '../index'
   import {
     IconUser as UserOutlined,
     IconPoweroff as LogoutOutlined,
     IconCaretDown as CaretDownOutlined,
   } from '@arco-design/web-vue/es/icon'
   import useUserStore from '@/store/modules/user'
+  import { useRouter } from 'vue-router'
 
   export default defineComponent({
     name: 'VAWavatar',
     components: { UserOutlined, LogoutOutlined, CaretDownOutlined },
     setup() {
-      const store = useLayoutStore()
       const userStore = useUserStore()
       const options = [
         {
@@ -53,8 +52,9 @@
           icon: 'LogoutOutlined',
         },
       ]
+      const router = useRouter()
       function personalCenter() {
-        ;(store as any).onPersonalCenter && (store as any).onPersonalCenter()
+        router.push('/personal/info')
       }
       function logout() {
         Modal.confirm({
@@ -64,7 +64,7 @@
           cancelText: '再想想',
           onOk: () => {
             userStore.logout().then(() => {
-              ;(store as any).onLogout && (store as any).onLogout()
+              window.location.reload()
             })
           },
         })

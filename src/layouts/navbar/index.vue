@@ -17,7 +17,6 @@
 <script lang="ts">
   import useAppConfigStore from '@/store/modules/app-config'
   import { defineComponent } from 'vue'
-  import { useLayoutStore } from '../index'
   export default defineComponent({
     name: 'NavBar',
     setup() {

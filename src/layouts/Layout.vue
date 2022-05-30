@@ -28,8 +28,6 @@
 
 <script lang="ts">
   import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-  import { DeviceType } from '../types/store'
-  import { useLayoutStore } from './index'
   import useEmit from '@/hooks/useEmit'
   import { AxiosResponse } from 'axios'
   import UserTokenExpiredInterceptor from '@/api/interceptors/UserTokenExpiredInterceptor'
@@ -38,12 +36,12 @@
   import { useChangeMenuWidth } from '@/hooks/useMenuWidth'
   import usePrimaryColor from '@/hooks/usePrimaryColor'
   import useTheme from '@/hooks/useTheme'
+  import { DeviceType } from '@/store/types'
   export default defineComponent({
     name: 'Layout',
     setup() {
       const settingRef = ref()
       const searchContentRef = ref()
-      const store = useLayoutStore()
       const appStore = useAppConfigStore()
       useTheme(appStore.theme as 'light' | 'dark')
       useChangeMenuWidth(appStore.sideWidth)
@@ -51,7 +49,7 @@
       const emitter = useEmit()
       const axios = useAxios()
       axios.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
-        return UserTokenExpiredInterceptor(response, store)
+        return UserTokenExpiredInterceptor(response)
       })
       emitter?.on('show-setting', () => {
         settingRef.value?.openDrawer()

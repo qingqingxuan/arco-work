@@ -29,13 +29,13 @@
 
 <script lang="ts">
   import { computed, defineComponent, onMounted, ref, shallowReactive, watch } from 'vue'
-  import { RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
-  import { RouteRecordRawWithHidden, SideTheme, SplitTab } from '../../types/store'
+  import { RouteLocationNormalizedLoaded, RouteRecordRaw, useRoute, useRouter } from 'vue-router'
   import { isExternal } from '../../utils'
   import { IconMenu } from '@arco-design/web-vue/es/icon'
   import usePermissionStore from '@/store/modules/permission'
   import useAppConfigStore from '@/store/modules/app-config'
   import { transformSplitTabMenu } from '@/store/help'
+  import { SideTheme, SplitTab } from '@/store/types'
   export default defineComponent({
     name: 'TabSplitSideBar',
     components: { IconMenu },
@@ -49,7 +49,7 @@
       const appStore = useAppConfigStore()
       const permissionStore = usePermissionStore()
       const tabs = shallowReactive<Array<SplitTab>>([])
-      const routes = shallowReactive<Array<RouteRecordRawWithHidden>>([])
+      const routes = shallowReactive<Array<RouteRecordRaw>>([])
       const route = useRoute()
       const router = useRouter()
       watch(
@@ -71,7 +71,7 @@
               it.checked.value = true
               if (it.children) {
                 routes.length = 0
-                routes.push(...(it.children as Array<RouteRecordRawWithHidden>))
+                routes.push(...(it.children as Array<RouteRecordRaw>))
               }
             } else {
               it.checked.value = false
@@ -94,24 +94,21 @@
               label: firstItem.meta?.title,
               iconPrefix: firstItem.meta?.iconPrefix,
               icon: firstItem.meta?.icon,
-              fullPath: firstItem.fullPath || firstItem.path,
+              fullPath: firstItem.path,
               children: firstItem.children,
               checked: ref(false),
             } as SplitTab)
           } else {
-            if (isExternal((firstItem.fullPath || firstItem.path) as string)) {
+            if (isExternal(firstItem.path as string)) {
               routes.length = 0
-              routes.push(...(item.children as Array<RouteRecordRawWithHidden>))
-              window.open(firstItem.fullPath || firstItem.path)
+              routes.push(...(item.children as Array<RouteRecordRaw>))
+              window.open(firstItem.path)
             } else {
-              router.push(firstItem.fullPath || firstItem.path || '/').then((error) => {
+              router.push(firstItem.path || '/').then((error) => {
                 if (error) {
-                  if (
-                    (firstItem.fullPath || firstItem.path) === route.path ||
-                    (firstItem.fullPath || firstItem.path) === route.fullPath
-                  ) {
+                  if (firstItem.path === route.path || firstItem.path === route.fullPath) {
                     routes.length = 0
-                    routes.push(...(item.children as Array<RouteRecordRawWithHidden>))
+                    routes.push(...(item.children as Array<RouteRecordRaw>))
                   }
                 }
               })

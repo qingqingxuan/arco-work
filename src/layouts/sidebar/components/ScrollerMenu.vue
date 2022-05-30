@@ -35,9 +35,8 @@
     watch,
     watchEffect,
   } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
-  import { RouteRecordRawWithHidden } from '../../../types/store'
-  import { isExternal } from '../../../utils'
+  import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
+  import { isExternal } from '@/utils'
   import useAppConfigStore from '@/store/modules/app-config'
   import { LayoutMode, SideTheme, ThemeMode } from '@/store/types'
   import { transfromMenu } from '@/store/help'
@@ -46,7 +45,7 @@
     name: 'ScrollerMenu',
     props: {
       routes: {
-        type: Object as PropType<Array<RouteRecordRawWithHidden>>,
+        type: Object as PropType<Array<RouteRecordRaw>>,
         require: true,
         default: () => [],
       },
@@ -79,7 +78,7 @@
           : 'dark'
       })
       handleExpandPath()
-      function handleMenu(routes?: Array<RouteRecordRawWithHidden>) {
+      function handleMenu(routes?: Array<RouteRecordRaw>) {
         menuOptions.length = 0
         const tempMenus = transfromMenu(routes || [])
         menuOptions.push(...tempMenus)

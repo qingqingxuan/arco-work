@@ -71,7 +71,6 @@
   import { mapState, mapActions } from 'pinia'
   import path from 'path-browserify'
   import { defineComponent, unref } from 'vue'
-  import { RouteRecordRawWithHidden } from '../../types/store'
   import {
     IconClose as CloseOutlined,
     IconLeft as LeftOutlined,
@@ -80,6 +79,7 @@
     IconToRight as ArrowRightOutlined,
   } from '@arco-design/web-vue/es/icon'
   import useVisitedRouteStore from '@/store/modules/visited-routes'
+  import { RouteRecordRaw } from 'vue-router'
   export default defineComponent({
     name: 'TabBar',
     components: {
@@ -112,7 +112,6 @@
           setTimeout(() => {
             const scrollbar = unref((this.$refs.scrollbar as any).getWrapContainer())
             const el = document.querySelector(`[data="${this.currentTab}"]`) as HTMLElement
-            console.log(el)
             el &&
               scrollbar.scrollTo({
                 left: el.offsetLeft,
@@ -159,16 +158,15 @@
       iconClick(fullPath: string | undefined) {
         this.removeTab(fullPath || '/')
       },
-      findAffixedRoutes(routes: Array<RouteRecordRawWithHidden>, basePath: string) {
-        const temp = [] as Array<RouteRecordRawWithHidden>
+      findAffixedRoutes(routes: Array<RouteRecordRaw>, basePath: string) {
+        const temp = [] as Array<RouteRecordRaw>
         routes.forEach((it) => {
-          if (!it.hidden && it.meta && it.meta.affix) {
+          if (it.meta && !it.meta.hidden && it.meta.affix) {
             temp.push({
               name: it.name,
-              fullPath: it.fullPath,
               path: it.path,
               meta: it.meta,
-            } as RouteRecordRawWithHidden)
+            } as RouteRecordRaw)
           }
           if (it.children && it.children.length > 0) {
             temp.push(...this.findAffixedRoutes(it.children, path.resolve(basePath, it.path)))
@@ -176,7 +174,7 @@
         })
         return temp
       },
-      isAffix(route: RouteRecordRawWithHidden) {
+      isAffix(route: RouteRecordRaw) {
         return route.meta && route.meta.affix
       },
       onContextMenu(fullPath: string | undefined, e: MouseEvent) {
@@ -199,7 +197,7 @@
       removeTab(fullPath: string) {
         const findItem = this.getVisitedRoutes.find((it) => it.path === fullPath)
         if (findItem) {
-          this.removeVisitedRoute(findItem as RouteRecordRawWithHidden).then(() => {
+          this.removeVisitedRoute(findItem as RouteRecordRaw).then(() => {
             if (this.currentTab === fullPath) {
               this.currentTab = this.findLastRoutePath()
               this.$router.push(this.currentTab)
@@ -232,16 +230,16 @@
       },
       closeLeft() {
         if (!this.selectRoute) return
-        this.closeLeftVisitedView(this.selectRoute as RouteRecordRawWithHidden).then(() => {
-          if (this.$route.fullPath !== (this.selectRoute as RouteRecordRawWithHidden).fullPath) {
+        this.closeLeftVisitedView(this.selectRoute as RouteRecordRaw).then(() => {
+          if (this.$route.fullPath !== (this.selectRoute as RouteRecordRaw).path) {
             this.$router.push(this.findLastRoutePath())
           }
         })
       },
       closeRight() {
         if (!this.selectRoute) return
-        this.closeRightVisitedView(this.selectRoute as RouteRecordRawWithHidden).then(() => {
-          if (this.$route.fullPath !== (this.selectRoute as RouteRecordRawWithHidden).fullPath) {
+        this.closeRightVisitedView(this.selectRoute as RouteRecordRaw).then(() => {
+          if (this.$route.fullPath !== (this.selectRoute as RouteRecordRaw).path) {
             this.$router.push(this.findLastRoutePath())
           }
         })

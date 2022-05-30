@@ -28,7 +28,6 @@
   import useAppConfigStore from '@/store/modules/app-config'
   import usePermissionStore from '@/store/modules/permission'
   import { defineComponent, computed } from 'vue'
-  import { useLayoutStore } from '../index'
   export default defineComponent({
     name: 'VAWHeader',
     setup() {

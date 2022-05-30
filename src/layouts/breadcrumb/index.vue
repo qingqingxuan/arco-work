@@ -8,11 +8,9 @@
 
 <script lang="ts">
   import usePermissionStore from '@/store/modules/permission'
-  import { RouteRecordRawWithHidden } from '@/types/store'
   import { isExternal } from '@/utils'
   import { defineComponent, onMounted, reactive, watch } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
-  import { useLayoutStore } from '..'
+  import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
   interface DropItem {
     label: string
     key: string
@@ -38,10 +36,7 @@
           return pre
         }, [])
       }
-      function generatorDropdown(
-        routes: Array<RouteRecordRawWithHidden> | undefined,
-        parentPath = '/'
-      ) {
+      function generatorDropdown(routes: Array<RouteRecordRaw> | undefined, parentPath = '/') {
         if (!routes) return
         const tempArray: DropItem[] = []
         routes.forEach((it) => {
@@ -66,13 +61,13 @@
         return tempArray
       }
       function findRoute(paths: string[]) {
-        const selectRoutes: Array<RouteRecordRawWithHidden> = []
+        const selectRoutes: Array<RouteRecordRaw> = []
         let tempOrigin = permissionStore.permissionRoutes
         paths.forEach((it) => {
           const selectRoute = tempOrigin.find((pIt) => pIt.path === it)
           if (selectRoute) {
             tempOrigin = selectRoute.children as []
-            selectRoutes.push(selectRoute as RouteRecordRawWithHidden)
+            selectRoutes.push(selectRoute as RouteRecordRaw)
           }
         })
         return selectRoutes

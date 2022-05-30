@@ -18,12 +18,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { useLayoutStore } from '@/layouts'
   import useAppInfo from '@/hooks/useAppInfo'
   import { onMounted, reactive, ref } from 'vue'
   const { version, dependencies, devDependencies } = useAppInfo()
   const showContact = ref(false)
-  const state = useLayoutStore().state
   const dependenciesList = reactive<Record<string, string>[]>([])
   const devDependenciesList = reactive<Record<string, string>[]>([])
   onMounted(() => {
