@@ -1,10 +1,8 @@
-import useVisitedRouteStore from '@/store/modules/visited-routes'
 import { defineStore } from 'pinia'
 import { UserState } from '../types'
 import store from '../pinia'
 
 import Avatar from '@/assets/img_avatar.gif'
-import usePermissionStore from './permission'
 
 const defaultAvatar = Avatar
 
@@ -38,10 +36,8 @@ const useUserStore = defineStore('user-info', {
       this.nickName = newNickName
     },
     logout() {
-      const visitedStore = useVisitedRouteStore()
       return new Promise<void>((resolve) => {
         this.$reset()
-        visitedStore.$reset()
         localStorage.clear()
         sessionStorage.clear()
         resolve()
