@@ -64,7 +64,7 @@
               {{ item.title }}
             </div>
             <div style="width: 40px">
-              <a-tag :color="item.status === 0 ? 'red' : 'green'" size="mini">
+              <a-tag :color="item.status === 0 ? 'red' : 'green'" size="small">
                 {{ item.status === 0 ? '未完成' : '已完成' }}
               </a-tag>
             </div>

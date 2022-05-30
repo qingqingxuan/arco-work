@@ -9,7 +9,7 @@ import {
 } from '@arco-design/web-vue'
 import { AllowedComponentProps, h, Ref } from 'vue'
 
-export default function Render(props: any) {
+export default function FormRender(props: any) {
   if (!props || !props.formItem) {
     throw new Error('miss formItem prop and check it')
   }

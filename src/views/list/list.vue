@@ -23,7 +23,7 @@
           </div>
         </a-col>
         <a-col :span="12">
-          <a-progress :percent="0.5" status="active" />
+          <a-progress :percent="0.5" status="success" />
         </a-col>
       </a-row>
     </a-card>

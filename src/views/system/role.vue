@@ -21,9 +21,9 @@
               v-for="item of tableColumns"
               :key="item.key"
               :align="item.align"
-              :title="item.title"
+              :title="(item.title as string)"
               :width="item.width"
-              :data-index="item.key"
+              :data-index="(item.key as string)"
               :fixed="item.fixed"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">

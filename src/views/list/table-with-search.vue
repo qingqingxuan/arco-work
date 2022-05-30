@@ -9,7 +9,7 @@
           @reset-search="onResetSearch"
         >
           <template #search-content>
-            <a-form layout="inline">
+            <a-form layout="inline" :model="{}">
               <a-form-item v-for="item of conditionItems" :key="item.key" :label="item.label">
                 <template v-if="item.render">
                   <FormRender :render="item.render" :formItem="item" />

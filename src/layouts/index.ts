@@ -26,6 +26,7 @@ function getComponentName(key: string) {
         it !== 'index.tsx'
     )
     ?.replace('.vue', '')
+    ?.replace('.tsx', '')
   return name || ''
 }
 
