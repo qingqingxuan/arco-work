@@ -431,11 +431,6 @@
   "resolved" "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
   "version" "0.2.0"
 
-"@types/js-cookie@^3.0.1":
-  "integrity" "sha512-7wg/8gfHltklehP+oyJnZrz9XBuX5ZPP4zB6UsI84utdlkRYLnOm2HfpLXazTwZA+fpGn0ir8tGNgVnMEleBGQ=="
-  "resolved" "https://registry.npmjs.org/@types/js-cookie/-/js-cookie-3.0.1.tgz"
-  "version" "3.0.1"
-
 "@types/lodash@^4.14.178":
   "integrity" "sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw=="
   "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.178.tgz"
@@ -1695,9 +1690,9 @@
     "d" "^1.0.1"
     "ext" "^1.1.2"
 
-"esbuild-darwin-64@0.13.15":
-  "integrity" "sha512-ihOQRGs2yyp7t5bArCwnvn2Atr6X4axqPpEdCFPVp7iUj4cVSdisgvEKdNR7yH3JDjW6aQDw40iQFoTqejqxvQ=="
-  "resolved" "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-0.13.15.tgz"
+"esbuild-darwin-arm64@0.13.15":
+  "integrity" "sha512-i1FZssTVxUqNlJ6cBTj5YQj4imWy3m49RZRnHhLpefFIh0To05ow9DTrXROTE1urGTQCloFUXTX8QfGJy1P8dQ=="
+  "resolved" "https://registry.npmjs.org/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.13.15.tgz"
   "version" "0.13.15"
 
 "esbuild@^0.13.2", "esbuild@>=0.13":
@@ -2646,11 +2641,6 @@
   "integrity" "sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ=="
   "resolved" "https://registry.npmjs.org/js-base64/-/js-base64-2.6.4.tgz"
   "version" "2.6.4"
-
-"js-cookie@^3.0.1":
-  "integrity" "sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw=="
-  "resolved" "https://registry.npmjs.org/js-cookie/-/js-cookie-3.0.1.tgz"
-  "version" "3.0.1"
 
 "js-stringify@^1.0.2":
   "integrity" "sha1-Fzb939lyTyijaCrcYjCufk6Weds="

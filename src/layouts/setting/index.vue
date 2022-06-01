@@ -51,11 +51,7 @@
           />
         </div>
       </div>
-      <a-divider dashed>页签显示</a-divider>
-      <div class="setting-item-wrapper">
-        <span>显示页签</span>
-        <!-- <a-switch v-model="appStore.isShowTabbar" @change="onShowTabbar" /> -->
-      </div>
+      <div style="height: 20px"></div>
       <a-divider dashed>主题颜色</a-divider>
       <a-row :gutter="[10, 10]">
         <a-col v-for="(item, index) of primartyColorList" :key="index" :span="4">
@@ -77,7 +73,7 @@
       <a-divider dashed>页面切换动画</a-divider>
       <div class="setting-item-wrapper">
         <span style="width: 100px">动画效果</span>
-        <a-select v-model="appStore.pageAnim" :options="animOptions" @select="onAnimUpdate" />
+        <a-select v-model="appStore.pageAnim" :options="animOptions" @change="onAnimUpdate" />
       </div>
       <a-divider dashed>按钮显示</a-divider>
       <div class="setting-item-wrapper">
@@ -354,7 +350,7 @@
       function openAppInfo() {
         appInfoDialog.value?.toggle()
       }
-      function onAnimUpdate(val: PageAnim) {
+      function onAnimUpdate(val: any) {
         appStore.changePageAnim(val)
       }
       watch(

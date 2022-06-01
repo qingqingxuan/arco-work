@@ -7,8 +7,8 @@ type TableColumnPops = TableColumnData & { key: string | number }
 
 interface Table {
   dataList: Array<any>
-  bordered: Ref<Boolean>
-  striped: Ref<Boolean>
+  bordered: Ref<boolean>
+  striped: Ref<boolean>
   tableLoading: Ref<boolean>
   tableHeaderRef: Ref<TableHeaderType | null>
   tableFooterRef: Ref<TableFooterType | null>

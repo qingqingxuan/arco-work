@@ -10,12 +10,8 @@ export default {
   layoutMode: 'ltr',
   sideWidth: 210,
   pageAnim: 'opacity',
-  isShowTabbar: true,
   isFixedNavBar: true,
-  isOpenWaterMark: false,
-  waterMark: projectName,
   deviceType: DeviceType.PC,
-  isGray: false,
   isCollapse: false,
   actionBar: {
     isShowSearch: true,

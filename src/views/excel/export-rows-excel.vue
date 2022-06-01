@@ -20,8 +20,8 @@
               v-for="item of tableColumns"
               :key="item.key"
               align="center"
-              :title="item.title"
-              :data-index="item.key"
+              :title="(item.title as string)"
+              :data-index="(item.key as string)"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                 {{ rowIndex + 1 }}
