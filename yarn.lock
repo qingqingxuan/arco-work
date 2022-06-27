@@ -24,10 +24,10 @@
   dependencies:
     "color" "^3.1.3"
 
-"@arco-design/web-vue@^2.26.0":
-  "integrity" "sha512-bH+ubw6KuDzqmQhVkY3UEdgP0bCcDUwLbJdsNhSrE1KQ4aHMgdHLWxgxEEWKI5mbOR5KtBaoJJEVR/OvARheeQ=="
-  "resolved" "https://registry.npmjs.org/@arco-design/web-vue/-/web-vue-2.26.0.tgz"
-  "version" "2.26.0"
+"@arco-design/web-vue@^2.32.0":
+  "integrity" "sha512-O19PY1i/HWyrI8NtCIr/fl6JABR3rdYBOifAPvvzigm3xIOWhyjpODD0jDkxNdPc7VBT/6JtoO8TDvr8eQD3qw=="
+  "resolved" "https://registry.npmjs.org/@arco-design/web-vue/-/web-vue-2.32.0.tgz"
+  "version" "2.32.0"
   dependencies:
     "@arco-design/color" "^0.4.0"
     "b-tween" "^0.3.3"
@@ -432,9 +432,9 @@
   "version" "0.2.0"
 
 "@types/lodash@^4.14.178":
-  "integrity" "sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw=="
-  "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.178.tgz"
-  "version" "4.14.178"
+  "integrity" "sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q=="
+  "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.182.tgz"
+  "version" "4.14.182"
 
 "@types/mousetrap@^1.6.4":
   "integrity" "sha512-zTqjvgCUT5EoXqbqmd8iJMb4NJqyV/V7pK7AIKq7qcaAsJIpGlTVJS1HQM6YkdHCdnkNSbhcQI7MXYxFfE3iCA=="
@@ -442,9 +442,9 @@
   "version" "1.6.8"
 
 "@types/node@*":
-  "integrity" "sha512-3aRnHa1KlOEEhJ6+CvyHKK5vE9BcLGjtUpwvqYLRvYNQKMfabu3BwfJaA/SLW8dxe28LsNDjtHwePTuzn3gmOA=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-16.11.10.tgz"
-  "version" "16.11.10"
+  "integrity" "sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.45.tgz"
+  "version" "17.0.45"
 
 "@types/nprogress@^0.2.0":
   "integrity" "sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A=="

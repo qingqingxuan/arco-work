@@ -37,6 +37,7 @@
   import usePrimaryColor from '@/hooks/usePrimaryColor'
   import useTheme from '@/hooks/useTheme'
   import { DeviceType } from '@/store/types'
+  import CustomRequestInterceptor from '@/api/interceptors/CustomRequestInterceptor'
   export default defineComponent({
     name: 'Layout',
     setup() {
@@ -48,6 +49,9 @@
       usePrimaryColor(appStore.themeColor)
       const emitter = useEmit()
       const axios = useAxios()
+      axios.interceptors.request.use((config) => {
+        return CustomRequestInterceptor(config)
+      })
       axios.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
         return UserTokenExpiredInterceptor(response)
       })

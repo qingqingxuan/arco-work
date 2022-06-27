@@ -1,3 +1,9 @@
+## 2022-6-27(v: 2.0.1)
+
+- 升级：升级 `arco-design` 版本到 `v2.32.0`
+
+- 新增：添加自定义 axios 的 request interceptor，方便使用 Pinia。
+
 ## 2022-5-30(v: 2.0.0)
 
 - 升级：升级 `arco-design` 版本到 `v2.26.0`
