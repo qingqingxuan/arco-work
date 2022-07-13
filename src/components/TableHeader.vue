@@ -11,6 +11,7 @@
       <div class="flex justify-end">
         <slot name="table-config"></slot>
       </div>
+      <slot name="top-right"></slot>
     </a-card>
   </div>
 </template>
