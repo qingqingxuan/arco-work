@@ -1,5 +1,5 @@
 <template>
-  <div class="logo-wrapper">
+  <div class="logo-wrapper" :style="{ 'background-color': bgColor }">
     <img v-if="showLogo" class="logo-img" src="../../assets/logo.png" />
     <div
       v-if="showTitle"
@@ -14,7 +14,7 @@
   import { computed, defineComponent } from 'vue'
   import { projectName } from '../../setting'
   import useAppConfigStore from '@/store/modules/app-config'
-  import { SideTheme } from '@/store/types'
+  import { SideTheme, ThemeMode } from '@/store/types'
   export default defineComponent({
     name: 'Logo',
     props: {
@@ -34,11 +34,11 @@
     setup() {
       const appStore = useAppConfigStore()
       const bgColor = computed(() => {
-        if (appStore.sideTheme === SideTheme.DARK) {
-          return 'var(--color-menu-dark-bg)'
-        }
-        if (appStore.sideTheme === SideTheme.WHITE) {
-          if (appStore.layoutMode !== 'ttb') {
+        if (appStore.layoutMode !== 'ttb') {
+          if (appStore.sideTheme === SideTheme.DARK) {
+            return 'var(--color-menu-dark-bg)'
+          }
+          if (appStore.sideTheme === SideTheme.WHITE) {
             return appStore.sideTheme === SideTheme.WHITE
               ? 'var(--color-white)'
               : appStore.sideTheme === SideTheme.DARK
@@ -46,6 +46,10 @@
               : 'transparent'
           }
           return 'var(--color-white)'
+        } else {
+          return appStore.theme === ThemeMode.DARK
+            ? 'var(--color-menu-dark-bg)'
+            : 'var(--color-white)'
         }
       })
       return {
@@ -63,7 +67,6 @@
     justify-content: center;
     align-items: center;
     border-bottom: 1px dashed var(--color-border);
-    background-color: v-bind(bgColor);
     .logo-img {
       width: 30px;
     }

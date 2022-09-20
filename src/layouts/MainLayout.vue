@@ -2,11 +2,7 @@
   <div
     class="vaw-main-layout-container scrollbar"
     :class="[
-      appStore.layoutMode == 'ttb'
-        ? ''
-        : !appStore.isCollapse
-        ? 'main-layout-open-status'
-        : 'main-layout-close-status',
+      appStore.isCollapse ? 'main-layout-close-status' : 'main-layout-open-status',
       appStore.isFixedNavBar ? 'main-layout_fixed-nav-bar' : 'main-layout',
       !appStore.isFixedNavBar
         ? 'main-layout_padding-top__0'
