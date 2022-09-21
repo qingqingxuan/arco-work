@@ -66,6 +66,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--color-text-1);
     border-bottom: 1px dashed var(--color-border);
     .logo-img {
       width: 30px;

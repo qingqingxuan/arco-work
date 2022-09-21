@@ -195,7 +195,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #f5f5f5;
+      border-radius: 50%;
+      background-color: var(--color-neutral-2);
+      color: var(--color-text-1);
     }
   }
   .is-mobile {

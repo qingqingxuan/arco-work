@@ -82,7 +82,7 @@
       overflow: hidden;
       :deep(.arco-menu-horizontal) {
         height: 47px;
-        width: 99%;
+        width: 100%;
       }
       :deep(.arco-menu-horizontal .arco-menu-inner) {
         overflow: hidden;
