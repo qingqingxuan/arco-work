@@ -61,3 +61,7 @@ object {
 .arco-pagination-item-active:hover {
   color: var(--color-white) !important;
 }
+
+.arco-trigger-popup{
+  width: 150px;
+}
