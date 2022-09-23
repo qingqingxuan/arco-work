@@ -1,10 +1,14 @@
 <template>
   <div class="vaw-header-layout">
     <div class="logo-wrapper">
-      <Logo :always-show="true" :showTitle="false" />
+      <Logo :always-show="true" />
     </div>
     <div class="menu-wrapper">
-      <ScrollerMenu :routes="permissionStore.getPermissionSideBar" mode="horizontal" />
+      <ScrollerMenu
+        :routes="permissionStore.getTopLevelTabs"
+        mode="horizontal"
+        @top-item-click="onTopItemClick"
+      />
     </div>
     <a-card
       class="right-wrapper"
@@ -27,15 +31,32 @@
 <script lang="ts">
   import useAppConfigStore from '@/store/modules/app-config'
   import usePermissionStore from '@/store/modules/permission'
-  import { defineComponent, computed } from 'vue'
+  import { defineComponent } from 'vue'
+  import { RouteRecordRaw, useRouter } from 'vue-router'
   export default defineComponent({
     name: 'VAWHeader',
     setup() {
+      const router = useRouter()
       const appStore = useAppConfigStore()
       const permissionStore = usePermissionStore()
+      function handlePath(routes: RouteRecordRaw[]) {
+        for (let index = 0; index < routes.length; index++) {
+          const it = routes[index]
+          if (it.children && it.children.length > 0) {
+            handlePath(it.children)
+          } else {
+            router.push(it.path)
+          }
+          break
+        }
+      }
+      function onTopItemClick(key: string) {
+        handlePath(permissionStore.getTopLevelTabs.find((it) => it.path === key)?.items || [])
+      }
       return {
         permissionStore,
         appStore,
+        onTopItemClick,
       }
     },
   })
@@ -54,11 +75,15 @@
     box-sizing: border-box;
     border-bottom: 1px solid var(--color-border);
     .logo-wrapper {
-      width: calc(@menuWidth / 3);
+      width: @menuWidth;
     }
     .menu-wrapper {
       flex: 1;
       overflow: hidden;
+      :deep(.arco-menu-horizontal) {
+        height: 47px;
+        width: 100%;
+      }
       :deep(.arco-menu-horizontal .arco-menu-inner) {
         overflow: hidden;
         padding: 9px 10px 8px 10px;

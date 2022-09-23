@@ -1,6 +1,6 @@
 <template>
   <a-card class="footer-container card-border-radius" :bordered="false">
-    Copyright © {{ projectName }} 2021
+    Copyright © {{ projectName }} 2022
   </a-card>
 </template>
 
