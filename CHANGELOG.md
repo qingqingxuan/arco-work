@@ -2,6 +2,10 @@
 
 - 升级：升级 `arco-design` 版本到 `v2.37.4`
 
+- 优化：优化 `tabbar` 按钮样式
+
+- 修复：修复 `.arco-trigger-popup` 样式问题
+
 ## 2022-9-20(v: 2.0.3)
 
 - 升级：升级 `arco-design` 版本到 `v2.37.1`

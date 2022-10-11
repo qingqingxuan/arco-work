@@ -29,6 +29,8 @@
   import {
     computed,
     defineComponent,
+    nextTick,
+    onMounted,
     PropType,
     ref,
     shallowReactive,
@@ -135,6 +137,16 @@
       )
       watchEffect(() => {
         handleMenu(props.routes)
+      })
+      onMounted(() => {
+        nextTick(() => {
+          const items = document.querySelectorAll(
+            '.arco-trigger-popup.arco-trigger-position-bl.arco-menu-pop-trigger'
+          )
+          items.forEach((it) => {
+            it.setAttribute('style', 'width: 150px')
+          })
+        })
       })
       return {
         appStore,

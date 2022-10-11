@@ -10,10 +10,9 @@
             <a-button
               v-for="item of getVisitedRoutes"
               :key="item.path"
-              :type="currentTab === item.path ? 'primary' : 'outline'"
+              :type="currentTab === item.path ? 'outline' : 'secondary'"
               class="mx-1 tab-item"
               size="small"
-              shape="round"
               :data="item.path"
               @click="itemClick(item.path, $event)"
               @contextmenu="onContextMenu(item.path, $event)"
