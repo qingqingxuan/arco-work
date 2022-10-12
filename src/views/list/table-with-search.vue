@@ -55,7 +55,7 @@
       <template #default>
         <a-table
           :bordered="false"
-          :row-selection="{ selectedRowKeys }"
+          :row-selection="{ selectedRowKeys, showCheckedAll }"
           :loading="tableLoading"
           :data="dataList"
           :columns="tableColumns"
@@ -174,7 +174,7 @@
     setup() {
       const searchForm = ref()
       const pagination = usePagination(doRefresh)
-      const { selectedRowKeys, onSelectionChange } = useRowSelection()
+      const { selectedRowKeys, onSelectionChange, showCheckedAll } = useRowSelection()
       const table = useTable()
       const rowKey = useRowKey('id')
       const tableColumns = useTableColumn([
@@ -258,6 +258,7 @@
         onSearch,
         onResetSearch,
         selectedRowKeys,
+        showCheckedAll,
         onSelectionChange,
       }
     },
