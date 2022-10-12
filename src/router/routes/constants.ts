@@ -4,7 +4,6 @@ export const constantRoutes = [
   {
     path: '/login',
     name: 'Login',
-    hidden: true,
     component: () => import('@/views/login/index.vue'),
     meta: {
       hidden: true,
@@ -67,3 +66,17 @@ export const constantRoutes = [
     },
   },
 ]
+
+/**
+ * 这个路由是为了防止vue-router在一开始匹配不到路由的时候报：
+ * No match found for location with xxx 的警告
+ */
+export const defaultPathRoute = {
+  path: window.location.hash.replace('#', '') || window.location.pathname,
+  name: 'defaultRouteName',
+  component: () => import('@/views/redirect/default-route.vue'),
+  meta: {
+    hidden: true,
+    noShowTabbar: true,
+  },
+}

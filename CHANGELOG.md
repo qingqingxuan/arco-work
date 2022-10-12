@@ -1,10 +1,12 @@
-## 2022-9-20(v: 2.0.4)
+## 2022-10-08(v: 2.0.4)
 
 - 升级：升级 `arco-design` 版本到 `v2.37.4`
 
 - 优化：优化 `tabbar` 按钮样式
 
 - 修复：修复 `.arco-trigger-popup` 样式问题
+
+- 修复：修复在动态加载菜单的时候或者刷新页面的时候 `vue-router` 出现警告 `No match found for location with xxx` 信息。
 
 ## 2022-9-20(v: 2.0.3)
 
