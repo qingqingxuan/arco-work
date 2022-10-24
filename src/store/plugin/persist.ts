@@ -1,4 +1,4 @@
-import { isObject } from '@vue/shared'
+import { isObject } from '@vueuse/core'
 import { PiniaPluginContext } from 'pinia'
 import { toRaw } from 'vue'
 
@@ -58,7 +58,7 @@ export default ({ options, store }: PiniaPluginContext) => {
             }
           })
         }
-        ;(window as any)[storage + 'Storage'].setItem(key, JSON.stringify(toPersistObj))
+        ; (window as any)[storage + 'Storage'].setItem(key, JSON.stringify(toPersistObj))
       },
       { detached: true }
     )
