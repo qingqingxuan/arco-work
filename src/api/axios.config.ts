@@ -13,8 +13,7 @@ export const TEXT_PLAIN = 'text/plain; charset=UTF-8'
 
 const service = Axios.create({
   baseURL,
-  timeout: 10 * 60 * 1000,
-  withCredentials: true, // 跨域请求时发送cookie
+  timeout: 10 * 60 * 1000
 })
 
 service.interceptors.request.use(
