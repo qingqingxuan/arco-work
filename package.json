@@ -40,6 +40,7 @@
     "@types/qrcode": "^1.4.1",
     "@types/qs": "^6.9.7",
     "@types/quill": "^2.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vitejs/plugin-vue-jsx": "^1.3.10",
     "autoprefixer": "^10.4.0",
@@ -58,6 +59,7 @@
     "unplugin-vue-components": "^0.17.21",
     "vite": "^3.1.8",
     "vite-plugin-svg-icons": "^1.0.5",
+    "vue-eslint-parser": "^9.1.0",
     "vue-tsc": "^0.3.0"
   }
 }
