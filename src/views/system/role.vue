@@ -3,7 +3,7 @@
     <TableBody>
       <template #header>
         <TableHeader :show-filter="false">
-          <template #top-right>
+          <template #table-config>
             <AddButton @add="onAddItem" />
           </template>
         </TableHeader>

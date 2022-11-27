@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <TableHeader :show-filter="false">
-      <template #top-right>
+      <template #table-config>
         <a-button type="primary" size="small" @click="exportExcel">导出选中的Excel </a-button>
       </template>
     </TableHeader>
