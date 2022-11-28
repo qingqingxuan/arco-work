@@ -47,7 +47,7 @@
     name: 'ScrollerMenu',
     props: {
       routes: {
-        type: Object as PropType<Array<RouteRecordRaw>>,
+        type: Array as PropType<Array<RouteRecordRaw>>,
         require: true,
         default: () => [],
       },
