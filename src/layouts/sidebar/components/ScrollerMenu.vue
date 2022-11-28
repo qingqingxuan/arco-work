@@ -7,6 +7,7 @@
       v-model:selectedKeys="defaultPath"
       v-model:openKeys="defaultExpandKeys"
       @menu-item-click="onMenuClick"
+      v-bind="menuProps"
     >
       <template v-for="item of menuOptions" :key="item.key">
         <template v-if="!item.children">
@@ -54,6 +55,10 @@
       mode: {
         type: String as PropType<'vertical' | 'pop' | 'horizontal' | 'popButton' | undefined>,
         default: 'vertical',
+      },
+      menuProps: {
+        type: Object,
+        default: () => ({}),
       },
     },
     emits: ['top-item-click'],
