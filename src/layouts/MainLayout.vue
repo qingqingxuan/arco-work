@@ -25,7 +25,8 @@
       <NavBar v-if="showNavBar" />
       <TabBar v-show="isShowTabbar" />
     </section>
-    <div
+    <component
+      :is="appStore.isFixedNavBar ? 'Scrollbar' : 'div'"
       class="main-base-style scrollbar"
       :class="[appStore.theme === 'light' ? 'main-base-light-theme' : 'main-base-dark-theme']"
     >
@@ -36,7 +37,7 @@
         <Footer />
       </section>
       <a-back-top target-container=".main-base-style" />
-    </div>
+    </component>
     <a-back-top target-container=".vaw-main-layout-container" />
   </div>
 </template>
