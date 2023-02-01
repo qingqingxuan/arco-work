@@ -32,7 +32,7 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.41.0",
+    "@arco-design/web-vue": "^2.42.0",
     "@types/lodash-es": "^4.17.6",
     "@types/nprogress": "^0.2.0",
     "@types/path-browserify": "^1.0.0",
