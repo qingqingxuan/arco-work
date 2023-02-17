@@ -91,6 +91,9 @@
   .nav-bar-open-status__ttb {
     width: 100%;
   }
+  :deep(.main-base-style .scrollbar__view) {
+    height: 100%;
+  }
 
   .main-layout {
     overflow-y: auto;
