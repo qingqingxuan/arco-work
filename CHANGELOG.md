@@ -1,3 +1,17 @@
+## 2023-2-20(v: 2.1.0)
+
+- 优化：优化`路由` 以 `fullPath` 字段为主键，以支持相同路由，query参数不一致时导致路由参数缺失 
+  
+  涉及文件如下：
+    - src/layouts/actions/index.vue
+    - src/layouts/tabbar/index.vue
+    - src/router/guard/visited.ts
+    - src/store/help/index.ts
+    - src/store/modules/visited-routes.ts
+
+
+- 升级：升级 `arco-design` 版本到 `v2.43.1`
+
 ## 2022-12-14(v: 2.0.8)
 
 - 优化：优化 `主体滑动` 样式

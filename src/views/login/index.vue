@@ -23,13 +23,13 @@
             </template>
           </a-input-password>
         </div>
-        <div class="flex-sub"></div>
+        <div class="flex-1"></div>
         <div class="mt-10">
           <a-button type="primary" class="login" :loading="loading" @click="onLogin">
             登录
           </a-button>
         </div>
-        <div class="my-width flex-sub mt-4 mb-8">
+        <div class="my-width flex-1 mt-4 mb-8">
           <div class="flex justify-between">
             <a-checkbox v-model="autoLogin">自动登录</a-checkbox>
             <a-link :underline="false" type="primary">忘记密码？</a-link>
@@ -170,8 +170,8 @@
         flex: 1;
         padding: 20px;
         height: 100%;
-        // border-radius: 10px;
-        // box-shadow: 0 0 5px #cfcfcf;
+        display: flex;
+        flex-direction: column;
         .title {
           font-size: 25px;
           font-weight: bold;

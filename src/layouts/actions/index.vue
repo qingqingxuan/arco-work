@@ -75,7 +75,7 @@
         }
       }
       const debouncedFn = useDebounceFn(() => {
-        router.replace({ path: '/redirect' + route.path })
+        router.replace({ path: '/redirect' + route.path, query: route.query })
       }, 200)
       function onRefrehRoute() {
         debouncedFn()

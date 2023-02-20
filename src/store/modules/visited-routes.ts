@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { RouteRecordRaw } from 'vue-router'
+import { RouteLocationNormalized } from 'vue-router'
 import pinia from '../pinia'
 import useCachedRouteStore from '@/store/modules/cached-routes'
 import { findCachedRoutes } from '../help'
@@ -9,7 +9,7 @@ const visitedRoutes = JSON.parse(localStorage.getItem('visited-routes') || '[]')
 const useVisitedRouteStore = defineStore('visited-routes', {
   state: () => {
     return {
-      visitedRoutes: visitedRoutes as RouteRecordRaw[],
+      visitedRoutes: visitedRoutes as RouteLocationNormalized[],
       isLoadAffix: false,
     }
   },
@@ -19,17 +19,17 @@ const useVisitedRouteStore = defineStore('visited-routes', {
     },
   },
   actions: {
-    initAffixRoutes(affixRoutes: RouteRecordRaw[]) {
+    initAffixRoutes(affixRoutes: RouteLocationNormalized[]) {
       affixRoutes.reverse().forEach((affixRoute) => {
-        if (!this.visitedRoutes.find((it) => it.path === affixRoute.path)) {
+        if (!this.visitedRoutes.find((it) => it.fullPath === affixRoute.fullPath)) {
           this.visitedRoutes.unshift(affixRoute)
         }
       })
       this.isLoadAffix = true
     },
-    addVisitedRoute(route: RouteRecordRaw) {
+    addVisitedRoute(route: RouteLocationNormalized) {
       return new Promise((resolve) => {
-        if (!this.visitedRoutes.find((it) => it.path === route.path)) {
+        if (!this.visitedRoutes.find((it) => it.fullPath === route.fullPath)) {
           if (route.name) {
             const cachedRoutesStore = useCachedRouteStore()
             if (!cachedRoutesStore.cachedRoutes.includes(route.name as string)) {
@@ -43,7 +43,7 @@ const useVisitedRouteStore = defineStore('visited-routes', {
         resolve(route)
       })
     },
-    removeVisitedRoute(route: RouteRecordRaw) {
+    removeVisitedRoute(route: RouteLocationNormalized) {
       return new Promise<string>((resolve) => {
         this.visitedRoutes.splice(this.visitedRoutes.indexOf(route), 1)
         if (route.name) {
@@ -61,10 +61,10 @@ const useVisitedRouteStore = defineStore('visited-routes', {
     },
     findLastRoutePath() {
       return this.visitedRoutes && this.visitedRoutes.length > 0
-        ? this.visitedRoutes[this.visitedRoutes.length - 1].path
+        ? this.visitedRoutes[this.visitedRoutes.length - 1].fullPath
         : '/'
     },
-    closeLeftVisitedView(selectRoute: RouteRecordRaw) {
+    closeLeftVisitedView(selectRoute: RouteLocationNormalized) {
       return new Promise((resolve) => {
         const selectIndex = this.visitedRoutes.indexOf(selectRoute)
         if (selectIndex !== -1) {
@@ -78,7 +78,7 @@ const useVisitedRouteStore = defineStore('visited-routes', {
         resolve(selectRoute)
       })
     },
-    closeRightVisitedView(selectRoute: RouteRecordRaw) {
+    closeRightVisitedView(selectRoute: RouteLocationNormalized) {
       return new Promise((resolve) => {
         const selectIndex = this.visitedRoutes.indexOf(selectRoute)
         if (selectIndex !== -1) {
@@ -106,7 +106,7 @@ const useVisitedRouteStore = defineStore('visited-routes', {
     persistentVisitedView() {
       const tempPersistendRoutes = this.visitedRoutes.map((it) => {
         return {
-          fullPath: it.path,
+          fullPath: it.fullPath,
           meta: it.meta,
           name: it.name,
           path: it.path,

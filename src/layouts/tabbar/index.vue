@@ -9,16 +9,20 @@
           <div class="flex">
             <a-button
               v-for="item of getVisitedRoutes"
-              :key="item.path"
-              :type="currentTab === item.path ? 'outline' : 'secondary'"
+              :key="item.fullPath"
+              :type="currentTab === item.fullPath ? 'outline' : 'secondary'"
               class="mx-1 tab-item"
               size="small"
-              :data="item.path"
-              @click="itemClick(item.path, $event)"
-              @contextmenu="onContextMenu(item.path, $event)"
+              :data="item.fullPath"
+              @click="itemClick(item, $event)"
+              @contextmenu="onContextMenu(item.fullPath, $event)"
             >
               {{ item.meta ? item.meta.title : item.name }}
-              <span v-if="!item.meta?.affix" class="icon-item" @click.stop="iconClick(item.path)">
+              <span
+                v-if="!item.meta?.affix"
+                class="icon-item"
+                @click.stop="iconClick(item.fullPath)"
+              >
                 <CloseOutlined />
               </span>
             </a-button>
@@ -68,7 +72,6 @@
 
 <script lang="ts">
   import { mapState, mapActions } from 'pinia'
-  import path from 'path-browserify'
   import { defineComponent, unref } from 'vue'
   import {
     IconClose as CloseOutlined,
@@ -78,7 +81,7 @@
     IconToRight as ArrowRightOutlined,
   } from '@arco-design/web-vue/es/icon'
   import useVisitedRouteStore from '@/store/modules/visited-routes'
-  import { RouteRecordRaw } from 'vue-router'
+  import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
   export default defineComponent({
     name: 'TabBar',
     components: {
@@ -136,16 +139,16 @@
         'closeLeftVisitedView',
         'closeAllVisitedView',
       ]),
-      itemClick(path: string | undefined, e: MouseEvent) {
-        this.handleTabClick(e.target as HTMLElement, path || '/')
+      itemClick(path: RouteLocationNormalized, e: MouseEvent) {
+        this.handleTabClick(e.target as HTMLElement, path)
       },
-      itemChildClick(path: string | undefined, e: MouseEvent) {
+      itemChildClick(path: RouteLocationNormalized, e: MouseEvent) {
         this.handleTabClick(
           (e.target as HTMLElement).parentElement?.parentElement as HTMLElement,
-          path || '/'
+          path
         )
       },
-      handleTabClick(el: HTMLElement, path: string) {
+      handleTabClick(el: HTMLElement, path: RouteLocationNormalized) {
         this.$router.push(path).then(() => {
           const scrollbar = unref((this.$refs.scrollbar as any).getWrapContainer())
           scrollbar.scrollTo({
@@ -157,27 +160,11 @@
       iconClick(fullPath: string | undefined) {
         this.removeTab(fullPath || '/')
       },
-      findAffixedRoutes(routes: Array<RouteRecordRaw>, basePath: string) {
-        const temp = [] as Array<RouteRecordRaw>
-        routes.forEach((it) => {
-          if (it.meta && !it.meta.hidden && it.meta.affix) {
-            temp.push({
-              name: it.name,
-              path: it.path,
-              meta: it.meta,
-            } as RouteRecordRaw)
-          }
-          if (it.children && it.children.length > 0) {
-            temp.push(...this.findAffixedRoutes(it.children, path.resolve(basePath, it.path)))
-          }
-        })
-        return temp
-      },
       isAffix(route: RouteRecordRaw) {
         return route.meta && route.meta.affix
       },
       onContextMenu(fullPath: string | undefined, e: MouseEvent) {
-        const tempView = this.getVisitedRoutes.find((it) => it.path === fullPath)
+        const tempView = this.getVisitedRoutes.find((it) => it.fullPath === fullPath)
         if (!tempView) return
         const { clientX } = e
         const { x } = this.$el.getBoundingClientRect()
@@ -194,9 +181,9 @@
         }
       },
       removeTab(fullPath: string) {
-        const findItem = this.getVisitedRoutes.find((it) => it.path === fullPath)
+        const findItem = this.getVisitedRoutes.find((it) => it.fullPath === fullPath)
         if (findItem) {
-          this.removeVisitedRoute(findItem as RouteRecordRaw).then(() => {
+          this.removeVisitedRoute(findItem).then(() => {
             if (this.currentTab === fullPath) {
               this.currentTab = this.findLastRoutePath()
               this.$router.push(this.currentTab)
@@ -206,11 +193,11 @@
       },
       // context menu actions
       isLeftLast(tempRoute: string) {
-        return this.getVisitedRoutes.findIndex((it) => it.path === tempRoute) === 0
+        return this.getVisitedRoutes.findIndex((it) => it.fullPath === tempRoute) === 0
       },
       isRightLast(tempRoute: string) {
         return (
-          this.getVisitedRoutes.findIndex((it) => it.path === tempRoute) ===
+          this.getVisitedRoutes.findIndex((it) => it.fullPath === tempRoute) ===
           this.getVisitedRoutes.length - 1
         )
       },
@@ -225,20 +212,20 @@
         }
       },
       refreshRoute() {
-        this.$router.replace({ path: '/redirect' + this.$route.path })
+        this.$router.replace({ path: '/redirect' + this.$route.path, query: this.$route.query })
       },
       closeLeft() {
         if (!this.selectRoute) return
-        this.closeLeftVisitedView(this.selectRoute as RouteRecordRaw).then(() => {
-          if (this.$route.fullPath !== (this.selectRoute as RouteRecordRaw).path) {
+        this.closeLeftVisitedView(this.selectRoute as RouteLocationNormalized).then(() => {
+          if (this.$route.fullPath !== (this.selectRoute as RouteLocationNormalized).fullPath) {
             this.$router.push(this.findLastRoutePath())
           }
         })
       },
       closeRight() {
         if (!this.selectRoute) return
-        this.closeRightVisitedView(this.selectRoute as RouteRecordRaw).then(() => {
-          if (this.$route.fullPath !== (this.selectRoute as RouteRecordRaw).path) {
+        this.closeRightVisitedView(this.selectRoute as RouteLocationNormalized).then(() => {
+          if (this.$route.fullPath !== (this.selectRoute as RouteLocationNormalized).fullPath) {
             this.$router.push(this.findLastRoutePath())
           }
         })
@@ -286,6 +273,10 @@
       border: 1px solid rgba(var(--primary-5), 1) !important;
       color: rgba(var(--primary-5), 1) !important;
     }
+  }
+  :deep(.arco-btn-disabled) {
+    background-color: transparent !important;
+    color: rgba(var(--primary-5), 0.7) !important;
   }
   :deep(.arco-btn-primary) {
     background-color: rgba(var(--primary-5), 0.8) !important;

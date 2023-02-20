@@ -1,7 +1,7 @@
 import { isExternal, toHump } from '@/utils'
 import { resolve } from 'path-browserify'
 import { ref } from 'vue'
-import { RouteRecordRaw } from 'vue-router'
+import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
 import { MenuOption, OriginRoute, SplitTab } from '../types'
 import { asyncRoutes } from '@/router/routes/async'
 import { LAYOUT } from '../keys'
@@ -144,17 +144,20 @@ export function mapTwoLevelRouter(srcRoutes: Array<RouteRecordRaw>) {
   return []
 }
 
-export function findAffixedRoutes(routes: Array<RouteRecordRaw>) {
-  const temp = [] as Array<RouteRecordRaw>
+export function findAffixedRoutes(routes: Array<RouteLocationNormalized>) {
+  const temp = [] as Array<RouteLocationNormalized>
   routes.forEach((it) => {
     if (it.meta && it.meta.affix) {
+      if (!it.fullPath) {
+        it.fullPath = it.path
+      }
       temp.push(it)
     }
   })
   return temp
 }
 
-export function findCachedRoutes(routes: Array<RouteRecordRaw>) {
+export function findCachedRoutes(routes: Array<RouteLocationNormalized>) {
   const temp = [] as Array<string>
   routes.forEach((it) => {
     if (it.name && it.meta && it.meta.cacheable) {
