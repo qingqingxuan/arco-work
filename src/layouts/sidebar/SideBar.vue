@@ -150,6 +150,21 @@
   }
   .sidebar-bg-light {
     background-color: #fff;
+
+    :deep(.arco-menu-light .arco-menu-item.arco-menu-selected) {
+      position: relative;
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        content: '';
+        display: block;
+        border-radius: 3px;
+        width: 3px;
+        height: 100%;
+        background-color: rgb(var(--primary-6));
+      }
+    }
   }
   .open-status {
     width: @menuWidth;
