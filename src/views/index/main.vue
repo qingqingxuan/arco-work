@@ -39,21 +39,20 @@
     </a-row>
     <div class="mt-2"></div>
     <a-row :gutter="10">
-      <a-col :xs="24" :sm="24" :md="12" :lg="16" :xl="16" :xxl="16">
-        <a-space direction="vertical" style="width: 100%">
-          <FullYearSalesChart ref="fullYearSalesChart" />
-          <div class="flex w-full">
-            <DepartmentChart class="flex-1" ref="departmentChart" />
-            <div style="width: 8px"></div>
-            <EnrollmentChannelsChart class="flex-1" ref="mOrderChart" />
-          </div>
-        </a-space>
+      <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
+        <FullYearSalesChart ref="fullYearSalesChart" />
+      </a-col>
+    </a-row>
+    <div class="mt-2"></div>
+    <a-row :gutter="10">
+      <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="8">
+        <SalesChart ref="salesChart" />
       </a-col>
       <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="8">
-        <a-space direction="vertical" style="width: 100%">
-          <SalesChart ref="salesChart" />
-          <StudentChart ref="enrollmentChannelsChart" />
-        </a-space>
+        <EnrollmentChannelsChart class="flex-1" ref="mOrderChart" />
+      </a-col>
+      <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="8">
+        <StudentChart ref="enrollmentChannelsChart" />
       </a-col>
     </a-row>
   </div>
@@ -78,7 +77,6 @@
       StudentChart,
       EnrollmentChannelsChart,
       FullYearSalesChart,
-      DepartmentChart,
     },
     setup() {
       const appStore = useAppConfigStore()

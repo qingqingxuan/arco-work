@@ -45,7 +45,7 @@
               ? 'var(--color-menu-dark-bg)'
               : 'transparent'
           }
-          return 'var(--color-white)'
+          return 'transparent'
         } else {
           return appStore.theme === ThemeMode.DARK
             ? 'var(--color-menu-dark-bg)'
