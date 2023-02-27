@@ -1,7 +1,5 @@
 <template>
-  <a-card class="footer-container card-border-radius" :bordered="false">
-    Copyright © {{ projectName }} 2021
-  </a-card>
+  <a-card class="footer-container" :bordered="false"> Copyright © {{ projectName }} 2023 </a-card>
 </template>
 
 <script lang="ts">
@@ -25,6 +23,5 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    border-top: 1px dashed var(--color-border);
   }
 </style>

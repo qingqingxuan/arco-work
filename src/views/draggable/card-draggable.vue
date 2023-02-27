@@ -98,6 +98,7 @@
     border-left: 1px solid #f5f5f5;
     overflow: hidden;
   }
+
   .card-item {
     height: 100px;
     padding: 10px 0;
@@ -108,14 +109,17 @@
     border-right: 1px solid #f5f5f5;
     border-bottom: 1px solid #f5f5f5;
     box-sizing: border-box;
+
     .icon {
       font-size: 26px;
     }
+
     .label {
       margin-top: 10px;
       font-size: 14px;
     }
   }
+
   .card-item:hover {
     .icon {
       transform: scale(1.5);

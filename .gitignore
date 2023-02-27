@@ -4,3 +4,5 @@ dist-ssr
 *.local
 dist
 dist-staging
+package-lock.json
+yarn.lock

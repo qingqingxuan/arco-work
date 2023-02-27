@@ -3,10 +3,11 @@
     <a-menu
       :mode="menuMode"
       :theme="theme"
-      :collapsed="appStore.isCollapse"
+      :collapsed="menuMode === 'horizontal' ? false : appStore.isCollapse"
       v-model:selectedKeys="defaultPath"
       v-model:openKeys="defaultExpandKeys"
       @menu-item-click="onMenuClick"
+      v-bind="menuProps"
     >
       <template v-for="item of menuOptions" :key="item.key">
         <template v-if="!item.children">
@@ -29,6 +30,8 @@
   import {
     computed,
     defineComponent,
+    nextTick,
+    onMounted,
     PropType,
     ref,
     shallowReactive,
@@ -45,7 +48,7 @@
     name: 'ScrollerMenu',
     props: {
       routes: {
-        type: Object as PropType<Array<RouteRecordRaw>>,
+        type: Array as PropType<Array<RouteRecordRaw>>,
         require: true,
         default: () => [],
       },
@@ -53,16 +56,23 @@
         type: String as PropType<'vertical' | 'pop' | 'horizontal' | 'popButton' | undefined>,
         default: 'vertical',
       },
+      menuProps: {
+        type: Object,
+        default: () => ({}),
+      },
     },
-    setup(props) {
+    emits: ['top-item-click'],
+    setup(props, { emit }) {
       const appStore = useAppConfigStore()
-      const menuOptions = shallowReactive([] as Array<any>)
-      const defaultPath = ref([] as Array<string>)
-      const defaultExpandKeys = ref([] as Array<string>)
+      const menuOptions = shallowReactive<any[]>([])
+      const defaultPath = ref<string[]>([])
+      const defaultExpandKeys = ref<string[]>([])
       const menuMode = computed(() => props.mode)
       const currentRoute = useRoute()
       const router = useRouter()
-      defaultPath.value.push(currentRoute.fullPath)
+      defaultPath.value.push(
+        menuMode.value === 'vertical' ? currentRoute.fullPath : currentRoute.matched[0].path
+      )
       const tag = ref(menuMode.value === 'vertical' ? 'Scrollbar' : 'div')
       const theme = computed(() => {
         if (appStore.theme === ThemeMode.DARK) {
@@ -85,13 +95,26 @@
       }
       function handleExpandPath() {
         const paths = currentRoute.fullPath.split('/')
-        paths.forEach((it) => {
-          if (it && !defaultExpandKeys.value.includes('/' + it)) {
-            defaultExpandKeys.value.push('/' + it)
+        const resultPaths = paths
+          .filter((it) => !!it)
+          .reduce(
+            (pre, cur) => {
+              pre.push(pre.slice(pre.length - 1, pre.length) + '/' + cur)
+              return pre
+            },
+            ['']
+          )
+        resultPaths.forEach((it) => {
+          if (it && !defaultExpandKeys.value.includes(it)) {
+            defaultExpandKeys.value.push(it)
           }
         })
       }
       function onMenuClick(key: string) {
+        if (menuMode.value === 'horizontal') {
+          emit('top-item-click', key)
+          return
+        }
         if (isExternal(key)) {
           window.open(key)
         } else {
@@ -105,7 +128,9 @@
         () => currentRoute.fullPath,
         (newVal) => {
           defaultPath.value.length = 0
-          defaultPath.value.push(newVal)
+          defaultPath.value.push(
+            menuMode.value === 'vertical' ? newVal : currentRoute.matched[0].path
+          )
           handleExpandPath()
         }
       )
@@ -117,6 +142,16 @@
       )
       watchEffect(() => {
         handleMenu(props.routes)
+      })
+      onMounted(() => {
+        nextTick(() => {
+          const items = document.querySelectorAll(
+            '.arco-trigger-popup.arco-trigger-position-bl.arco-menu-pop-trigger'
+          )
+          items.forEach((it) => {
+            it.setAttribute('style', 'width: 150px')
+          })
+        })
       })
       return {
         appStore,

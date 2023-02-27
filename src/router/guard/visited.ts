@@ -1,6 +1,6 @@
 import { findAffixedRoutes } from '@/store/help'
 import useVisitedRouteStore from '@/store/modules/visited-routes'
-import { RouteRecordRaw } from 'vue-router'
+import { RouteLocationNormalized } from 'vue-router'
 import router from '..'
 
 function useVisitedGuard() {
@@ -10,7 +10,9 @@ function useVisitedGuard() {
     }
     const visitedRouteStore = useVisitedRouteStore()
     if (!visitedRouteStore.isLoadAffix) {
-      const affixRoutes = findAffixedRoutes(router.getRoutes())
+      const affixRoutes = findAffixedRoutes(
+        router.getRoutes() as unknown as RouteLocationNormalized[]
+      )
       visitedRouteStore.initAffixRoutes(affixRoutes)
     }
     if (to.path.startsWith('/redirect')) {
@@ -22,7 +24,7 @@ function useVisitedGuard() {
     if (to.query?.noShowTabbar) {
       return true
     }
-    visitedRouteStore.addVisitedRoute(to as unknown as RouteRecordRaw)
+    visitedRouteStore.addVisitedRoute(to)
     return true
   })
 }

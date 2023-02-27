@@ -62,16 +62,20 @@
       function onShowSearch() {
         emitter?.emit('show-search')
       }
-      const { isSupported, enter } = useFullscreen(document.documentElement)
+      const { isSupported, enter, isFullscreen, exit } = useFullscreen(document.documentElement)
       function onScreenFull() {
         if (!isSupported) {
           Message.error('当前浏览器不支持全屏操作')
           return false
         }
-        enter()
+        if (isFullscreen.value) {
+          exit()
+        } else {
+          enter()
+        }
       }
       const debouncedFn = useDebounceFn(() => {
-        router.replace({ path: '/redirect' + route.path })
+        router.replace({ path: '/redirect' + route.path, query: route.query })
       }, 200)
       function onRefrehRoute() {
         debouncedFn()

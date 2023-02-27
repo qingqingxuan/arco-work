@@ -5,6 +5,7 @@
   >
     <template v-if="appStore.layoutMode === 'ttb'">
       <VAWHeader />
+      <InnerSideBar />
       <MainLayout :show-nav-bar="false" />
     </template>
     <template v-else-if="appStore.layoutMode === 'lcr'">
@@ -27,7 +28,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+  import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
   import useEmit from '@/hooks/useEmit'
   import { AxiosResponse } from 'axios'
   import UserTokenExpiredInterceptor from '@/api/interceptors/UserTokenExpiredInterceptor'
@@ -37,6 +38,7 @@
   import usePrimaryColor from '@/hooks/usePrimaryColor'
   import useTheme from '@/hooks/useTheme'
   import { DeviceType } from '@/store/types'
+  import CustomRequestInterceptor from '@/api/interceptors/CustomRequestInterceptor'
   export default defineComponent({
     name: 'Layout',
     setup() {
@@ -48,6 +50,9 @@
       usePrimaryColor(appStore.themeColor)
       const emitter = useEmit()
       const axios = useAxios()
+      axios.interceptors.request.use((config) => {
+        return CustomRequestInterceptor(config)
+      })
       axios.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
         return UserTokenExpiredInterceptor(response)
       })
@@ -97,6 +102,7 @@
   .vaw-layout-container {
     height: 100%;
     max-width: 100%;
+    position: relative;
     overflow-x: hidden;
     .mobile-shadow {
       display: none;

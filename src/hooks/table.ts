@@ -37,7 +37,7 @@ export const useTableHeight = async function (currentIns: any): Promise<number> 
           tempHeight += header.clientHeight
         }
         if (currentIns.refs.tableFooterRef) {
-          tempHeight += 51
+          tempHeight += 56
         }
         resolve(clientHeight - tempHeight)
       }

@@ -12,9 +12,9 @@ export default defineConfig(({ mode }) => {
   const dotenvConfig = dotenv.config({ path: `./.env.${mode}` })
   const dotenvObj = dotenvConfig.parsed
   return {
-    base: dotenvObj.BUILD_PATH,
+    base: dotenvObj?.BUILD_PATH || '/',
     build: {
-      outDir: dotenvObj.BUILD_OUT_DIR || 'dist',
+      outDir: dotenvObj?.BUILD_OUT_DIR || 'dist',
       rollupOptions: {
         output: {
           manualChunks(id) {

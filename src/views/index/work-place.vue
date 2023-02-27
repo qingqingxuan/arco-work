@@ -88,9 +88,9 @@
           >
             <a-table :data="dataList" :pagination="false" :bordered="false">
               <template #columns>
-                <a-table-column data-index="projectName" title="项目名"></a-table-column>
-                <a-table-column data-index="beginTime" title="开始时间"></a-table-column>
-                <a-table-column data-index="endTime" title="结束时间"></a-table-column>
+                <a-table-column data-index="projectName" title="项目名" />
+                <a-table-column data-index="beginTime" title="开始时间" />
+                <a-table-column data-index="endTime" title="结束时间" />
                 <a-table-column data-index="progress" title="进度">
                   <template #cell="{ record }">
                     <a-tag>
@@ -145,9 +145,9 @@
 <script lang="ts">
   import ProjectItem from './components/ProjectItem.vue'
   import TodoItem from './components/TodoItem.vue'
-  import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
+  import { computed, defineComponent, reactive } from 'vue'
   import { useRouter } from 'vue-router'
-  import { random } from 'lodash'
+  import { random } from 'lodash-es'
   import useUserStore from '@/store/modules/user'
   const COLORS = ['#67C23A', '#E6A23C', '#F56C6C', '#409EFF']
   const date = new Date()
@@ -326,6 +326,7 @@
     max-height: 3rem;
     min-width: 3rem;
     min-height: 3rem;
+
     & > img {
       width: 100%;
       height: 100%;
@@ -333,10 +334,12 @@
       border: 2px solid yellowgreen;
     }
   }
+
   .item-action {
     position: relative;
     padding: 0 30px;
   }
+
   .item-action::after {
     position: absolute;
     top: 20%;
@@ -347,16 +350,20 @@
     width: 1px;
     background-color: var(--border-color);
   }
+
   div.item-action:last-child::after {
     width: 0;
   }
+
   .fast-item-wrapper {
     height: 80px;
     border-radius: 8px;
+
     .anticon {
       font-size: 20px;
     }
   }
+
   .fast-item-wrapper:hover {
     cursor: pointer;
     box-shadow: 0px 0px 10px #ddd;

@@ -1,44 +1,57 @@
 <template>
   <div
-    class="vaw-side-bar-wrapper"
-    :style="{ borderRadius: '0px', marginTop: appStore.layoutMode === 'ttb' ? '48px' : 0 }"
+    class="vaw-inner-side-bar-wrapper"
+    :style="{ borderRadius: '0px' }"
     :class="[!appStore.isCollapse ? 'open-status' : 'close-status', bgColor]"
   >
-    <transition name="logo">
-      <Logo v-if="showLogo" />
-    </transition>
-    <ScrollerMenu :routes="permissionStore.getPermissionSideBar" />
+    <ScrollerMenu :routes="routes" />
+    <div class="humburger-wrapper">
+      <Humburger />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
   import useAppConfigStore from '@/store/modules/app-config'
   import usePermissionStore from '@/store/modules/permission'
-  import { SideTheme } from '@/store/types'
-  import { computed, defineComponent } from 'vue'
+  import { SideTheme, ThemeMode } from '@/store/types'
+  import { computed, defineComponent, ref, watch } from 'vue'
+  import { RouteRecordRaw, useRoute } from 'vue-router'
   export default defineComponent({
-    name: 'SideBar',
-    props: {
-      showLogo: {
-        type: Boolean,
-        default: true,
-      },
-    },
+    name: 'InnerSideBar',
     setup() {
       const permissionStore = usePermissionStore()
       const appStore = useAppConfigStore()
+      const route = useRoute()
+      const routes = ref<RouteRecordRaw[]>([])
       const bgColor = computed(() => {
-        if (appStore.sideTheme === SideTheme.IMAGE) {
-          return 'sidebar-bg-img'
-        } else if (appStore.sideTheme === SideTheme.DARK) {
-          return 'sidebar-bg-dark'
+        if (appStore.layoutMode !== 'ttb') {
+          if (appStore.sideTheme === SideTheme.IMAGE) {
+            return 'sidebar-bg-img'
+          } else if (appStore.sideTheme === SideTheme.DARK) {
+            return 'sidebar-bg-dark'
+          } else {
+            return 'sidebar-bg-light'
+          }
         } else {
-          return 'sidebar-bg-light'
+          return appStore.theme === ThemeMode.DARK ? 'sidebar-bg-dark' : 'sidebar-bg-light'
         }
       })
+      watch(
+        () => route.fullPath,
+        () => {
+          const firstMatchPath = route.matched[0].path
+          const item = permissionStore.getPermissionSideBar.find((it) => it.path === firstMatchPath)
+          routes.value = item?.children || []
+        },
+        {
+          immediate: true,
+        }
+      )
       return {
         appStore,
         permissionStore,
+        routes,
         bgColor,
       }
     },
@@ -150,7 +163,6 @@
   }
   .sidebar-bg-light {
     background-color: #fff;
-
     :deep(.arco-menu-light .arco-menu-item.arco-menu-selected) {
       position: relative;
       &::after {
@@ -176,17 +188,30 @@
     box-shadow: none;
     transition: all @transitionTime;
   }
-  .vaw-side-bar-wrapper {
-    position: fixed;
-    top: 0;
+  .vaw-inner-side-bar-wrapper {
+    position: absolute;
+    top: @logoHeight;
     left: 0;
     overflow-x: hidden;
-    height: 100%;
+    bottom: 0;
     box-sizing: border-box;
     z-index: 999;
     .vaw-menu-wrapper {
       overflow-x: hidden;
       color: white;
+    }
+    .humburger-wrapper {
+      position: absolute;
+      bottom: 5%;
+      right: 2%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: var(--color-neutral-2);
+      color: var(--color-text-1);
     }
   }
   .is-mobile {

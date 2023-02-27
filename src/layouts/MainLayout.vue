@@ -2,11 +2,7 @@
   <div
     class="vaw-main-layout-container scrollbar"
     :class="[
-      appStore.layoutMode == 'ttb'
-        ? ''
-        : !appStore.isCollapse
-        ? 'main-layout-open-status'
-        : 'main-layout-close-status',
+      appStore.isCollapse ? 'main-layout-close-status' : 'main-layout-open-status',
       appStore.isFixedNavBar ? 'main-layout_fixed-nav-bar' : 'main-layout',
       !appStore.isFixedNavBar
         ? 'main-layout_padding-top__0'
@@ -29,7 +25,8 @@
       <NavBar v-if="showNavBar" />
       <TabBar v-show="isShowTabbar" />
     </section>
-    <div
+    <component
+      :is="appStore.isFixedNavBar ? 'Scrollbar' : 'div'"
       class="main-base-style scrollbar"
       :class="[appStore.theme === 'light' ? 'main-base-light-theme' : 'main-base-dark-theme']"
     >
@@ -40,7 +37,7 @@
         <Footer />
       </section>
       <a-back-top target-container=".main-base-style" />
-    </div>
+    </component>
     <a-back-top target-container=".vaw-main-layout-container" />
   </div>
 </template>
@@ -94,6 +91,9 @@
   .nav-bar-open-status__ttb {
     width: 100%;
   }
+  :deep(.main-base-style .scrollbar__view) {
+    height: 100%;
+  }
 
   .main-layout {
     overflow-y: auto;
@@ -127,7 +127,8 @@
       padding: 5px;
     }
     .main-base-light-theme {
-      background-color: #f0f2f5;
+      // background-color: #f0f2f5;
+      background-image: linear-gradient(#f0f2f5, rgba(var(--primary-1), 0.1), #f0f2f5);
     }
     .main-base-dark-theme {
       background-color: #333333;

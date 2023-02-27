@@ -85,7 +85,7 @@ export default {
   post,
 }
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
   // 为 `this.$` 提供类型声明
   interface ComponentCustomProperties {
     $get: <T>(options: HttpOption) => Promise<Response<T>>

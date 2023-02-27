@@ -1,7 +1,7 @@
 import { mapTwoLevelRouter } from '@/store/help'
 import { App } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { constantRoutes } from './routes/constants'
+import { constantRoutes, defaultPathRoute } from './routes/constants'
 
 const Layout = () => import('@/layouts/Layout.vue')
 
@@ -10,7 +10,6 @@ export const extraRoutes = [
     path: '/params-info',
     name: 'paramsInfo',
     component: Layout,
-    hidden: true,
     meta: {
       title: '路由参数',
     },
@@ -36,7 +35,7 @@ export const extraRoutes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: mapTwoLevelRouter([...constantRoutes, ...extraRoutes]),
+  routes: mapTwoLevelRouter([...constantRoutes, ...extraRoutes, defaultPathRoute]),
 })
 
 export default router

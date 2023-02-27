@@ -1,7 +1,9 @@
 <template>
   <div class="main-container">
     <div class="left">
-      <a-card> left-top </a-card>
+      <a-card>
+        <TitleComp title="asd" />
+      </a-card>
       <a-card> left-center </a-card>
       <a-card> left-bottom </a-card>
     </div>
@@ -18,63 +20,19 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .main-container {
-    display: flex;
-    height: 100vh;
-    .left {
-      width: 25%;
-      background-color: red;
-    }
-    .center {
-      flex: 1;
-      background-color: blue;
-    }
-    .right {
-      width: 25%;
-      background-color: green;
-    }
-  }
-</style>
-
 <script lang="ts">
-  import DataItem from './components/DataItem.vue'
-  import OrderChart from './components/chart/OrderChart.vue'
-  import SalesChart from './components/chart/SalesChart.vue'
-  import StudentChart from './components/chart/StudentChart.vue'
-  import EnrollmentChannelsChart from './components/chart/EnrollmentChannelsChart.vue'
-  import FullYearSalesChart from './components/chart/FullYearSalesChart.vue'
-  import DepartmentChart from './components/chart/DepartmentChart.vue'
-  import { computed, defineComponent, ref, watch } from 'vue'
+  import { computed, defineComponent, watch } from 'vue'
+  import TitleComp from './components/Title.jsx'
   import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'Home',
     components: {
-      DataItem,
-      OrderChart,
-      SalesChart,
-      StudentChart,
-      EnrollmentChannelsChart,
-      FullYearSalesChart,
-      DepartmentChart,
+      TitleComp,
     },
     setup() {
       const appStore = useAppConfigStore()
-      const mOrderChart = ref<InstanceType<typeof OrderChart>>()
-      const salesChart = ref<InstanceType<typeof SalesChart>>()
-      const enrollmentChannelsChart = ref<InstanceType<typeof EnrollmentChannelsChart>>()
-      const studentChart = ref<InstanceType<typeof StudentChart>>()
-      const fullYearSalesChart = ref<InstanceType<typeof FullYearSalesChart>>()
-      const departmentChart = ref<InstanceType<typeof DepartmentChart>>()
       const onResize = () => {
-        setTimeout(() => {
-          mOrderChart.value?.updateChart()
-          salesChart.value?.updateChart()
-          enrollmentChannelsChart.value?.updateChart()
-          studentChart.value?.updateChart()
-          fullYearSalesChart.value?.updateChart()
-          departmentChart.value?.updateChart()
-        }, 500)
+        setTimeout(() => {}, 500)
       }
       const collapse = computed(() => {
         return appStore.isCollapse
@@ -84,12 +42,6 @@
       })
       return {
         collapse,
-        mOrderChart,
-        salesChart,
-        enrollmentChannelsChart,
-        studentChart,
-        departmentChart,
-        fullYearSalesChart,
         dataList: [
           {
             id: 'visited',
@@ -150,3 +102,25 @@
     },
   })
 </script>
+
+<style lang="scss" scoped>
+  :deep(.arco-card-body) {
+    padding: 0;
+  }
+  .main-container {
+    display: flex;
+    height: 100vh;
+    .left {
+      width: 25%;
+      background-color: red;
+    }
+    .center {
+      flex: 1;
+      background-color: blue;
+    }
+    .right {
+      width: 25%;
+      background-color: green;
+    }
+  }
+</style>

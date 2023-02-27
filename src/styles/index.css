@@ -61,3 +61,11 @@ object {
 .arco-pagination-item-active:hover {
   color: var(--color-white) !important;
 }
+
+.arco-btn-disabled{
+  background-color: rgba(var(--primary-1), 0.6) !important;
+}
+
+/* .arco-trigger-popup{
+  width: 150px;
+} */

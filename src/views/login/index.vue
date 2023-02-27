@@ -1,17 +1,13 @@
 <template>
   <div class="login-container">
-    <div class="left">
-      <img :src="ImageBg1" />
-      <div class="content">
+    <div class="center">
+      <div class="left">
         <img :src="logo" />
-        <div class="proj-name">{{ projectName }}</div>
-        <div class="desc">Vue3 + Vite2 + Typescript + Arco Design</div>
-        <div class="ttiipp"> 不止于此，全力启程 </div>
+        <div class="proj-name">{{ projectName }} 管理系统</div>
+        <div class="desc">Vue3 + Vite + Typescript + Arco Design</div>
         <div class="bottom">{{ projectName + '    ' + version }} · Made by qingqingxuan</div>
       </div>
-    </div>
-    <div class="right">
-      <a-card class="form-wrapper" :body-style="{ padding: '20px' }" :bordered="false">
+      <div class="form-wrapper">
         <div class="title">账号登录</div>
         <div class="item-wrapper mt-6">
           <a-input v-model="username" placeholder="请输入用户名/手机号" allow-clear size="large">
@@ -27,13 +23,13 @@
             </template>
           </a-input-password>
         </div>
-        <div class="flex-sub"></div>
+        <div class="flex-1"></div>
         <div class="mt-10">
           <a-button type="primary" class="login" :loading="loading" @click="onLogin">
             登录
           </a-button>
         </div>
-        <div class="my-width flex-sub mt-4 mb-8">
+        <div class="my-width flex-1 mt-4 mb-8">
           <div class="flex justify-between">
             <a-checkbox v-model="autoLogin">自动登录</a-checkbox>
             <a-link :underline="false" type="primary">忘记密码？</a-link>
@@ -45,7 +41,7 @@
           <icon-github class="mr-6 ml-6" />
           <icon-weibo-circle-fill />
         </div>
-      </a-card>
+      </div>
     </div>
   </div>
 </template>
@@ -116,106 +112,71 @@
 </script>
 
 <style lang="less" scoped>
-  @keyframes scale-to {
-    0% {
-      transform: scale(0.2, 0.2);
-    }
-    100% {
-      transform: scale(1, 1);
-    }
-  }
   @leftWith: 35%;
   .login-container {
     overflow: hidden;
     height: 100vh;
     width: 100vw;
     display: flex;
-    .left {
-      position: relative;
-      width: @leftWith;
-      min-width: @leftWith;
-      max-width: @leftWith;
-      overflow: hidden;
-      & > img {
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-image: url('../../assets/bg.png');
+    .center {
+      width: 70%;
+      height: 60%;
+      border-radius: 10px;
+      border: 1px solid #f5f5f5;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      box-shadow: 0 0 5px #ececec;
+      .left {
+        flex: 1;
         height: 100%;
-        width: 100%;
-        object-fit: fill;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-      }
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 2;
-        background-color: rgba(0, 0, 0, 0.7);
-      }
-      .content {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 3;
-        width: 100%;
+        padding: 20px;
         display: flex;
-        align-items: center;
         flex-direction: column;
+        justify-content: space-between;
+        text-align: center;
         & > img {
-          width: 70px;
-          height: 70px;
-          margin-top: 20%;
+          width: 80px;
+          height: 80px;
+          margin: 0 auto;
+          border: 1px solid #e4e4e4;
+          padding: 10px;
+          border-radius: 10px;
         }
         .proj-name {
-          font-size: 20px;
+          font-size: 30px;
           font-weight: bold;
-          color: #fff;
-          margin-top: 10px;
-        }
-        .desc {
-          font-size: 14px;
-          color: #fff;
-          margin-top: 10px;
-        }
-        .ttiipp {
           flex: 1;
           display: flex;
-          justify-content: center;
           align-items: center;
-          color: #fff;
+          justify-content: center;
+        }
+        .desc {
+          text-align: center;
           font-weight: bold;
-          font-weight: 500;
-          font-size: 30px;
-          animation: scale-to 1s linear;
+          color: #333;
         }
         .bottom {
-          color: silver;
-          margin-bottom: 5%;
-          font-size: 16px;
+          font-size: 12px;
+          color: #333;
+          text-align: center;
         }
       }
-    }
-    .right {
-      flex: 1;
-      background-color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       .form-wrapper {
-        width: 50%;
-        box-shadow: 0 0 10px #cfcfcf;
-        border-radius: 10px;
+        flex: 1;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         .title {
           font-size: 25px;
           font-weight: bold;
           margin-bottom: 20px;
+          text-align: center;
         }
         .login {
           width: 100%;

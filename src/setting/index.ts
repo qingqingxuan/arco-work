@@ -7,7 +7,7 @@ export default {
   sideTheme: 'white',
   themeColor: '#165dff',
   projectName,
-  layoutMode: 'ltr',
+  layoutMode: 'ttb',
   sideWidth: 210,
   pageAnim: 'opacity',
   isFixedNavBar: true,

@@ -1,3 +1,63 @@
+## 2023-2-20(v: 2.1.0)
+
+- 优化：优化`路由` 以 `fullPath` 字段为主键，以支持相同路由，query参数不一致时导致路由参数缺失 
+  
+  涉及文件如下：
+    - src/layouts/actions/index.vue
+    - src/layouts/tabbar/index.vue
+    - src/router/guard/visited.ts
+    - src/store/help/index.ts
+    - src/store/modules/visited-routes.ts
+
+
+- 升级：升级 `arco-design` 版本到 `v2.43.1`
+
+## 2022-12-14(v: 2.0.8)
+
+- 优化：优化 `主体滑动` 样式
+
+- 升级：升级 `arco-design` 版本到 `v2.41.0`
+
+## 2022-11-18(v: 2.0.7)
+
+- 升级：升级 `arco-design` 版本到 `v2.39.0`
+
+- 修复：修复 `vite.config.ts` 中 `dotEnv` 报错
+
+## 2022-10-24(v: 2.0.6)
+
+- 适配：`arco-work` 适配 `pnpm` 包管理工具，在使用 `pnpm` 的时候不会产生报错信息
+
+## 2022-10-18(v: 2.0.5)
+
+- 移除多余的依赖，解决 `npm install` 报错
+
+## 2022-10-08(v: 2.0.4)
+
+- 升级：升级 `arco-design` 版本到 `v2.37.4`
+
+- 优化：优化 `tabbar` 按钮样式
+
+- 修复：修复 `.arco-trigger-popup` 样式问题
+
+- 修复：修复在动态加载菜单的时候或者刷新页面的时候 `vue-router` 出现警告 `No match found for location with xxx` 信息。
+
+## 2022-9-20(v: 2.0.3)
+
+- 升级：升级 `arco-design` 版本到 `v2.37.1`
+
+- 新增：适配 `上下` 分栏
+
+## 2022-7-27(v: 2.0.2)
+
+- 升级：升级 `arco-design` 版本到 `v2.35.2`
+
+## 2022-6-27(v: 2.0.1)
+
+- 升级：升级 `arco-design` 版本到 `v2.32.0`
+
+- 新增：添加自定义 axios 的 request interceptor，方便使用 Pinia。
+
 ## 2022-5-30(v: 2.0.0)
 
 - 升级：升级 `arco-design` 版本到 `v2.26.0`
