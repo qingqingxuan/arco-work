@@ -1,29 +1,62 @@
 <template>
   <div class="main-container">
-    <div class="left"></div>
-    <div class="center"></div>
-    <div class="right"></div>
+    <a-row :gutter="10">
+      <a-col
+        :xs="24"
+        :sm="12"
+        :md="8"
+        :lg="6"
+        :xl="6"
+        :xxl="6"
+        v-for="(item, index) of dataList"
+        :key="index"
+        class="item-wrapper"
+      >
+        <DataItem :data-model="item">
+          <template v-if="index === 0" #extra="{ extra }">
+            <div class="mt-4 text-xs">
+              <div> 较昨日新增：{{ extra.data }} 人</div>
+              <div class="mt-2"> 较上周新增：{{ extra.data1 }} 人</div>
+            </div>
+          </template>
+          <template v-else-if="index === 1" #extra="{ extra }">
+            <div class="mt-4 text-xs" style="position: relative">
+              <div> 较昨日新增：{{ extra.data }} 人</div>
+              <div class="mt-2"> 较上周新增：{{ extra.data1 }} 人</div>
+              <div class="stack-avatar-wrapper"> </div>
+            </div>
+          </template>
+          <template v-else-if="index === 2" #extra="{ extra }">
+            <div class="p-4">
+              <a-progress :percent="extra.data" />
+            </div>
+          </template>
+          <template v-else-if="index === 3" #extra>
+            <OrderChart ref="mOrderChart" />
+          </template>
+        </DataItem>
+      </a-col>
+    </a-row>
+    <div class="mt-2"></div>
+    <a-row :gutter="10">
+      <a-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" :xxl="24">
+        <FullYearSalesChart ref="fullYearSalesChart" />
+      </a-col>
+    </a-row>
+    <div class="mt-2"></div>
+    <a-row :gutter="10">
+      <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="8">
+        <SalesChart ref="salesChart" />
+      </a-col>
+      <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="8">
+        <EnrollmentChannelsChart class="flex-1" ref="mOrderChart" />
+      </a-col>
+      <a-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8" :xxl="8">
+        <StudentChart ref="enrollmentChannelsChart" />
+      </a-col>
+    </a-row>
   </div>
 </template>
-
-<style lang="scss" scoped>
-  .main-container {
-    display: flex;
-    height: 100vh;
-    .left {
-      width: 25%;
-      background-color: red;
-    }
-    .center {
-      flex: 1;
-      background-color: blue;
-    }
-    .right {
-      width: 25%;
-      background-color: green;
-    }
-  }
-</style>
 
 <script lang="ts">
   import DataItem from './components/DataItem.vue'
@@ -44,7 +77,6 @@
       StudentChart,
       EnrollmentChannelsChart,
       FullYearSalesChart,
-      DepartmentChart,
     },
     setup() {
       const appStore = useAppConfigStore()
