@@ -1,9 +1,8 @@
 <template>
   <div class="main-container">
     <div class="left">
-      <a-card>
-        <TitleComp title="asd" />
-      </a-card>
+      <TestComp title="asdf" />
+      <a-card />
       <a-card> left-center </a-card>
       <a-card> left-bottom </a-card>
     </div>
@@ -22,12 +21,12 @@
 
 <script lang="ts">
   import { computed, defineComponent, watch } from 'vue'
-  import TitleComp from './components/Title.jsx'
+  import TestComp from './components/TestComp'
   import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'Home',
     components: {
-      TitleComp,
+      TestComp,
     },
     setup() {
       const appStore = useAppConfigStore()
