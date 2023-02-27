@@ -1,8 +1,20 @@
 <template>
   <div class="main-container">
-    <div class="left"></div>
-    <div class="center"></div>
-    <div class="right"></div>
+    <div class="left">
+      <a-card> left-top </a-card>
+      <a-card> left-center </a-card>
+      <a-card> left-bottom </a-card>
+    </div>
+    <div class="center">
+      <a-card> left-top </a-card>
+      <a-card> left-center </a-card>
+      <a-card> left-bottom </a-card>
+    </div>
+    <div class="right">
+      <a-card> left-top </a-card>
+      <a-card> left-center </a-card>
+      <a-card> left-bottom </a-card>
+    </div>
   </div>
 </template>
 
