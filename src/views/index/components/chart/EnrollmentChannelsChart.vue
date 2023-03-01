@@ -1,20 +1,12 @@
 <template>
-  <a-card
-    :body-style="{ padding: '10px' }"
-    :head-style="{ padding: '0 10px' }"
-    title="招生渠道分析图"
-    class="card-border-radius"
-    :bordered="false"
-  >
-    <div class="chart-item-container">
-      <a-skeleton animation v-if="loading">
-        <a-skeleton-line :rows="4" />
-      </a-skeleton>
-      <template v-else>
-        <div ref="channelsChart" class="chart-item"> </div>
-      </template>
-    </div>
-  </a-card>
+  <div class="chart-item-container">
+    <a-skeleton animation v-if="loading">
+      <a-skeleton-line :rows="4" />
+    </a-skeleton>
+    <template v-else>
+      <div ref="channelsChart" class="chart-item"> </div>
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -45,7 +37,6 @@
               radius: ['40%', '70%'],
               avoidLabelOverlap: false,
               itemStyle: {
-                borderRadius: 10,
                 borderColor: '#fff',
                 borderWidth: 2,
               },

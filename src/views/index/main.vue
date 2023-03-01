@@ -1,10 +1,20 @@
 <template>
   <div class="main-container">
     <div class="left">
-      <TestComp title="asdf" />
-      <a-card />
-      <a-card> left-center </a-card>
-      <a-card> left-bottom </a-card>
+      <a-space direction="vertical" fill>
+        <a-card>
+          <Title title="招生渠道" />
+          <EnrollmentChannelsChart />
+        </a-card>
+        <a-card>
+          <Title title="公司各部门人员数量" />
+          <DepartmentChart />
+        </a-card>
+        <a-card>
+          <Title title="招生渠道" />
+          <EnrollmentChannelsChart />
+        </a-card>
+      </a-space>
     </div>
     <div class="center">
       <a-card> left-top </a-card>
@@ -21,12 +31,16 @@
 
 <script lang="ts">
   import { computed, defineComponent, watch } from 'vue'
-  import TestComp from './components/TestComp'
+  import Title from './components/Title'
+  import EnrollmentChannelsChart from './components/chart/EnrollmentChannelsChart.vue'
+  import DepartmentChart from './components/chart/DepartmentChart.vue'
   import useAppConfigStore from '@/store/modules/app-config'
   export default defineComponent({
     name: 'Home',
     components: {
-      TestComp,
+      Title,
+      EnrollmentChannelsChart,
+      DepartmentChart,
     },
     setup() {
       const appStore = useAppConfigStore()
@@ -102,16 +116,14 @@
   })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
   :deep(.arco-card-body) {
     padding: 0;
   }
   .main-container {
     display: flex;
-    height: 100vh;
     .left {
       width: 25%;
-      background-color: red;
     }
     .center {
       flex: 1;

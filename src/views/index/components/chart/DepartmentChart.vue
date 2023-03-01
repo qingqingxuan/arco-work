@@ -1,20 +1,12 @@
 <template>
-  <a-card
-    :body-style="{ padding: '10px' }"
-    :head-style="{ padding: '0 10px' }"
-    title="公司各部门人员数量"
-    class="card-border-radius"
-    :bordered="false"
-  >
-    <div class="chart-item-container">
-      <a-skeleton animation v-if="loading">
-        <a-skeleton-line :rows="4" />
-      </a-skeleton>
-      <template v-else>
-        <div ref="departmentChart" class="chart-item"> </div>
-      </template>
-    </div>
-  </a-card>
+  <div class="chart-item-container">
+    <a-skeleton animation v-if="loading">
+      <a-skeleton-line :rows="4" />
+    </a-skeleton>
+    <template v-else>
+      <div ref="departmentChart" class="chart-item"> </div>
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -49,7 +41,7 @@
               { name: '人资', max: 5 },
               { name: '运营', max: 10 },
             ],
-            radius: 60,
+            radius: 70,
             nameGap: 8,
           },
           series: [
