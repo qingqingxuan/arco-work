@@ -17,14 +17,35 @@
       </a-space>
     </div>
     <div class="center">
-      <a-card> left-top </a-card>
+      <a-card>
+        <svg width="100" height="100">
+          <rect
+            x="10"
+            y="10"
+            width="10"
+            height="10"
+            style="fill: rgb(0, 0, 255); stroke-width: 1; stroke: rgb(0, 0, 0)"
+          />
+        </svg>
+      </a-card>
       <a-card> left-center </a-card>
       <a-card> left-bottom </a-card>
     </div>
     <div class="right">
-      <a-card> left-top </a-card>
-      <a-card> left-center </a-card>
-      <a-card> left-bottom </a-card>
+      <a-space direction="vertical" fill>
+        <a-card>
+          <Title title="招生渠道" />
+          <EnrollmentChannelsChart />
+        </a-card>
+        <a-card>
+          <Title title="公司各部门人员数量" />
+          <DepartmentChart />
+        </a-card>
+        <a-card>
+          <Title title="招生渠道" />
+          <EnrollmentChannelsChart />
+        </a-card>
+      </a-space>
     </div>
   </div>
 </template>
@@ -131,7 +152,6 @@
     }
     .right {
       width: 25%;
-      background-color: green;
     }
   }
 </style>
