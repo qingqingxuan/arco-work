@@ -1,35 +1,27 @@
 <template>
   <div class="main-container">
     <div class="left">
-      <a-space direction="vertical" fill>
-        <a-card>
-          <Title title="招生渠道" />
-          <EnrollmentChannelsChart />
-        </a-card>
-        <a-card>
-          <Title title="公司各部门人员数量" />
-          <DepartmentChart />
-        </a-card>
-        <a-card>
-          <Title title="招生渠道" />
-          <EnrollmentChannelsChart />
-        </a-card>
-      </a-space>
+      <div class="item">
+        <Title title="招生渠道" />
+        <EnrollmentChannelsChart />
+      </div>
+      <div class="item">
+        <Title title="公司各部门人员数量" />
+        <DepartmentChart />
+      </div>
+      <div class="item">
+        <Title title="招生渠道" />
+        <EnrollmentChannelsChart />
+      </div>
     </div>
     <div class="center">
-      <a-card>
-        <svg width="100" height="100">
-          <rect
-            x="10"
-            y="10"
-            width="10"
-            height="10"
-            style="fill: rgb(0, 0, 255); stroke-width: 1; stroke: rgb(0, 0, 0)"
-          />
-        </svg>
-      </a-card>
-      <a-card> left-center </a-card>
-      <a-card> left-bottom </a-card>
+      <div style="display: flex; flex-direction: column">
+        <a-card>
+          <CenterTitle />
+        </a-card>
+        <a-card> left-center </a-card>
+        <a-card style="flex: 1"> left-bottom </a-card>
+      </div>
     </div>
     <div class="right">
       <a-space direction="vertical" fill>
@@ -56,15 +48,23 @@
   import EnrollmentChannelsChart from './components/chart/EnrollmentChannelsChart.vue'
   import DepartmentChart from './components/chart/DepartmentChart.vue'
   import useAppConfigStore from '@/store/modules/app-config'
+  import CenterTitle from './components/CenterTitle.vue'
   export default defineComponent({
     name: 'Home',
     components: {
       Title,
       EnrollmentChannelsChart,
       DepartmentChart,
+      CenterTitle,
     },
     setup() {
       const appStore = useAppConfigStore()
+      console.log(appStore.mainHeight)
+
+      const mainHeight = computed(() => {
+        return appStore.mainHeight + 'px'
+      })
+
       const onResize = () => {
         setTimeout(() => {}, 500)
       }
@@ -75,6 +75,7 @@
         onResize()
       })
       return {
+        mainHeight,
         collapse,
         dataList: [
           {
@@ -143,8 +144,30 @@
   }
   .main-container {
     display: flex;
+    height: v-bind(mainHeight);
+    overflow: hidden;
     .left {
       width: 25%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      .item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        background: var(--color-bg-2);
+        border-radius: var(--border-radius-none);
+        transition: box-shadow 0.2s cubic-bezier(0, 0, 1, 1);
+        border: 1px solid var(--color-neutral-3);
+        border-radius: var(--border-radius-small);
+        div:nth-last-child(1) {
+          flex: 1;
+        }
+      }
+      .item + .item {
+        margin-top: 10px;
+      }
     }
     .center {
       flex: 1;

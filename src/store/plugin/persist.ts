@@ -58,7 +58,7 @@ export default ({ options, store }: PiniaPluginContext) => {
             }
           })
         }
-        ; (window as any)[storage + 'Storage'].setItem(key, JSON.stringify(toPersistObj))
+        ;(window as any)[storage + 'Storage'].setItem(key, JSON.stringify(toPersistObj))
       },
       { detached: true }
     )

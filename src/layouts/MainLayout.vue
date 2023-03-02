@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent } from 'vue'
+  import { computed, defineComponent, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { useTitle } from '@vueuse/core'
   import { projectName } from '@/setting'
@@ -63,6 +63,10 @@
       const route = useRoute()
       router.afterEach(() => {
         useTitle(projectName + ' | ' + (route.meta.title as string))
+      })
+      onMounted(() => {
+        const mainEl = document.querySelector('.main-section') as HTMLDivElement
+        appStore.setMainHeight(mainEl.clientHeight || mainEl.offsetHeight)
       })
       return {
         appStore,

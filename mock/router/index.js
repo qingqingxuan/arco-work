@@ -20,7 +20,6 @@ export const adminRoutes = [
         menuUrl: '/index/work-place',
         menuName: '工作台',
         routeName: 'workPlace',
-        isRootPath: true,
       },
     ],
   },

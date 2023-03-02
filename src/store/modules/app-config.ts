@@ -44,6 +44,9 @@ const useAppConfigStore = defineStore('app-config', {
     toggleCollapse(isCollapse: boolean) {
       this.isCollapse = isCollapse
     },
+    setMainHeight(height: number) {
+      this.mainHeight = height
+    },
   },
   presist: {
     enable: true,

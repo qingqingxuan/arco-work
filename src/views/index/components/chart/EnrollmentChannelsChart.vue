@@ -1,11 +1,6 @@
 <template>
   <div class="chart-item-container">
-    <a-skeleton animation v-if="loading">
-      <a-skeleton-line :rows="4" />
-    </a-skeleton>
-    <template v-else>
-      <div ref="channelsChart" class="chart-item"> </div>
-    </template>
+    <div ref="channelsChart" class="chart-item"> </div>
   </div>
 </template>
 
@@ -90,7 +85,7 @@
   .chart-item-container {
     width: 100%;
     .chart-item {
-      height: 30vh;
+      height: 100%;
     }
   }
 </style>
