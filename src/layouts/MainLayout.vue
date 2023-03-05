@@ -30,7 +30,10 @@
       class="main-base-style scrollbar"
       :class="[appStore.theme === 'light' ? 'main-base-light-theme' : 'main-base-dark-theme']"
     >
-      <section class="main-section">
+      <section
+        class="main-section"
+        :class="[appStore.flexMainHeight ? 'flex-height' : 'min-height']"
+      >
         <Main />
       </section>
       <section class="footer-wrapper">
@@ -138,8 +141,13 @@
       background-color: #333333;
     }
     .main-section {
-      min-height: calc(100% - @footerHeight - 10px);
       overflow-x: hidden;
+    }
+    .flex-height {
+      height: calc(100% - @footerHeight - 10px);
+    }
+    .min-height {
+      min-height: calc(100% - @footerHeight - 10px);
     }
     .fixed-nav-bar {
       position: fixed;

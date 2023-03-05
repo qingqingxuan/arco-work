@@ -47,10 +47,17 @@ const useAppConfigStore = defineStore('app-config', {
     setMainHeight(height: number) {
       this.mainHeight = height
     },
+    setFlexMainHeight(isFlex: boolean) {
+      this.flexMainHeight = isFlex
+      console.log(this.flexMainHeight)
+    },
   },
   presist: {
     enable: true,
     resetToState: true,
+    option: {
+      exclude: ['flexMainHeight'],
+    },
   },
 })
 

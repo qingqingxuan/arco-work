@@ -13,6 +13,7 @@ export default {
   isFixedNavBar: true,
   deviceType: DeviceType.PC,
   isCollapse: false,
+  flexMainHeight: false,
   mainHeight: document.body.clientHeight,
   actionBar: {
     isShowSearch: true,

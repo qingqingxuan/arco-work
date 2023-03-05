@@ -15,29 +15,40 @@
       </div>
     </div>
     <div class="center">
-      <div style="display: flex; flex-direction: column">
+      <div style="display: flex; flex-direction: column; height: 100%">
         <a-card>
           <CenterTitle />
         </a-card>
-        <a-card> left-center </a-card>
-        <a-card style="flex: 1"> left-bottom </a-card>
+        <div class="center-data-item-wrapper">
+          <DataItem
+            class="item"
+            title="总目标金额"
+            :data-model="{ num: 1000, prefix: '￥', color: '--primary-1' }"
+          />
+          <DataItem class="item" title="总目标金额" :data-model="{ num: 1000 }" />
+          <DataItem class="item" title="总目标金额" :data-model="{ num: 1000 }" />
+        </div>
+        <a-card style="flex: 1">
+          <div style="display: flex; flex-direction: column; height: 100%">
+            <Title title="招生渠道" />
+            <FullYearSalesChart style="margin-top: 10px" />
+            <div style="flex: 1">
+              <ProjectList />
+            </div>
+          </div>
+        </a-card>
       </div>
     </div>
     <div class="right">
-      <a-space direction="vertical" fill>
-        <a-card>
-          <Title title="招生渠道" />
-          <EnrollmentChannelsChart />
-        </a-card>
-        <a-card>
-          <Title title="公司各部门人员数量" />
-          <DepartmentChart />
-        </a-card>
-        <a-card>
-          <Title title="招生渠道" />
-          <EnrollmentChannelsChart />
-        </a-card>
-      </a-space>
+      <div class="item">
+        <Title title="招生渠道" />
+        <EnrollmentChannelsChart />
+      </div>
+      <div class="item">
+        <Title title="公司各部门人员数量" />
+        <DepartmentChart />
+        <EnrollmentChannelsChart />
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +60,9 @@
   import DepartmentChart from './components/chart/DepartmentChart.vue'
   import useAppConfigStore from '@/store/modules/app-config'
   import CenterTitle from './components/CenterTitle.vue'
+  import DataItem from './components/DataItem.vue'
+  import FullYearSalesChart from './components/chart/FullYearSalesChart.vue'
+  import ProjectList from './components/ProjectList.vue'
   export default defineComponent({
     name: 'Home',
     components: {
@@ -56,6 +70,9 @@
       EnrollmentChannelsChart,
       DepartmentChart,
       CenterTitle,
+      DataItem,
+      FullYearSalesChart,
+      ProjectList,
     },
     setup() {
       const appStore = useAppConfigStore()
@@ -141,6 +158,7 @@
 <style lang="less" scoped>
   :deep(.arco-card-body) {
     padding: 0;
+    height: 100%;
   }
   .main-container {
     display: flex;
@@ -170,11 +188,49 @@
       }
     }
     .center {
+      margin: 0 10px;
       flex: 1;
-      background-color: blue;
+      .center-data-item-wrapper {
+        display: flex;
+        margin: 10px 0;
+        .item {
+          flex: 1;
+        }
+        .item + .item {
+          margin-left: 10px;
+        }
+      }
     }
     .right {
       width: 25%;
+      display: flex;
+      flex-direction: column;
+      & > div:nth-child(1) {
+        flex: 1;
+      }
+      & > div:nth-child(2) {
+        flex: 2;
+      }
+      .item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        background: var(--color-bg-2);
+        border-radius: var(--border-radius-none);
+        transition: box-shadow 0.2s cubic-bezier(0, 0, 1, 1);
+        border: 1px solid var(--color-neutral-3);
+        border-radius: var(--border-radius-small);
+        & > div:nth-child(2) {
+          flex: 1;
+        }
+        & > div:nth-child(3) {
+          flex: 1;
+        }
+      }
+      .item + .item {
+        margin-top: 10px;
+      }
     }
   }
 </style>
