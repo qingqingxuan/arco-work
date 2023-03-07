@@ -41,8 +41,13 @@
         </div>
       </div>
     </div>
-    <div class="desc">Vue3 + Vite + Typescript + Arco Design</div>
-    <div class="bottom">{{ projectName + '    ' + version }} · Made by qingqingxuan</div>
+    <div class="bottom">{{
+      'Vue3 + Vite + Typescript + Arco Design  |  ' +
+      projectName +
+      '    ' +
+      version +
+      ' · Made by qingqingxuan'
+    }}</div>
   </div>
 </template>
 
@@ -128,22 +133,13 @@
       top: 0;
       left: 0;
     }
-    .desc {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 8%;
-      font-size: 14px;
-      text-align: center;
-      font-weight: bold;
-      color: #333;
-    }
     .bottom {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 3%;
       font-size: 14px;
+      font-weight: bold;
       color: #333;
       text-align: center;
     }
