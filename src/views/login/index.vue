@@ -1,11 +1,9 @@
 <template>
   <div class="login-container">
+    <img src="../../assets/bg.png" class="bg-img" />
     <div class="center">
       <div class="left">
-        <img :src="logo" />
-        <div class="proj-name">{{ projectName }} 管理系统</div>
-        <div class="desc">Vue3 + Vite + Typescript + Arco Design</div>
-        <div class="bottom">{{ projectName + '    ' + version }} · Made by qingqingxuan</div>
+        <img src="../../assets/bg_left.png" class="left-bg-img" />
       </div>
       <div class="form-wrapper">
         <div class="title">账号登录</div>
@@ -43,6 +41,8 @@
         </div>
       </div>
     </div>
+    <div class="desc">Vue3 + Vite + Typescript + Arco Design</div>
+    <div class="bottom">{{ projectName + '    ' + version }} · Made by qingqingxuan</div>
   </div>
 </template>
 
@@ -114,38 +114,65 @@
 <style lang="less" scoped>
   @leftWith: 35%;
   .login-container {
+    position: relative;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-repeat: no-repeat;
-    background-image: url('../../assets/bg.png');
+    .bg-img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .desc {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 8%;
+      font-size: 14px;
+      text-align: center;
+      font-weight: bold;
+      color: #333;
+    }
+    .bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 3%;
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+    }
     .center {
+      position: relative;
+      z-index: 9;
       width: 70%;
       height: 60%;
       border-radius: 10px;
       border: 1px solid #f5f5f5;
       display: flex;
       align-items: center;
-      padding: 10px;
+      background-color: #fff;
       box-shadow: 0 0 5px #ececec;
       .left {
-        flex: 1;
+        position: relative;
+        width: 50%;
         height: 100%;
         padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         text-align: center;
-        & > img {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto;
-          border: 1px solid #e4e4e4;
-          padding: 10px;
-          border-radius: 10px;
+        .left-bg-img {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
         }
         .proj-name {
           font-size: 30px;
@@ -155,20 +182,10 @@
           align-items: center;
           justify-content: center;
         }
-        .desc {
-          text-align: center;
-          font-weight: bold;
-          color: #333;
-        }
-        .bottom {
-          font-size: 12px;
-          color: #333;
-          text-align: center;
-        }
       }
       .form-wrapper {
-        flex: 1;
-        padding: 20px;
+        width: 50%;
+        padding: 2% 5%;
         height: 100%;
         display: flex;
         flex-direction: column;
