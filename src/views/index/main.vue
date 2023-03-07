@@ -2,16 +2,16 @@
   <div class="main-container">
     <div class="left">
       <div class="item">
-        <Title title="招生渠道" />
+        <Title title="销售渠道" />
         <EnrollmentChannelsChart />
       </div>
       <div class="item">
-        <Title title="公司各部门人员数量" />
-        <DepartmentChart />
+        <Title title="周销售额分析图" />
+        <WeekSalesChart />
       </div>
       <div class="item">
-        <Title title="招生渠道" />
-        <EnrollmentChannelsChart />
+        <Title title="热卖产品指数" />
+        <HotProductChart />
       </div>
     </div>
     <div class="center">
@@ -22,17 +22,25 @@
         <div class="center-data-item-wrapper">
           <DataItem
             class="item"
-            title="总目标金额"
-            :data-model="{ num: 1000, prefix: '￥', color: '--primary-1' }"
+            title="周销售金额"
+            :data-model="{ num: 1000, prefix: '￥', bg: Bg1 }"
           />
-          <DataItem class="item" title="总目标金额" :data-model="{ num: 1000 }" />
-          <DataItem class="item" title="总目标金额" :data-model="{ num: 1000 }" />
+          <DataItem
+            class="item"
+            title="周增长人数"
+            :data-model="{ num: 56100, suffix: '人', bg: Bg2 }"
+          />
+          <DataItem
+            class="item"
+            title="周成交单数"
+            :data-model="{ num: 3216, suffix: '单', bg: Bg3 }"
+          />
         </div>
-        <a-card style="flex: 1">
+        <a-card style="flex: 1; overflow: hidden">
           <div style="display: flex; flex-direction: column; height: 100%">
-            <Title title="招生渠道" />
+            <Title title="年销售成交额走势图" />
             <FullYearSalesChart style="margin-top: 10px" />
-            <div style="flex: 1">
+            <div style="flex: 1; overflow: auto">
               <ProjectList />
             </div>
           </div>
@@ -63,6 +71,11 @@
   import DataItem from './components/DataItem.vue'
   import FullYearSalesChart from './components/chart/FullYearSalesChart.vue'
   import ProjectList from './components/ProjectList.vue'
+  import Bg1 from '@/assets/bg_item_1.png'
+  import Bg2 from '@/assets/bg_item_2.png'
+  import Bg3 from '@/assets/bg_item_3.png'
+  import WeekSalesChart from './components/chart/WeekSalesChart.vue'
+  import HotProductChart from './components/chart/HotProductChart.vue'
   export default defineComponent({
     name: 'Home',
     components: {
@@ -73,6 +86,8 @@
       DataItem,
       FullYearSalesChart,
       ProjectList,
+      WeekSalesChart,
+      HotProductChart,
     },
     setup() {
       const appStore = useAppConfigStore()
@@ -92,6 +107,9 @@
         onResize()
       })
       return {
+        Bg1,
+        Bg2,
+        Bg3,
         mainHeight,
         collapse,
         dataList: [
@@ -156,9 +174,17 @@
 </script>
 
 <style lang="less" scoped>
+  :deep(.arco-card) {
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0px 8px 8px 0px rgba(162, 173, 200, 0.15);
+  }
   :deep(.arco-card-body) {
     padding: 0;
     height: 100%;
+  }
+  :deep(.arco-table-th) {
+    background-color: transparent;
   }
   .main-container {
     display: flex;
@@ -170,15 +196,14 @@
       flex-direction: column;
       justify-content: space-evenly;
       .item {
+        border-radius: 5px;
         display: flex;
         flex-direction: column;
         height: 100%;
         position: relative;
         background: var(--color-bg-2);
-        border-radius: var(--border-radius-none);
         transition: box-shadow 0.2s cubic-bezier(0, 0, 1, 1);
-        border: 1px solid var(--color-neutral-3);
-        border-radius: var(--border-radius-small);
+        box-shadow: 0px 8px 8px 0px rgba(162, 173, 200, 0.15);
         div:nth-last-child(1) {
           flex: 1;
         }
@@ -190,6 +215,7 @@
     .center {
       margin: 0 10px;
       flex: 1;
+      overflow: hidden;
       .center-data-item-wrapper {
         display: flex;
         margin: 10px 0;
@@ -217,10 +243,9 @@
         height: 100%;
         position: relative;
         background: var(--color-bg-2);
-        border-radius: var(--border-radius-none);
+        border-radius: 5px;
         transition: box-shadow 0.2s cubic-bezier(0, 0, 1, 1);
-        border: 1px solid var(--color-neutral-3);
-        border-radius: var(--border-radius-small);
+        box-shadow: 0px 8px 8px 0px rgba(162, 173, 200, 0.15);
         & > div:nth-child(2) {
           flex: 1;
         }

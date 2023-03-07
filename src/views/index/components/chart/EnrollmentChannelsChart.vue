@@ -13,23 +13,53 @@
     setup() {
       const loading = ref(true)
       const channelsChart = ref<HTMLDivElement | null>(null)
+      const data = [
+        { value: 1969, name: '线上' },
+        { value: 743, name: '互推' },
+        { value: 1594, name: '电话' },
+        { value: 1347, name: '地推' },
+        { value: 635, name: '直播' },
+      ]
       const init = () => {
         const option = {
-          grid: {
-            left: '12%',
-            right: '5%',
-            top: '5%',
-            bottom: '3%',
-            containLabel: true,
-          },
-          tooltip: {
-            trigger: 'axis',
+          legend: {
+            right: '10%',
+            y: 'center',
+            icon: 'circle',
+            orient: 'vertical',
+            formatter: function (name: string) {
+              // 添加
+              let total = 0
+              let target = 0
+              for (let i = 0; i < data.length; i++) {
+                total += data[i].value
+                if (data[i].name === name) {
+                  target = data[i].value
+                }
+              }
+              var arr = ['{a|' + name + '}', '{b|' + ((target / total) * 100).toFixed(2) + '%}']
+              return arr.join('  ')
+            },
+            textStyle: {
+              // 添加
+              rich: {
+                a: {
+                  fontSize: 12,
+                },
+                b: {
+                  fontSize: 12,
+                  color: 'rgb(var(--primary-1))',
+                  fontWeight: 'bold',
+                },
+              },
+            },
           },
           series: [
             {
               name: '访问来源',
               type: 'pie',
-              radius: ['40%', '70%'],
+              center: ['30%', '50%'],
+              radius: ['50%', '70%'],
               avoidLabelOverlap: false,
               itemStyle: {
                 borderColor: '#fff',
@@ -42,19 +72,14 @@
                   fontWeight: 'bold',
                 },
               },
-              labelLine: {
-                show: true,
-                length: 5,
-                length2: 5,
-                smooth: true,
+              label: {
+                show: false,
+                position: 'center',
               },
-              data: [
-                { value: 1969, name: '线上' },
-                { value: 743, name: '互推' },
-                { value: 1594, name: '电话' },
-                { value: 1347, name: '地推' },
-                { value: 635, name: '直播' },
-              ],
+              labelLine: {
+                show: false,
+              },
+              data,
             },
           ],
         }

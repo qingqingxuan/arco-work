@@ -1,6 +1,6 @@
 import * as echarts from 'echarts/core'
 
-import { BarChart, LineChart, PieChart, RadarChart } from 'echarts/charts'
+import { BarChart, LineChart, PieChart, RadarChart, PictorialBarChart } from 'echarts/charts'
 
 import { SVGRenderer } from 'echarts/renderers'
 
@@ -11,6 +11,7 @@ echarts.use([
   LineChart,
   PieChart,
   RadarChart,
+  PictorialBarChart,
   SVGRenderer,
   TooltipComponent,
   GridComponent,

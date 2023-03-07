@@ -1,13 +1,29 @@
 <script lang="tsx">
-  import { defineComponent } from 'vue'
+  import { getNowDate } from '@/utils'
+  import { defineComponent, onUnmounted, ref } from 'vue'
 
   export default defineComponent({
     setup() {
+      const date = getNowDate()
+      const dateStr = date[0]
+      const timeStr = ref(date[1])
+      const interval = setInterval(() => {
+        timeStr.value = getNowDate()[1]
+      })
+      onUnmounted(() => {
+        clearInterval(interval)
+      })
       return () => (
         <div class="title-container">
-          <div class="left">2022-05-40</div>
-          <div class="center">ArcoWork平台管理</div>
-          <div class="right">当前在线人数：2502</div>
+          <div class="left">
+            <div class="date">{dateStr}</div>
+            <div class="time">{timeStr.value}</div>
+          </div>
+          <div class="center">ArcoWork 平台管理</div>
+          <div class="right">
+            <div>15020</div>
+            <div style={{ color: '#333', fontSize: '12px' }}>当前在线人数</div>
+          </div>
         </div>
       )
     },
@@ -22,20 +38,25 @@
     .right {
       flex: 1;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       color: rgb(var(--primary-1));
       font-size: 16px;
       font-weight: 500;
+      .date {
+      }
     }
     .center {
       flex: 1;
       font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-weight: bold;
-      background-color: rgb(var(--primary-1));
+      background: linear-gradient(-18deg, #2e5ff6 0%, #2e8cf6 100%);
       color: #fff;
-      border-radius: 2px;
-      padding: 6px 0;
+      border-radius: 5px;
     }
     .right {
       flex: 1;

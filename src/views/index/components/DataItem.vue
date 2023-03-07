@@ -1,22 +1,27 @@
 <template>
   <a-card
-    :body-style="{ padding: '10px' }"
-    :head-style="{ padding: '0 15px' }"
+    :body-style="{ padding: '0px' }"
+    :head-style="{ padding: '0px' }"
     :title="dataModel.title"
     size="small"
     :bordered="false"
+    style="background-color: transparent"
   >
+    <img :src="dataModel.bg" class="item-img" />
     <div class="title-wrapper">
       {{ title }}
     </div>
-    <div style="height: 80px" class="flex flex-col justify-center items-center overflow-hidden">
+    <div
+      style="height: 70px; position: relative; z-index: 9"
+      class="flex flex-col justify-end items-center overflow-hidden item-value"
+    >
       <span class="text-bold">
         <a-statistic
           :value="num"
           :value-from="0"
           :start="true"
           animation
-          :value-style="{ color: 'rgb(var(' + color + '))' }"
+          :value-style="{ color: '#fff', fontSize: '46px', fontWeight: 'bold' }"
         >
           <template #prefix>
             <icon-arrow-rise />
@@ -57,12 +62,33 @@
 </script>
 
 <style lang="less" scoped>
+  :deep(.arco-card-body) {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+  }
+  :deep(.arco-statistic-content .arco-statistic-value-integer) {
+    font-size: 36px;
+  }
   .title-wrapper {
-    text-align: center;
-    background-color: #f5f5f5;
-    padding: 6px;
-    font-size: 16px;
+    position: relative;
+    z-index: 9;
+    padding: 10px;
+    font-size: 14px;
     font-weight: bold;
-    color: #000;
+    color: #fff;
+    border-bottom: #fff dashed 1px;
+  }
+  .item-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  .item-value {
+    font-size: 46px;
+    font-weight: bold;
   }
 </style>

@@ -12,6 +12,7 @@ export default defineComponent({
     const { title } = toRefs(props)
     return () => (
       <div class={TitleStyle['title-container']}>
+        <span class={TitleStyle['line']}></span>
         <span class={TitleStyle['title']}>{title.value}</span>
       </div>
     )

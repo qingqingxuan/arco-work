@@ -1,5 +1,12 @@
 <template>
-  <a-table :columns="columns" :data="data" :pagination="false" />
+  <a-table
+    :columns="columns"
+    :data="data"
+    :pagination="false"
+    scrollbar
+    :scroll="{ y: '100%' }"
+    :bordered="false"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -68,7 +75,7 @@
     },
     {
       key: '7',
-      name: 'William Smith',
+      name: 'William Smith11',
       salary: 2700,
       address: '62 Park Road, London',
       email: 'william.smith@example.com',

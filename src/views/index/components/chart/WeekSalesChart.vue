@@ -1,6 +1,6 @@
 <template>
   <div class="chart-item-container">
-    <div ref="fullYearSalesChart" class="chart-item"></div>
+    <div ref="weekSalesChart" class="chart-item"></div>
   </div>
 </template>
 <script lang="ts">
@@ -15,31 +15,18 @@
     }
     return data
   }
-  const months = [
-    '1月',
-    '2月',
-    '3月',
-    '4月',
-    '5月',
-    '6月',
-    '7月',
-    '8月',
-    '9月',
-    '10月',
-    '11月',
-    '12月',
-  ]
+  const weeks = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
   export default defineComponent({
-    name: 'FullYearSalesChart',
+    name: 'WeekSalesChart',
     setup() {
       const loading = ref(true)
-      const fullYearSalesChart = ref<HTMLDivElement | null>(null)
+      const weekSalesChart = ref<HTMLDivElement | null>(null)
       let interval: any = null
       const init = () => {
         const option = {
           color: ['rgba(64, 58, 255)'],
           grid: {
-            top: '2%',
+            top: '10%',
             left: '2%',
             right: '2%',
             bottom: '5%',
@@ -50,7 +37,7 @@
           },
           xAxis: {
             type: 'category',
-            data: months,
+            data: weeks,
             axisLine: {
               show: true,
               lineStyle: {
@@ -77,18 +64,19 @@
           },
           series: [
             {
-              type: 'line',
-              name: '2019全年销售额',
+              type: 'bar',
+              name: '周销售图',
               stack: '总量',
               data: getData(),
-              symbolSize: 0,
               smooth: true,
-              lineStyle: { width: 5 },
+              barMaxWidth: 20, // 每一个都要设置
+              barMinWidth: 5, // 每一个都要设置
               itemStyle: {
-                color: new graphic.LinearGradient(1, 0, 0, 0, [
-                  { offset: 0, color: '#D860FF' },
-                  { offset: 0.5, color: '#3CA6FF' },
-                  { offset: 1, color: '#00FDAD' },
+                borderWidth: 15,
+                color: new graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#5880F8' },
+                  { offset: 0.5, color: '#3ca6ff' },
+                  { offset: 1, color: '#58B9F8' },
                 ]),
               },
             },
@@ -97,21 +85,21 @@
         setTimeout(() => {
           loading.value = false
           setTimeout(() => {
-            nextTick(() => useEcharts(fullYearSalesChart.value as HTMLDivElement).setOption(option))
+            nextTick(() => useEcharts(weekSalesChart.value as HTMLDivElement).setOption(option))
           }, 100)
         }, 1000)
       }
       const updateChart = () => {
-        useEcharts(fullYearSalesChart.value as HTMLDivElement).resize()
+        useEcharts(weekSalesChart.value as HTMLDivElement).resize()
       }
       onMounted(init)
       onBeforeUnmount(() => {
-        dispose(fullYearSalesChart.value as HTMLDivElement)
+        dispose(weekSalesChart.value as HTMLDivElement)
         clearInterval(interval)
       })
       return {
         loading,
-        fullYearSalesChart,
+        weekSalesChart,
         updateChart,
       }
     },
@@ -123,7 +111,7 @@
     width: 100%;
 
     .chart-item {
-      height: 30vh;
+      height: 100%;
     }
   }
 </style>
