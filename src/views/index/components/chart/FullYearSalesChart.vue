@@ -123,7 +123,7 @@
     width: 100%;
 
     .chart-item {
-      height: 30vh;
+      height: 20vh;
     }
   }
 </style>
