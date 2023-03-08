@@ -49,7 +49,6 @@ const useAppConfigStore = defineStore('app-config', {
     },
     setFlexMainHeight(isFlex: boolean) {
       this.flexMainHeight = isFlex
-      console.log(this.flexMainHeight)
     },
   },
   presist: {
