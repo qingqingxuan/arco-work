@@ -34,6 +34,7 @@
     padding: 10px;
     display: flex;
     text-align: center;
+    align-items: center;
     .left,
     .right {
       flex: 1;
@@ -44,17 +45,16 @@
       color: rgb(var(--primary-1));
       font-size: 16px;
       font-weight: 500;
-      .date {
-      }
     }
     .center {
       flex: 1;
-      font-size: 18px;
+      font-size: 16px;
       display: flex;
       justify-content: center;
+      padding: 5px;
       align-items: center;
       font-weight: bold;
-      background: linear-gradient(-18deg, #2e5ff6 0%, #2e8cf6 100%);
+      background: rgba(var(--primary-1), 0.8);
       color: #fff;
       border-radius: 5px;
     }

@@ -3,15 +3,15 @@
     <div class="left">
       <div class="item">
         <Title title="销售渠道" />
-        <EnrollmentChannelsChart />
+        <EnrollmentChannelsChart ref="enrollmentChannelsChart" />
       </div>
       <div class="item">
         <Title title="周销售额分析图" />
-        <WeekSalesChart />
+        <WeekSalesChart ref="weekSalesChart" />
       </div>
       <div class="item">
         <Title title="热卖产品指数" />
-        <HotProductChart />
+        <HotProductChart ref="hotProductChart" />
       </div>
     </div>
     <div class="center">
@@ -39,7 +39,7 @@
         <a-card style="flex: 1; overflow: hidden">
           <div style="display: flex; flex-direction: column; height: 100%">
             <Title title="年销售成交额走势图" />
-            <FullYearSalesChart style="margin-top: 10px" />
+            <FullYearSalesChart ref="fullYearSalesChart" />
             <div style="flex: 1; overflow: auto">
               <ProjectList />
             </div>
@@ -49,23 +49,22 @@
     </div>
     <div class="right">
       <div class="item">
-        <Title title="招生渠道" />
-        <EnrollmentChannelsChart />
+        <Title title="周订单分析图" />
+        <OrderChart ref="orderChart" />
       </div>
       <div class="item">
-        <Title title="公司各部门人员数量" />
-        <DepartmentChart />
-        <EnrollmentChannelsChart />
+        <Title title="销售业绩排行榜" />
+        <SaleOrderList />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, watch } from 'vue'
+  import { computed, defineComponent, ref, unref, watch } from 'vue'
   import Title from './components/Title'
   import EnrollmentChannelsChart from './components/chart/EnrollmentChannelsChart.vue'
-  import DepartmentChart from './components/chart/DepartmentChart.vue'
+  import SaleOrderList from './components/SaleOrderList.vue'
   import useAppConfigStore from '@/store/modules/app-config'
   import CenterTitle from './components/CenterTitle.vue'
   import DataItem from './components/DataItem.vue'
@@ -76,29 +75,41 @@
   import Bg3 from '@/assets/bg_item_3.png'
   import WeekSalesChart from './components/chart/WeekSalesChart.vue'
   import HotProductChart from './components/chart/HotProductChart.vue'
+  import OrderChart from './components/chart/OrderChart.vue'
   export default defineComponent({
     name: 'Home',
     components: {
       Title,
       EnrollmentChannelsChart,
-      DepartmentChart,
+      SaleOrderList,
       CenterTitle,
       DataItem,
       FullYearSalesChart,
       ProjectList,
       WeekSalesChart,
       HotProductChart,
+      OrderChart,
     },
     setup() {
       const appStore = useAppConfigStore()
-      console.log(appStore.mainHeight)
-
       const mainHeight = computed(() => {
         return appStore.mainHeight + 'px'
       })
 
+      const enrollmentChannelsChart = ref()
+      const weekSalesChart = ref()
+      const hotProductChart = ref()
+      const fullYearSalesChart = ref()
+      const orderChart = ref()
+
       const onResize = () => {
-        setTimeout(() => {}, 500)
+        setTimeout(() => {
+          unref(enrollmentChannelsChart).updateChart()
+          unref(weekSalesChart).updateChart()
+          unref(hotProductChart).updateChart()
+          unref(fullYearSalesChart).updateChart()
+          unref(orderChart).updateChart()
+        }, 500)
       }
       const collapse = computed(() => {
         return appStore.isCollapse
@@ -107,6 +118,11 @@
         onResize()
       })
       return {
+        enrollmentChannelsChart,
+        weekSalesChart,
+        hotProductChart,
+        fullYearSalesChart,
+        orderChart,
         Bg1,
         Bg2,
         Bg3,
@@ -183,9 +199,6 @@
     padding: 0;
     height: 100%;
   }
-  :deep(.arco-table-th) {
-    background-color: transparent;
-  }
   .main-container {
     display: flex;
     height: v-bind(mainHeight);
@@ -230,12 +243,15 @@
     .right {
       width: 25%;
       display: flex;
+      height: 100%;
+      overflow: hidden;
       flex-direction: column;
       & > div:nth-child(1) {
         flex: 1;
       }
       & > div:nth-child(2) {
         flex: 2;
+        overflow: hidden;
       }
       .item {
         display: flex;
@@ -247,9 +263,6 @@
         transition: box-shadow 0.2s cubic-bezier(0, 0, 1, 1);
         box-shadow: 0px 8px 8px 0px rgba(162, 173, 200, 0.15);
         & > div:nth-child(2) {
-          flex: 1;
-        }
-        & > div:nth-child(3) {
           flex: 1;
         }
       }

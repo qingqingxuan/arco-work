@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="bottom">{{
-      'Vue3 + Vite + Typescript + Arco Design  |  ' +
+      'Vue3 + Vite + Typescript + Arco Design  ©   ' +
       projectName +
       '    ' +
       version +

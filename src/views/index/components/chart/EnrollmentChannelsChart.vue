@@ -15,7 +15,6 @@
       const channelsChart = ref<HTMLDivElement | null>(null)
       const data = [
         { value: 1969, name: '线上' },
-        { value: 743, name: '互推' },
         { value: 1594, name: '电话' },
         { value: 1347, name: '地推' },
         { value: 635, name: '直播' },
@@ -23,7 +22,7 @@
       const init = () => {
         const option = {
           legend: {
-            right: '10%',
+            right: '5%',
             y: 'center',
             icon: 'circle',
             orient: 'vertical',

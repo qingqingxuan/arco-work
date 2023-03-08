@@ -23,7 +23,7 @@
             top: '2%',
             left: '5%',
             right: '8%',
-            bottom: '5%',
+            bottom: '2%',
             containLabel: true,
           },
           tooltip: {
@@ -38,6 +38,12 @@
             axisTick: {
               show: false,
             },
+            axisLabel: {
+              textStyle: {
+                fontSize: 10,
+                color: '#98A3B2',
+              },
+            },
           },
           xAxis: {
             show: false,
@@ -51,7 +57,7 @@
               smooth: true,
               symbol: 'rect',
               symbolRepeat: true,
-              symbolSize: [3, 10],
+              symbolSize: [2, 10],
               symbolMargin: 1,
               label: {
                 show: true, //开启数值显示
@@ -59,7 +65,7 @@
                 textStyle: {
                   //数值样式
                   color: 'rgb(var(--primary-1))',
-                  fontSize: 14,
+                  fontSize: 12,
                 },
               },
               itemStyle: {

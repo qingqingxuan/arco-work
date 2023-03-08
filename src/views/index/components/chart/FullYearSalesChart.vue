@@ -39,10 +39,10 @@
         const option = {
           color: ['rgba(64, 58, 255)'],
           grid: {
-            top: '2%',
+            top: '5%',
             left: '2%',
             right: '2%',
-            bottom: '5%',
+            bottom: '4%',
             containLabel: true,
           },
           tooltip: {
@@ -66,6 +66,7 @@
           yAxis: {
             type: 'value',
             max: 300,
+            splitLine: { show: false },
             axisLine: {
               show: true,
               lineStyle: {
@@ -78,12 +79,17 @@
           series: [
             {
               type: 'line',
-              name: '2019全年销售额',
+              name: '全年销售额',
               stack: '总量',
               data: getData(),
               symbolSize: 0,
               smooth: true,
-              lineStyle: { width: 5 },
+              lineStyle: {
+                width: 5,
+                shadowColor: '#999', //设置折线阴影
+                shadowBlur: 10,
+                shadowOffsetY: 5,
+              },
               itemStyle: {
                 color: new graphic.LinearGradient(1, 0, 0, 0, [
                   { offset: 0, color: '#D860FF' },

@@ -37,7 +37,13 @@
           },
           xAxis: {
             type: 'category',
+            splitLine: { show: false },
             data: weeks,
+            axisLabel: {
+              textStyle: {
+                fontSize: 10,
+              },
+            },
             axisLine: {
               show: true,
               lineStyle: {
@@ -53,6 +59,12 @@
           yAxis: {
             type: 'value',
             max: 300,
+            splitLine: { show: false },
+            axisLabel: {
+              textStyle: {
+                fontSize: 10,
+              },
+            },
             axisLine: {
               show: true,
               lineStyle: {
@@ -69,7 +81,7 @@
               stack: '总量',
               data: getData(),
               smooth: true,
-              barMaxWidth: 20, // 每一个都要设置
+              barMaxWidth: 10, // 每一个都要设置
               barMinWidth: 5, // 每一个都要设置
               itemStyle: {
                 borderWidth: 15,

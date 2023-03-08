@@ -73,7 +73,7 @@
   .title-wrapper {
     position: relative;
     z-index: 9;
-    padding: 10px;
+    padding: 6px 10px;
     font-size: 14px;
     font-weight: bold;
     color: #fff;
