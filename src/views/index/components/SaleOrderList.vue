@@ -28,28 +28,32 @@
   import TagBg2 from '@/assets/bg_tag_2.png'
   import TagBg3 from '@/assets/bg_tag_3.png'
   import TagBg4 from '@/assets/bg_tag_4.png'
+  import type { TableColumnData } from '@arco-design/web-vue'
 
   type Item = { key: string; order: string; name: string; sale: string; rate: string | number }
-  const columns = [
+  const columns: TableColumnData[] = [
     {
       title: '排名',
       dataIndex: 'order',
-      width: 40,
       slotName: 'order',
+      align: 'center',
     },
     {
       title: '姓名',
       dataIndex: 'name',
+      align: 'center',
     },
     {
       title: '金额',
       dataIndex: 'sale',
+      align: 'center',
     },
     {
       title: '完成率',
       dataIndex: 'rate',
       width: 100,
       slotName: 'rate',
+      align: 'center',
     },
   ]
 
@@ -110,6 +114,7 @@
     align-items: center;
     width: 24px;
     justify-content: center;
+    margin: 0 auto;
     & > img {
       position: absolute;
       top: 0;

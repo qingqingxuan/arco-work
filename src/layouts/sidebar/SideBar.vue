@@ -110,7 +110,7 @@
     }
     :deep(.arco-menu-dark .arco-menu-item.arco-menu-selected) {
       color: var(--color-white);
-      background-color: rgb(var(--primary-6));
+      background-color: rgba(var(--primary-6), 0.3);
       & .arco-menu-icon {
         color: var(--color-white) !important;
         & .arco-icon {

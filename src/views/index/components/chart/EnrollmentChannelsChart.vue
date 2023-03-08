@@ -22,7 +22,7 @@
       const init = () => {
         const option = {
           legend: {
-            right: '5%',
+            right: '10%',
             y: 'center',
             icon: 'circle',
             orient: 'vertical',
@@ -44,6 +44,7 @@
               rich: {
                 a: {
                   fontSize: 12,
+                  color: 'var(--color-text-2)',
                 },
                 b: {
                   fontSize: 12,
