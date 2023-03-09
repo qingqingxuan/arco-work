@@ -76,7 +76,6 @@
   import WeekSalesChart from './components/chart/WeekSalesChart.vue'
   import HotProductChart from './components/chart/HotProductChart.vue'
   import OrderChart from './components/chart/OrderChart.vue'
-  import { useTest } from '@/hooks/useTest'
   export default defineComponent({
     name: 'Home',
     components: {
@@ -102,20 +101,6 @@
       const hotProductChart = ref()
       const fullYearSalesChart = ref()
       const orderChart = ref()
-
-      const { testName } = useTest()
-
-      watch(
-        () => testName.value,
-        (newVal) => {
-          console.log('newVal' + newVal)
-        }
-      )
-
-      setTimeout(() => {
-        testName.value = true
-      }, 2000)
-
       const onResize = () => {
         setTimeout(() => {
           unref(enrollmentChannelsChart).updateChart()
