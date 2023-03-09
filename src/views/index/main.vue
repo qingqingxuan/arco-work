@@ -23,17 +23,17 @@
           <DataItem
             class="item"
             title="周销售金额"
-            :data-model="{ num: 1000, prefix: '￥', bg: Bg1 }"
+            :data-model="{ num: 1000, prefix: '￥', suffix: '', bg: Bg1 }"
           />
           <DataItem
             class="item"
             title="周增长人数"
-            :data-model="{ num: 56100, suffix: '人', bg: Bg2 }"
+            :data-model="{ num: 56100, prefix: '', suffix: '人', bg: Bg2 }"
           />
           <DataItem
             class="item"
             title="周成交单数"
-            :data-model="{ num: 3216, suffix: '单', bg: Bg3 }"
+            :data-model="{ num: 3216, prefix: '', suffix: '单', bg: Bg3 }"
           />
         </div>
         <a-card style="flex: 1; overflow: hidden">
@@ -76,6 +76,7 @@
   import WeekSalesChart from './components/chart/WeekSalesChart.vue'
   import HotProductChart from './components/chart/HotProductChart.vue'
   import OrderChart from './components/chart/OrderChart.vue'
+  import { useTest } from '@/hooks/useTest'
   export default defineComponent({
     name: 'Home',
     components: {
@@ -101,6 +102,19 @@
       const hotProductChart = ref()
       const fullYearSalesChart = ref()
       const orderChart = ref()
+
+      const { testName } = useTest()
+
+      watch(
+        () => testName.value,
+        (newVal) => {
+          console.log('newVal' + newVal)
+        }
+      )
+
+      setTimeout(() => {
+        testName.value = true
+      }, 2000)
 
       const onResize = () => {
         setTimeout(() => {
@@ -128,62 +142,6 @@
         Bg3,
         mainHeight,
         collapse,
-        dataList: [
-          {
-            id: 'visited',
-            title: '今日访问量',
-            data: '1000',
-            prefix: '+',
-            bottomTitle: '总访问量',
-            totalSum: '100万+',
-            icon: 'icon-face-smile-fill',
-            color: '#1890ff',
-            extra: {
-              data: 1000,
-              data1: 2350,
-            },
-          },
-          {
-            id: 'newAdd',
-            title: '新增用户',
-            data: '500',
-            prefix: '+',
-            bottomTitle: '总用户量',
-            totalSum: '200万+',
-            icon: 'icon-heart-fill',
-            color: '#ff0000',
-            extra: {
-              data: 700,
-              data1: 968,
-            },
-          },
-          {
-            id: 'sales',
-            title: '当月销售额',
-            data: '50000',
-            prefix: '￥',
-            bottomTitle: '累计销售额',
-            totalSum: '2000万+',
-            color: '#18e3ff',
-            icon: 'icon-star-fill',
-            extra: {
-              data: 0.8,
-            },
-          },
-          {
-            id: 'order',
-            title: '当月订单量',
-            data: '189',
-            suffix: '笔',
-            bottomTitle: '累计订单量',
-            totalSum: '1万+',
-            color: '#bbc314',
-            icon: 'icon-sun-fill',
-            extra: {
-              data: 80,
-            },
-          },
-        ],
       }
     },
   })

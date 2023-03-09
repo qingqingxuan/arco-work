@@ -30,7 +30,7 @@
   import TagBg4 from '@/assets/bg_tag_4.png'
   import type { TableColumnData } from '@arco-design/web-vue'
 
-  type Item = { key: string; order: string; name: string; sale: string; rate: string | number }
+  type Item = { key: string; order: string; name: string; sale: string; rate: number }
   const columns: TableColumnData[] = [
     {
       title: '排名',
@@ -67,7 +67,7 @@
           order: index + '',
           name: '王木棍',
           sale: (13 - index) * 50 + '万',
-          rate: Number((13 - index) / 12).toFixed(2),
+          rate: parseFloat(Number((13 - index) / 12).toFixed(2)),
         })
       }
       return {

@@ -23,9 +23,8 @@
           animation
           :value-style="{ color: '#fff', fontSize: '46px', fontWeight: 'bold' }"
         >
-          <template #prefix>
-            <icon-arrow-rise />
-            <span v-if="prefix">{{ prefix }}</span>
+          <template v-if="prefix" #prefix>
+            <span>{{ prefix }}</span>
           </template>
           <template #suffix>
             <span v-if="suffix">{{ suffix }}</span>
@@ -37,7 +36,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, toRefs } from 'vue'
+  import { defineComponent } from 'vue'
 
   export default defineComponent({
     name: 'DataItem',
@@ -55,7 +54,7 @@
     },
     setup(props) {
       return {
-        ...toRefs(props.dataModel),
+        ...props.dataModel,
       }
     },
   })
