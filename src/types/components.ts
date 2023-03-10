@@ -54,7 +54,7 @@ export interface TablePropsType {
   title: string
   key: string
   sortIndex: number
-  checked: Ref<boolean>
+  checked: boolean
 }
 
 // export type ModalDialogType = InstanceType<typeof ModalDialog>

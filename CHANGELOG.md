@@ -1,3 +1,16 @@
+## 2023-3-1(v: 3.0.0)
+
+- 升级：全新升级登录页面和首页面UI
+
+- 修复：全新设计并修复 `SortableTable.vue` 组件报错问题。
+  涉及文件如下：
+    - src/components/SortableTable.vue
+    - src/types/components.ts
+    - package.json （新增第三方依赖：sortablejs 声明依赖：@types/sortablejs）
+
+- 修复：添加 `@typescript-eslint/parser` eslint 依赖，修复在某些情况下报错信息：
+    `Parsing error: Cannot find module '@typescript-eslint/parser'`
+
 ## 2023-2-20(v: 2.1.0)
 
 - 优化：优化`路由` 以 `fullPath` 字段为主键，以支持相同路由，query参数不一致时导致路由参数缺失 
