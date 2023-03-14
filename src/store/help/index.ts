@@ -5,6 +5,7 @@ import { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
 import { MenuOption, OriginRoute, SplitTab } from '../types'
 import { asyncRoutes } from '@/router/routes/async'
 import { LAYOUT } from '../keys'
+import { Message } from '@arco-design/web-vue'
 
 export function loadComponents() {
   return import.meta.glob('/src/views/**/*.vue')
@@ -25,6 +26,13 @@ export function getFilePath(it: OriginRoute) {
 }
 
 export function findRootPathRoute(routes: RouteRecordRaw[]) {
+  if (!routes || routes.length === 0) {
+    Message.error('系统加载菜单发生异常，请打开控制台查看具体原因')
+    console.error(
+      '系统加载菜单发生异常，有可能是在加载菜单的时候返回了空数据或者接口发生异常，如果您采用前端加载菜单的方式请确保/src/router/routes/default-route.ts文件里面有配置路由'
+    )
+    return '/login'
+  }
   for (let index = 0; index < routes.length; index++) {
     const route = routes[index]
     const rootRoute = route.children?.find((it) => it.meta && it.meta.isRootPath)
@@ -34,7 +42,7 @@ export function findRootPathRoute(routes: RouteRecordRaw[]) {
   }
   return routes && routes.length > 0 && routes[0].children && routes[0].children.length > 0
     ? routes[0].children![0].path
-    : '/'
+    : '/login'
 }
 
 export function filterRoutesFromLocalRoutes(
@@ -108,7 +116,7 @@ export function generatorRoutes(res: Array<OriginRoute>) {
         },
       }
       if (it.children) {
-        route.children = generatorRoutes(it.children)
+        route.children = generatorRoutes(it.children) as any
       }
       tempRoutes.push(route)
     }
