@@ -6,6 +6,17 @@
    
    - src/store/help/index.ts
 
+- 修复：修复在`hmr`下 `transition` 动画执行会丢失进入页面的bug
+
+  涉及文件：
+   - src/layouts/Main.vue
+
+- 优化：升级 `import.meta.globEager` 到 `import.meta.glob`
+
+  涉及文件：
+   - src/layouts/index.ts
+   - src/components/index.ts
+
 ## 2023-3-10(v: 3.0.0)
 
   - 升级：全新升级登录页面和首页面UI

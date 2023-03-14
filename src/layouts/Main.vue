@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="{ Component, route }">
-    <transition :name="appStore.pageAnim + '-transform'" mode="out-in" appear>
+    <transition appear>
       <keep-alive :include="cacheRoutes.cachedRoutes">
         <component :is="Component" :key="route.fullPath" />
       </keep-alive>
@@ -24,3 +24,9 @@
     },
   })
 </script>
+
+<style>
+  .h-full-vh {
+    height: 100vh;
+  }
+</style>
