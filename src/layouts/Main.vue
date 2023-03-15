@@ -1,10 +1,8 @@
 <template>
   <router-view v-slot="{ Component, route }">
-    <transition appear>
-      <keep-alive :include="cacheRoutes.cachedRoutes">
-        <component :is="Component" :key="route.fullPath" />
-      </keep-alive>
-    </transition>
+    <keep-alive :include="cacheRoutes.cachedRoutes">
+      <component :is="Component" :key="route.fullPath" />
+    </keep-alive>
   </router-view>
 </template>
 
