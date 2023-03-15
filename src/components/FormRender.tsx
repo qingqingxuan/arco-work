@@ -28,7 +28,7 @@ export function renderInput(value: Ref<string>, props = {}) {
   )
 }
 
-export function renderInputNumber(value: Ref<number>, props = {}) {
+export function renderInputNumber(value: Ref<number | undefined>, props = {}) {
   return (
     <InputNumber
       onUpdate:modelValue={(newVal) => {
@@ -40,7 +40,11 @@ export function renderInputNumber(value: Ref<number>, props = {}) {
   )
 }
 
-export function renderCheckBox(value: Ref<boolean>, tip = '', props = {}) {
+export function renderCheckBox(
+  value: Ref<boolean | (string | number | boolean)[]>,
+  tip = '',
+  props = {}
+) {
   return (
     <Checkbox
       onUpdate:modelValue={(newVal) => {
