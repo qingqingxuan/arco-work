@@ -73,7 +73,10 @@
         onUpdateValue(innerTableProps)
       }
       function onUpdateValue(columns: TablePropsType[]) {
-        emit('update', columns)
+        emit(
+          'update',
+          columns.filter((it) => it.checked)
+        )
       }
       function onPopVisibleChange(visible: boolean) {
         if (visible) {
