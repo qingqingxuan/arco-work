@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@arco-design/web-vue': ^2.43.2
+  '@arco-design/web-vue': ^2.44.2
   '@logicflow/core': ^0.7.13-alpha.1
   '@logicflow/extension': ^0.7.13-alpha.1
   '@types/lodash-es': ^4.17.6
@@ -79,7 +79,7 @@ dependencies:
   xlsx: registry.npmmirror.com/xlsx/0.17.5
 
 devDependencies:
-  '@arco-design/web-vue': registry.npmmirror.com/@arco-design/web-vue/2.43.2_vue@3.2.47
+  '@arco-design/web-vue': registry.npmmirror.com/@arco-design/web-vue/2.44.2_vue@3.2.47
   '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
   '@types/nprogress': registry.npmmirror.com/@types/nprogress/0.2.0
   '@types/path-browserify': registry.npmmirror.com/@types/path-browserify/1.0.0
@@ -138,11 +138,11 @@ packages:
       color: registry.npmmirror.com/color/3.2.1
     dev: true
 
-  registry.npmmirror.com/@arco-design/web-vue/2.43.2_vue@3.2.47:
-    resolution: {integrity: sha512-g07sP64WI7v+U0NzfhdOAOvGPbT3hksjLELHcNVb350y9SpjG7PGGK2wvOVGla+JTnE6LPqxwlIBbXErTI6hbw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@arco-design/web-vue/-/web-vue-2.43.2.tgz}
-    id: registry.npmmirror.com/@arco-design/web-vue/2.43.2
+  registry.npmmirror.com/@arco-design/web-vue/2.44.2_vue@3.2.47:
+    resolution: {integrity: sha512-QWVlUcEq5KhVLSb/egH74AbGzzX8Py/Nysk05wb6qj2CJFKO592hKeF4kHARmHxEhgIqiMZbYf3/iPjg/PuGDg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@arco-design/web-vue/-/web-vue-2.44.2.tgz}
+    id: registry.npmmirror.com/@arco-design/web-vue/2.44.2
     name: '@arco-design/web-vue'
-    version: 2.43.2
+    version: 2.44.2
     peerDependencies:
       vue: ^3.1.0
     dependencies:
