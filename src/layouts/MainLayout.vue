@@ -27,7 +27,7 @@
     </section>
     <component
       :is="appStore.isFixedNavBar ? 'Scrollbar' : 'div'"
-      class="main-base-style scrollbar"
+      class="main-base-style"
       :class="[appStore.theme === 'light' ? 'main-base-light-theme' : 'main-base-dark-theme']"
     >
       <section
