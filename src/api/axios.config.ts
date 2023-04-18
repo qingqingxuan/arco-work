@@ -1,7 +1,7 @@
 import Axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 
-export const baseURL = 'http://localhost:8080/'
+export const baseURL = import.meta.env.VITE_PROXY_API
 
 export const CONTENT_TYPE = 'Content-Type'
 

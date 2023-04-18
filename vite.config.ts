@@ -56,6 +56,12 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       open: true,
+      proxy: {
+        [dotenvObj?.VITE_PROXY_API || '']: {
+          target: 'http://localhost:8080/',
+          rewrite: (path) => path.replace(dotenvObj?.VITE_PROXY_API || '', ''),
+        },
+      },
     },
     // optimizeDeps: {
     //   include: [

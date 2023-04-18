@@ -80,23 +80,31 @@
         post({
           url: login,
           data: {
-            username: username.value,
+            phone: username.value,
             password: password.value,
           },
         })
           .then(({ data }: Response) => {
-            userStore.saveUser(data as UserState).then(() => {
-              router
-                .replace({
-                  path: route.query.redirect ? (route.query.redirect as string) : '/',
-                })
-                .then(() => {
-                  Message.success('登录成功，欢迎：' + username.value)
-                  loading.value = false
-                })
-            })
+            userStore
+              .saveUser(data as UserState)
+              .then(() => {
+                router
+                  .replace({
+                    path: route.query.redirect ? (route.query.redirect as string) : '/',
+                  })
+                  .then(() => {
+                    Message.success('登录成功，欢迎：' + username.value)
+                    loading.value = false
+                  })
+              })
+              .catch((error) => {
+                loading.value = false
+                Message.error(error.message)
+              })
           })
           .catch((error) => {
+            console.log(error)
+
             loading.value = false
             Message.error(error.message)
           })
