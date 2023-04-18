@@ -59,7 +59,6 @@
   import { post, Response } from '@/api/http'
   import { login } from '@/api/url'
   import { Message } from '@arco-design/web-vue'
-  import { UserState } from '@/store/types'
   import setting from '../../setting'
   import useAppInfo from '@/hooks/useAppInfo'
   import useUserStore from '@/store/modules/user'
@@ -86,7 +85,7 @@
         })
           .then(({ data }: Response) => {
             userStore
-              .saveUser(data as UserState)
+              .saveUser(data.userInfo, data.roles || null, data.token)
               .then(() => {
                 router
                   .replace({

@@ -1,3 +1,4 @@
+import { useUserStoreContext } from '@/store/modules/user'
 import Axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 
@@ -11,6 +12,8 @@ export const APPLICATION_JSON = 'application/json; charset=UTF-8'
 
 export const TEXT_PLAIN = 'text/plain; charset=UTF-8'
 
+export const TOKEN_PREFIX = 'Bearer '
+
 const service = Axios.create({
   baseURL,
   timeout: 10 * 60 * 1000,
@@ -18,6 +21,7 @@ const service = Axios.create({
 
 service.interceptors.request.use(
   (config) => {
+    const userInfo = useUserStoreContext()
     !config.headers && (config.headers = {})
     if (!config.headers[CONTENT_TYPE]) {
       config.headers[CONTENT_TYPE] = APPLICATION_JSON
@@ -25,6 +29,7 @@ service.interceptors.request.use(
     if (config.headers[CONTENT_TYPE] === FORM_URLENCODED) {
       config.data = qs.stringify(config.data)
     }
+    config.headers['token'] = TOKEN_PREFIX + userInfo.token
     return config
   },
   (error) => {

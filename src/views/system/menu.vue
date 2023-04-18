@@ -87,21 +87,20 @@
                 :placeholder="item.placeholder"
                 allow-clear
                 :data="treeData"
-              >
-              </a-tree-select>
+              />
             </template>
             <template v-if="item.type === 'input'">
               <a-input
                 v-model="item.value.value"
                 :placeholder="item.placeholder"
                 :disabled="item.disabled ? item.disabled.value : false"
-              ></a-input>
+              />
             </template>
             <template v-if="item.type === 'icon'">
-              <IconSelector v-model:value="item.value.value"></IconSelector>
+              <IconSelector v-model:value="item.value.value" />
             </template>
             <template v-if="item.type === 'switch'">
-              <a-switch v-model="item.value.value"></a-switch>
+              <a-switch v-model="item.value.value" />
             </template>
           </a-form-item>
         </a-form>
@@ -111,7 +110,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, h, onMounted, ref, Ref } from 'vue'
+  import { defineComponent, onMounted, ref, Ref } from 'vue'
   import { post } from '@/api/http'
   import { getMenuList } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
@@ -126,7 +125,6 @@
     name: 'Menu',
     setup() {
       const actionModel = ref('add')
-      let tempItem: { menuUrl: string } | null = null
       const table = useTable()
       const treeData = ref<Array<TreeItem>>([])
       const modalDialog = ref<ModalDialogType | null>(null)
@@ -280,7 +278,7 @@
         },
       ] as Array<FormItem>
 
-      function transformRoutes(routes: any[], parentPath: string = '/'): TreeItem[] {
+      function transformRoutes(routes: any[], parentPath = '/'): TreeItem[] {
         const list: TreeItem[] = []
         routes
           .filter((it) => it.hidden !== true && it.fullPath !== parentPath)
@@ -319,7 +317,6 @@
       }
       function onUpdateItem(item: any) {
         actionModel.value = 'edit'
-        tempItem = item
         itemFormOptions.forEach((it) => {
           it.value.value = item[it.key] || null
           if (it.key === 'menuUrl' && it.disabled) {

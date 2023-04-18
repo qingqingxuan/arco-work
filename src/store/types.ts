@@ -1,13 +1,16 @@
 import { Ref, UnwrapRef } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 
+export interface UserRole {
+  id: number
+  name: string
+}
+
 export interface UserState {
-  userId: number
+  id: number
   token: string
-  roleId: number
-  roles: string[] | null
-  userName: string
-  nickName: string
+  roles: UserRole[] | null
+  username: string
   avatar: string
 }
 export enum LayoutMode {

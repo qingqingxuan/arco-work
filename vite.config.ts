@@ -56,6 +56,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       open: true,
+      port: 5588,
       proxy: {
         [dotenvObj?.VITE_PROXY_API || '']: {
           target: 'http://localhost:8080/',
