@@ -96,12 +96,12 @@
 </template>
 
 <script lang="ts">
-  import { post } from '@/api/http'
+  import { get, post } from '@/api/http'
   import { getMenuListByRoleId, getRoleList } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
   import { ModalDialogType, FormItem } from '@/types/components'
   import { Message, Modal } from '@arco-design/web-vue'
-  import { defineComponent, nextTick, onMounted, ref, shallowReactive } from 'vue'
+  import { defineComponent, nextTick, onMounted, ref } from 'vue'
   const ROLE_CODE_FLAG = 'ROLE_'
   const formItems = [
     {
@@ -109,7 +109,6 @@
       type: 'input',
       key: 'name',
       value: ref(''),
-
       required: true,
       placeholder: '请输入角色名称',
       validator: function () {
@@ -170,18 +169,13 @@
       const table = useTable()
       const rowKey = useRowKey('id')
       const actionTitle = ref('添加角色')
-      const menuData = ref([] as Array<any>)
+      const menuData = ref<Array<any>>([])
       const tableColumns = useTableColumn([
         table.indexColumn,
         {
           title: '角色名称',
           key: 'name',
           dataIndex: 'name',
-        },
-        {
-          title: '角色编号',
-          key: 'roleCode',
-          dataIndex: 'roleCode',
         },
         {
           title: '角色描述',
@@ -199,16 +193,11 @@
           dataIndex: 'actions',
         },
       ])
-      const defaultCheckedKeys = ref([] as Array<string>)
-      const defaultExpandedKeys = ref([] as Array<string>)
+      const defaultCheckedKeys = ref<Array<string>>([])
+      const defaultExpandedKeys = ref<Array<string>>([])
       const formModel = ref({})
       function doRefresh() {
-        post({
-          url: getRoleList,
-          data: {},
-        })
-          .then(table.handleSuccess)
-          .catch(console.log)
+        get({ url: getRoleList }).then(table.handleSuccess).catch(console.log)
       }
       function onAddItem() {
         actionTitle.value = '添加角色'

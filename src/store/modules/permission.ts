@@ -4,7 +4,7 @@ import router from '@/router'
 import { getMenuListByRoleId } from '@/api/url'
 import { post } from '@/api/http'
 import { defaultRoutes } from '@/router/routes/default-routes'
-import { findRootPathRoute, generatorRoutes, mapTwoLevelRouter } from '../help'
+import { findRootPathRoute, generatorRoutes, handleResponseMenus, mapTwoLevelRouter } from '../help'
 import { constantRoutes } from '@/router/routes/constants'
 
 const usePermissionStore = defineStore('permission-route', {
@@ -43,7 +43,7 @@ const usePermissionStore = defineStore('permission-route', {
           const res = await post({
             url: getMenuListByRoleId,
           })
-          return generatorRoutes(res.data)
+          return generatorRoutes(handleResponseMenus(res.data))
         } else {
           return generatorRoutes(defaultRoutes)
         }

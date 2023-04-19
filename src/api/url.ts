@@ -2,6 +2,8 @@ import { baseURL } from './axios.config'
 
 export const baseAddress = baseURL
 
+export const apiModule = '/api'
+
 export const test = '/test'
 
 export const login = '/login'
@@ -10,7 +12,7 @@ export const updateUserInfo = '/updateUser'
 
 export const addUserInfo = '/addUser'
 
-export const getMenuListByRoleId = '/api/getMenusByRoleIds'
+export const getMenuListByRoleId = apiModule + '/getMenusByRoleIds'
 
 export const getAllMenuByRoleId = '/getAllMenuByRoleId'
 
@@ -20,9 +22,9 @@ export const getDepartmentList = '/getDepartmentList'
 
 export const addDepartment = '/addDepartment'
 
-export const getRoleList = '/getRoleList'
+export const getRoleList = apiModule + '/getAllRoles'
 
-export const getMenuList = '/getMenuList'
+export const getMenuList = apiModule + '/getAllMenus'
 
 export const getParentMenuList = '/getParentMenuList'
 

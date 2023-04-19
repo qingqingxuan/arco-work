@@ -15,6 +15,7 @@
           :data="dataList"
           :row-key="rowKey"
           :pagination="false"
+          :default-expanded-keys="expandedKeys"
         >
           <template #columns>
             <a-table-column
@@ -30,7 +31,10 @@
                 {{ rowIndex + 1 }}
               </template>
               <template v-else-if="item.key === 'routeName'" #cell="{ record }">
-                {{ record.routeName ?? '系统默认  ' }}
+                {{ record.routeName ? record.routeName : '-' }}
+              </template>
+              <template v-else-if="item.key === 'component'" #cell="{ record }">
+                {{ record.component ? record.component : '-' }}
               </template>
               <template v-else-if="item.key === 'icon'" #cell="{ record }">
                 <component :is="record.icon || 'IconMenu'" style="font-size: 18px" />
@@ -111,11 +115,12 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref, Ref } from 'vue'
-  import { post } from '@/api/http'
+  import { get } from '@/api/http'
   import { getMenuList } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
   import { ModalDialogType, FormItem } from '@/types/components'
   import { Message, Modal } from '@arco-design/web-vue'
+  import { reactive } from 'vue'
   interface TreeItem {
     title: string
     key: string
@@ -125,51 +130,64 @@
     name: 'Menu',
     setup() {
       const actionModel = ref('add')
+      const expandedKeys = reactive<number[]>([])
       const table = useTable()
       const treeData = ref<Array<TreeItem>>([])
       const modalDialog = ref<ModalDialogType | null>(null)
       const dataForm = ref()
-      const rowKey = useRowKey('menuUrl')
+      const rowKey = useRowKey('id')
       const tableColumns = useTableColumn([
         {
           title: '菜单名称',
-          key: 'menuName',
-          dataIndex: 'menuName',
+          key: 'title',
+          dataIndex: 'title',
         },
         {
           title: '菜单地址',
-          key: 'menuUrl',
-          dataIndex: 'menuUrl',
+          key: 'path',
+          dataIndex: 'path',
+        },
+        {
+          title: '组件地址',
+          key: 'component',
+          dataIndex: 'component',
+          width: 100,
         },
         {
           title: '路由name',
           key: 'routeName',
           dataIndex: 'routeName',
+          width: 100,
         },
         {
           title: '菜单图标',
           key: 'icon',
           dataIndex: 'icon',
+          width: 100,
         },
         {
           title: '是否缓存',
           key: 'cacheable',
           dataIndex: 'cacheable',
+          width: 100,
         },
         {
           title: '是否隐藏',
           key: 'hidden',
           dataIndex: 'hidden',
+          width: 100,
         },
         {
-          title: '是否固定标题栏',
+          title: '是否固定',
           key: 'affix',
           dataIndex: 'affix',
+          width: 100,
         },
         {
           title: '操作',
           key: 'actions',
           dataIndex: 'actions',
+          fixed: 'right',
         },
       ])
       const itemFormOptions = [
@@ -277,33 +295,20 @@
           },
         },
       ] as Array<FormItem>
-
-      function transformRoutes(routes: any[], parentPath = '/'): TreeItem[] {
-        const list: TreeItem[] = []
-        routes
-          .filter((it) => it.hidden !== true && it.fullPath !== parentPath)
-          .forEach((it) => {
-            const searchItem: TreeItem = {
-              key: it.menuUrl,
-              title: it.menuName,
-            }
-            if (it.children && it.children.length > 0) {
-              searchItem.children = transformRoutes(it.children, it.fullPath)
-            }
-            list.push(searchItem)
-          })
-        return list
+      async function doRefresh() {
+        const res = await get({ url: getMenuList })
+        handleData(res.data)
+        table.handleSuccess(res)
       }
-      function doRefresh() {
-        post({
-          url: getMenuList,
-          data: {},
+      function handleData(data: Array<any>) {
+        data.forEach((it) => {
+          if (it.children && it.children.length > 0) {
+            expandedKeys.push(it.id)
+            handleData(it.children)
+          } else {
+            delete it.children
+          }
         })
-          .then(table.handleSuccess)
-          .then((data) => {
-            treeData.value = transformRoutes(data)
-          })
-          .catch(console.log)
       }
       function onAddItem() {
         actionModel.value = 'add'
@@ -368,6 +373,7 @@
       onMounted(doRefresh)
       return {
         rowKey,
+        expandedKeys,
         actionModel,
         modalDialog,
         dataForm,

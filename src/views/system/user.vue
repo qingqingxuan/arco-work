@@ -42,9 +42,7 @@
               </a-avatar>
             </template>
             <template v-else-if="item.key === 'actions'" #cell="{ record }">
-              <a-button status="danger" @click="onDeleteItem(record)" size="mini"
-                >删除</a-button
-              >
+              <a-button status="danger" @click="onDeleteItem(record)" size="mini">删除</a-button>
             </template>
             <template v-else-if="item.key === 'status'" #cell="{ record }">
               <a-tag color="blue" size="small" v-if="record.status === 1">正常</a-tag>
@@ -72,7 +70,7 @@
     useTableHeight,
   } from '@/hooks/table'
   import { Message, Modal } from '@arco-design/web-vue'
-  import { defineComponent, getCurrentInstance, onMounted, ref, watch } from 'vue'
+  import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue'
   export default defineComponent({
     name: 'UserList',
     setup() {

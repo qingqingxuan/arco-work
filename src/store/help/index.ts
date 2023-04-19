@@ -92,6 +92,29 @@ export function getNameByUrl(menuUrl: string) {
   return toHump(temp[temp.length - 1])
 }
 
+export function handleResponseMenus(menus: Array<any>) {
+  const res: OriginRoute[] = []
+  menus.forEach((it) => {
+    const originRouteItem: OriginRoute = {
+      affix: !!it.affix,
+      cacheable: !!it.cacheable,
+      hidden: !!it.hidden,
+      isRootPath: !!it.rootPath,
+      isSingle: !!it.single,
+      badge: it.badge,
+      icon: it.icon,
+      iconPrefix: it.iconPrefix,
+      localFilePath: it.component || '',
+      menuUrl: it.path,
+      menuName: it.title,
+      routeName: it.routeName,
+    }
+    originRouteItem.children = handleResponseMenus(it.children || [])
+    res.push(originRouteItem)
+  })
+  return res
+}
+
 export function generatorRoutes(res: Array<OriginRoute>) {
   const tempRoutes: Array<RouteRecordRaw> = []
   res.forEach((it) => {
@@ -115,8 +138,8 @@ export function generatorRoutes(res: Array<OriginRoute>) {
           isSingle: !!it.isSingle,
         },
       }
-      if (it.children) {
-        route.children = generatorRoutes(it.children) as any
+      if (isMenuFlag) {
+        route.children = generatorRoutes(it.children!) as never
       }
       tempRoutes.push(route)
     }

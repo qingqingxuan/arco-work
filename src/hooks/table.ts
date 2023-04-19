@@ -47,7 +47,7 @@ export const useTableHeight = async function (currentIns: any): Promise<number> 
 }
 
 export const useTable = function (): Table {
-  const dataList = shallowReactive([]) as Array<any>
+  const dataList = shallowReactive<Array<any>>([])
   const tableHeaderRef = ref<TableHeaderType | null>(null)
   const tableFooterRef = ref<TableFooterType | null>(null)
   const tableHeight = ref(200)

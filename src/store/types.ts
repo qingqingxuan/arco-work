@@ -80,7 +80,6 @@ export interface SplitTab {
 }
 
 export interface OriginRoute {
-  parentPath?: string
   menuUrl: string
   menuName?: string
   routeName?: string
