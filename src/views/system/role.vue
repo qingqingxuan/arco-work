@@ -29,22 +29,25 @@
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                 {{ rowIndex + 1 }}
               </template>
-              <template v-else-if="item.key === 'gender'" #cell="{ record }">
-                {{ record.gender === 1 ? '男' : '女' }}
-              </template>
-              <template v-else-if="item.key === 'avatar'" #cell="{ record }">
-                <a-avatar>
-                  <img :src="record.avatar" />
-                </a-avatar>
+              <template v-else-if="item.key === 'status'" #cell="{ record }">
+                <a-tag v-if="record.status === 1" color="green"> 正常 </a-tag>
+                <a-tag v-else color="red"> 禁用 </a-tag>
               </template>
               <template v-else-if="item.key === 'actions'" #cell="{ record }">
                 <a-space>
                   <a-button status="success" size="mini" @click="onUpdateItem(record)"
                     >编辑</a-button
                   >
-                  <a-button status="danger" size="mini" @click="onDeleteItem(record)"
-                    >删除</a-button
+                  <a-button
+                    v-if="record.status === 1"
+                    status="danger"
+                    size="mini"
+                    @click="onChangeStatus(record)"
+                    >禁用</a-button
                   >
+                  <a-button v-else status="primary" size="mini" @click="onChangeStatus(record)">
+                    启用
+                  </a-button>
                   <a-button status="warning" size="mini" @click="onShowMenu(record)">
                     菜单权限
                   </a-button>
@@ -59,32 +62,27 @@
       <template #content>
         <a-form :model="formModel">
           <a-form-item
+            v-for="item of formItems"
             :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
             :label="item.label"
-            v-for="item of formItems"
             :key="item.key"
+            :disabled="item.disabled"
           >
             <template v-if="item.type === 'input'">
-              <a-input :placeholder="item.placeholder" v-model="item.value.value">
-                <template #prepend v-if="item.key === 'roleCode'">
+              <a-input :placeholder="item.placeholder" v-model="(formModel as any)[item.key]">
+                <template #prepend v-if="item.key === 'name'">
                   {{ ROLE_CODE_FLAG }}
                 </template>
               </a-input>
-            </template>
-            <template v-if="item.type === 'textarea'">
-              <a-textarea
-                v-model="item.value.value"
-                :placeholder="item.placeholder"
-                :auto-size="{ minRows: 3, maxRows: 5 }"
-              />
             </template>
           </a-form-item>
         </a-form>
       </template>
     </ModalDialog>
-    <ModalDialog ref="menuModalDialogRef" title="编辑菜单权限">
+    <ModalDialog ref="menuModalDialogRef" title="编辑菜单权限" @confirm="onUpdateRoleMenus">
       <template #content>
         <a-tree
+          ref="menuTreeRef"
           :data="menuData"
           checkable
           v-model:expanded-keys="defaultExpandedKeys"
@@ -96,66 +94,31 @@
 </template>
 
 <script lang="ts">
+  import { FORM_URLENCODED, CONTENT_TYPE } from '@/api/axios.config'
   import { get, post } from '@/api/http'
-  import { getMenuListByRoleId, getRoleList } from '@/api/url'
+  import {
+    createRole,
+    getSelectedMenusByRoleId,
+    updateMenuByRoleId,
+    getRoleList,
+    updateRole,
+  } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
   import { ModalDialogType, FormItem } from '@/types/components'
   import { Message, Modal } from '@arco-design/web-vue'
+  import { reactive } from 'vue'
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
   const ROLE_CODE_FLAG = 'ROLE_'
-  const formItems = [
-    {
-      label: '角色名称',
-      type: 'input',
-      key: 'name',
-      value: ref(''),
-      required: true,
-      placeholder: '请输入角色名称',
-      validator: function () {
-        if (!this.value.value) {
-          Message.error(this.placeholder || '')
-          return false
-        }
-        return true
-      },
-    },
-    {
-      label: '角色编号',
-      key: 'roleCode',
-      value: ref(''),
-      type: 'input',
-      required: true,
-      placeholder: '请输入角色编号',
-      validator: function () {
-        if (!this.value.value) {
-          Message.error(this.placeholder || '')
-          return false
-        }
-        return true
-      },
-    },
-    {
-      label: '角色描述',
-      key: 'description',
-      value: ref(''),
-      type: 'textarea',
-      placeholder: '请输入角色描述',
-    },
-  ] as FormItem[]
-  function handleMenuData(
-    menuData: Array<any>,
-    defaultCheckedKeys: Array<string>,
-    defaultExpandedKeys: Array<string>
-  ) {
+
+  function handleMenuData(menuData: Array<any>, defaultExpandedKeys: Array<number>) {
     const tempMenus = [] as Array<any>
     menuData.forEach((it) => {
       const tempMenu = {} as any
-      tempMenu.key = it.menuUrl
-      tempMenu.title = it.menuName
-      defaultCheckedKeys.push(tempMenu.key as string)
+      tempMenu.key = it.id
+      tempMenu.title = it.title
       if (it.children) {
-        defaultExpandedKeys.push(tempMenu.key as string)
-        tempMenu.children = handleMenuData(it.children, defaultCheckedKeys, defaultExpandedKeys)
+        defaultExpandedKeys.push(tempMenu.key)
+        tempMenu.children = handleMenuData(it.children, defaultExpandedKeys)
       }
       tempMenus.push(tempMenu)
     })
@@ -166,6 +129,7 @@
     setup() {
       const modalDialogRef = ref<ModalDialogType | null>(null)
       const menuModalDialogRef = ref<ModalDialogType | null>(null)
+      const menuTreeRef = ref<ModalDialogType | null>(null)
       const table = useTable()
       const rowKey = useRowKey('id')
       const actionTitle = ref('添加角色')
@@ -183,6 +147,11 @@
           dataIndex: 'description',
         },
         {
+          title: '角色状态',
+          key: 'status',
+          dataIndex: 'status',
+        },
+        {
           title: '创建时间',
           key: 'createTime',
           dataIndex: 'createTime',
@@ -193,90 +162,167 @@
           dataIndex: 'actions',
         },
       ])
-      const defaultCheckedKeys = ref<Array<string>>([])
-      const defaultExpandedKeys = ref<Array<string>>([])
-      const formModel = ref({})
+      const defaultCheckedKeys = ref<Array<number>>([])
+      const defaultExpandedKeys = ref<Array<number>>([])
+      let tempRole: { id: any } | null = null
+      const formItems = reactive<FormItem[]>([
+        {
+          label: '角色名称',
+          key: 'name',
+          type: 'input',
+          required: true,
+          disabled: false,
+          placeholder: '请输入角色名称',
+          validator: function () {
+            if (!formModel.name) {
+              Message.error(this.placeholder || '')
+              return false
+            }
+            return true
+          },
+        },
+        {
+          label: '角色描述',
+          key: 'description',
+          required: true,
+          type: 'input',
+          placeholder: '请输入角色描述',
+          validator: function () {
+            if (!formModel.description) {
+              Message.error(this.placeholder || '')
+              return false
+            }
+            return true
+          },
+        },
+      ])
+      const formModel = reactive({
+        id: 0,
+        name: '',
+        description: '',
+      })
       function doRefresh() {
         get({ url: getRoleList }).then(table.handleSuccess).catch(console.log)
       }
       function onAddItem() {
         actionTitle.value = '添加角色'
         modalDialogRef.value?.toggle()
-        formItems.forEach((it) => {
-          if (it.reset) {
-            it.reset()
-          } else {
-            it.value.value = ''
-          }
-        })
+        formModel.name = ''
+        formModel.description = ''
+        formItems[0].disabled = false
       }
       function onUpdateItem(item: any) {
         actionTitle.value = '编辑角色'
         modalDialogRef.value?.toggle()
         nextTick(() => {
-          formItems.forEach((it) => {
-            const key = it.key
-            const propName = item[key]
-            if (propName) {
-              if (it.key === 'roleCode') {
-                it.value.value = propName.replace(ROLE_CODE_FLAG, '')
-              } else {
-                it.value.value = propName
-              }
-            }
-          })
+          formItems[0].disabled = true
+          formModel.id = item.id
+          formModel.name = item.name.replace(ROLE_CODE_FLAG, '')
+          formModel.description = item.description
         })
       }
-      function onDeleteItem(data: any) {
+      function onChangeStatus(data: any) {
         Modal.confirm({
           title: '提示',
-          content: '是否要删除此角色？',
+          content: data.status === 1 ? '是否要禁用此角色？' : '是否要启用此角色？',
           cancelText: '取消',
-          okText: '删除',
+          okText: '确定',
           onOk: () => {
-            Message.success('模拟角色删除成功，参数为' + JSON.stringify(data))
+            post({
+              url: updateRole,
+              data: {
+                id: data.id,
+                status: data.status === 1 ? 0 : 1,
+              },
+            })
+              .then(() => {
+                Message.success('状态设置成功')
+                doRefresh()
+              })
+              .catch((error: Error) => {
+                Message.error(error.message)
+              })
           },
         })
       }
       function onDataFormConfirm() {
         if (formItems.every((it) => (it.validator ? it.validator() : true))) {
-          modalDialogRef.value?.toggle()
-          Message.success(
-            '模拟菜单添加成功，参数为：' +
-              JSON.stringify(
-                formItems.reduce((pre, cur) => {
-                  ;(pre as any)[cur.key] = cur.value.value
-                  return pre
-                }, {})
-              )
-          )
+          post({
+            url: formModel.id ? updateRole : createRole,
+            data: formModel.id
+              ? {
+                  id: formModel.id,
+                  description: formModel.description,
+                }
+              : {
+                  name: ROLE_CODE_FLAG + formModel.name,
+                  description: formModel.description,
+                },
+          })
+            .then((res) => {
+              formModel.id = 0
+              formModel.name = ''
+              formModel.description = ''
+              modalDialogRef.value?.toggle()
+              Message.success(res.msg)
+              doRefresh()
+            })
+            .catch((error: Error) => {
+              Message.error(error.message)
+            })
         }
       }
-      function onShowMenu(item: any) {
-        post({
-          url: getMenuListByRoleId,
-          data: {
-            roleId: item.id,
-          },
-        })
-          .then((res) => {
-            menuData.value = []
-            defaultCheckedKeys.value = []
-            defaultExpandedKeys.value = []
-            menuData.value = handleMenuData(
-              res.data,
-              defaultCheckedKeys.value,
-              defaultExpandedKeys.value
-            )
-            menuModalDialogRef.value?.toggle()
+      async function onShowMenu(item: any) {
+        try {
+          tempRole = item
+          const res = await get({
+            url: getSelectedMenusByRoleId,
+            data: {
+              roleId: item.id,
+            },
           })
-          .catch(console.log)
+          menuData.value = []
+          defaultExpandedKeys.value = []
+          defaultCheckedKeys.value = res.data.selectedIds
+          menuData.value = handleMenuData(res.data.allMenus, defaultExpandedKeys.value)
+          menuModalDialogRef.value?.toggle()
+        } catch (error: any) {
+          Message.error(error.message)
+        }
+      }
+      async function onUpdateRoleMenus() {
+        try {
+          const haflfNodes = menuTreeRef.value.getHalfCheckedNodes()
+          const checkNodes = menuTreeRef.value.getCheckedNodes()
+          const res = await post({
+            url: updateMenuByRoleId,
+            data: {
+              roleId: tempRole?.id,
+              menus: [
+                ...haflfNodes.map((it: any) => {
+                  return it.key
+                }),
+                ...checkNodes.map((it: any) => {
+                  return it.key
+                }),
+              ].join(','),
+            },
+            headers: {
+              [CONTENT_TYPE]: FORM_URLENCODED,
+            },
+          })
+          Message.success(res.msg)
+          menuModalDialogRef.value?.toggle()
+        } catch (error: any) {
+          Message.error(error.message)
+        }
       }
       onMounted(doRefresh)
       return {
         ROLE_CODE_FLAG,
         modalDialogRef,
         menuModalDialogRef,
+        menuTreeRef,
         rowKey,
         formModel,
         menuData,
@@ -289,8 +335,9 @@
         onAddItem,
         onDataFormConfirm,
         onShowMenu,
-        onDeleteItem,
+        onChangeStatus,
         onUpdateItem,
+        onUpdateRoleMenus,
       }
     },
   })

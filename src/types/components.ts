@@ -24,7 +24,7 @@ export interface SelectOptionItem {
 export interface TableSearchItem {
   key: string | number
   label: string
-  value: Ref<any>
+  value?: Ref<any>
   placeholder?: string
   associatedOption?: string
   onChange?: (value: any, associationItem: string) => void
@@ -38,7 +38,7 @@ export interface FormItem extends TableSearchItem {
   type?: string
   maxLength?: number
   rows?: number
-  disabled?: Ref<boolean>
+  disabled?: Ref<boolean> | boolean
   optionItems?: Array<SelectOptionItem>
   path?: string
   reset?: (formItem?: FormItem) => void

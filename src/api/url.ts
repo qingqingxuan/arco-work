@@ -4,8 +4,6 @@ export const baseAddress = baseURL
 
 export const apiModule = '/api'
 
-export const test = '/test'
-
 export const login = '/login'
 
 export const updateUserInfo = '/updateUser'
@@ -14,17 +12,23 @@ export const addUserInfo = '/addUser'
 
 export const getMenuListByRoleId = apiModule + '/getMenusByRoleIds'
 
-export const getAllMenuByRoleId = '/getAllMenuByRoleId'
+export const getMenuList = apiModule + '/getAllMenus'
+
+export const getSelectedMenusByRoleId = apiModule + '/getSelectedMenusByRoleId'
+
+export const getRoleList = apiModule + '/getAllRoles'
+
+export const createRole = apiModule + '/createRole'
+
+export const updateRole = apiModule + '/editRole'
+
+export const updateMenuByRoleId = apiModule + '/updateMenuByRoleId'
 
 export const deleteUserById = '/deleteUserById'
 
 export const getDepartmentList = '/getDepartmentList'
 
 export const addDepartment = '/addDepartment'
-
-export const getRoleList = apiModule + '/getAllRoles'
-
-export const getMenuList = apiModule + '/getAllMenus'
 
 export const getParentMenuList = '/getParentMenuList'
 

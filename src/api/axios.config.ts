@@ -27,6 +27,8 @@ service.interceptors.request.use(
       config.headers[CONTENT_TYPE] = APPLICATION_JSON
     }
     if (config.headers[CONTENT_TYPE] === FORM_URLENCODED) {
+      console.log(config.data)
+
       config.data = qs.stringify(config.data)
     }
     config.headers['token'] = TOKEN_PREFIX + userInfo.token
