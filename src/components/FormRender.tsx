@@ -7,13 +7,10 @@ import {
   SelectOptionData,
   SelectProps,
 } from '@arco-design/web-vue'
-import { AllowedComponentProps, h, Ref } from 'vue'
+import { AllowedComponentProps, Ref } from 'vue'
 
 export default function FormRender(props: any) {
-  if (!props || !props.formItem) {
-    throw new Error('miss formItem prop and check it')
-  }
-  return props.render(props.formItem, h)
+  return props.render(props)
 }
 
 export function renderInput(value: Ref<string>, props = {}) {

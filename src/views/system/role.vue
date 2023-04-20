@@ -110,15 +110,24 @@
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
   const ROLE_CODE_FLAG = 'ROLE_'
 
-  function handleMenuData(menuData: Array<any>, defaultExpandedKeys: Array<number>) {
+  function handleMenuData(
+    menuData: Array<any>,
+    selectedKeys: number[],
+    defaultExpandedKeys: Array<number>
+  ) {
     const tempMenus = [] as Array<any>
     menuData.forEach((it) => {
       const tempMenu = {} as any
       tempMenu.key = it.id
       tempMenu.title = it.title
-      if (it.children) {
+
+      if (it.children && it.children.length > 0) {
         defaultExpandedKeys.push(tempMenu.key)
-        tempMenu.children = handleMenuData(it.children, defaultExpandedKeys)
+        const index = selectedKeys.indexOf(tempMenu.key)
+        if (index !== -1) {
+          selectedKeys.splice(selectedKeys.indexOf(tempMenu.key), 1)
+        }
+        tempMenu.children = handleMenuData(it.children, selectedKeys, defaultExpandedKeys)
       }
       tempMenus.push(tempMenu)
     })
@@ -283,8 +292,12 @@
           })
           menuData.value = []
           defaultExpandedKeys.value = []
+          menuData.value = handleMenuData(
+            res.data.allMenus,
+            res.data.selectedIds || [],
+            defaultExpandedKeys.value
+          )
           defaultCheckedKeys.value = res.data.selectedIds
-          menuData.value = handleMenuData(res.data.allMenus, defaultExpandedKeys.value)
           menuModalDialogRef.value?.toggle()
         } catch (error: any) {
           Message.error(error.message)
