@@ -8,9 +8,9 @@ export const login = '/login'
 
 export const updateUserInfo = '/updateUser'
 
-export const addUserInfo = '/addUser'
-
 export const getUserList = apiModule + '/getUserList'
+
+export const addUser = apiModule + '/createUser'
 
 export const updateUser = apiModule + '/updateUser'
 

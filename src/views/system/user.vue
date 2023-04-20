@@ -73,7 +73,7 @@
     </TableBody>
     <ModalDialog ref="modalDialogRef" :title="actionTitle" @confirm="onDataFormConfirm">
       <template #content>
-        <a-form :model="formModel">
+        <a-form ref="userFormRef" :model="formModel">
           <a-form-item v-for="item of formItems" :key="item.formItem.field" v-bind="item.formItem">
             <FormRender :render="item.render" :options="item.options" />
           </a-form-item>
@@ -85,12 +85,15 @@
 
 <script lang="ts">
   import { get, post } from '@/api/http'
-  import { getUserList, updateUser } from '@/api/url'
+  import { getUserList, updateUser, addUser } from '@/api/url'
   import { usePagination, useRowKey, useTable, useTableColumn, useTableHeight } from '@/hooks/table'
-  import { Message, Modal } from '@arco-design/web-vue'
+  import { FormInstance, Message, Modal } from '@arco-design/web-vue'
   import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue'
-  import { useUser, useUserFormItem } from './hooks/userHooks'
+  import { useUserModel, useUserFormItem, UserItem } from './hooks/userHooks'
   import { ModalDialogType } from '@/types/components'
+  import { useRoleList } from './hooks/roleHooks'
+  import { omit } from 'lodash-es'
+  import { unref } from 'vue'
   export default defineComponent({
     name: 'UserList',
     setup() {
@@ -98,7 +101,10 @@
       const rowKey = useRowKey('id')
       const actionTitle = ref('添加用户')
       const modalDialogRef = ref<ModalDialogType | null>()
+      const userFormRef = ref<FormInstance | null>()
       const pagination = usePagination(doRefresh)
+      const { formModel, clearFormModel, setFormModel } = useUserModel()
+      const { formItems } = useUserFormItem(formModel)
       const tableColumns = useTableColumn([
         table.indexColumn,
         {
@@ -148,7 +154,12 @@
         pagination.setTotalSize((res.data as any).totalSize)
       }
       function onAddItems() {
+        clearFormModel()
         modalDialogRef.value?.toggle()
+      }
+      function onChangeItem(item: UserItem) {
+        setFormModel(item)
+        unref(modalDialogRef)?.toggle()
       }
       function onChangeStatusItem(data: any) {
         Modal.confirm({
@@ -174,27 +185,49 @@
           },
         })
       }
-      function onChangeItem() {}
-      function onDataFormConfirm() {}
-      const { formModel } = useUser()
-      const { formItems } = useUserFormItem(formModel)
+      async function onDataFormConfirm() {
+        try {
+          const validate = await userFormRef.value?.validate()
+          if (validate) {
+            return
+          }
+          const res = await post({
+            url: addUser,
+            data: formModel.id
+              ? {
+                  ...omit(formModel, 'id'),
+                  roles: (formModel.roles as Array<number>).join(','),
+                }
+              : {
+                  ...omit(formModel, ['phone']),
+                  roles: (formModel.roles as Array<number>).join(','),
+                },
+          })
+          if (res.code === 200) {
+            Message.success('添加用户成功')
+            modalDialogRef.value?.toggle()
+            doRefresh()
+          }
+        } catch (error: any) {
+          Message.error(error.message)
+        }
+      }
+
       onMounted(async () => {
         table.tableHeight.value = await useTableHeight(getCurrentInstance())
         doRefresh()
         const item = formItems.value.find((it) => it.formItem.field === 'roles')
-        item!.options = [
-          {
-            value: 1,
-            label: '12',
-          },
-          {
-            value: 2,
-            label: '22',
-          },
-        ]
+        const roleList = await useRoleList()
+        item!.options = roleList.map((it: { description: string; id: any }) => {
+          return {
+            label: it.description,
+            value: it.id,
+          }
+        })
       })
       return {
         modalDialogRef,
+        userFormRef,
         actionTitle,
         formModel,
         formItems,

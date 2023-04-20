@@ -1,4 +1,11 @@
-import { FormItemInstance, Input, Select } from '@arco-design/web-vue'
+import {
+  FormItemInstance,
+  Input,
+  InputPassword,
+  Radio,
+  RadioGroup,
+  Select,
+} from '@arco-design/web-vue'
 import { VNode, h, reactive, ref } from 'vue'
 
 export interface FormItemProps {
@@ -10,9 +17,11 @@ export interface FormItemProps {
 export type UserItem = {
   id: string | number
   username: string
+  password: string
   phone: string
   email: string
   roles?: string | number | Record<string, any> | (string | number | Record<string, any>)[]
+  status: number
 }
 
 export function useUserFormItem(formModel: UserItem) {
@@ -51,6 +60,7 @@ export function useUserFormItem(formModel: UserItem) {
         return h(Input, {
           placeholder: '请输入手机号码',
           modelValue: formModel.phone,
+          maxLength: 11,
           onInput(value) {
             formModel.phone = value
           },
@@ -79,6 +89,26 @@ export function useUserFormItem(formModel: UserItem) {
     },
     {
       formItem: {
+        label: '登录密码',
+        field: 'password',
+        rules: {
+          required: true,
+          message: '请输入登录密码',
+        },
+        validateTrigger: 'blur',
+      },
+      render: () => {
+        return h(InputPassword, {
+          placeholder: '请输入登录密码',
+          modelValue: formModel.password,
+          onInput(value: string) {
+            formModel.password = value
+          },
+        })
+      },
+    },
+    {
+      formItem: {
         label: '用户角色',
         field: 'roles',
         rules: {
@@ -88,7 +118,6 @@ export function useUserFormItem(formModel: UserItem) {
         validateTrigger: 'blur',
       },
       render: ({ options = [] }) => {
-        console.log(options)
         return h(Select, {
           placeholder: '请选择用户角色',
           options,
@@ -101,33 +130,80 @@ export function useUserFormItem(formModel: UserItem) {
       },
       options: [],
     },
+    {
+      formItem: {
+        label: '启用状态',
+        field: 'status',
+        validateTrigger: 'blur',
+      },
+      render: () => {
+        return h(
+          RadioGroup,
+          {
+            placeholder: '请选择用户状态',
+            modelValue: formModel.status,
+            onChange(value) {
+              formModel.status = value as number
+            },
+          },
+          {
+            default: () => [
+              h(
+                Radio,
+                {
+                  value: 1,
+                },
+                {
+                  default: () => '启用',
+                }
+              ),
+              h(
+                Radio,
+                {
+                  value: 0,
+                },
+                {
+                  default: () => '禁用',
+                }
+              ),
+            ],
+          }
+        )
+      },
+    },
   ])
   return {
     formItems,
   }
 }
 
-export function useUser() {
+export function useUserModel() {
   const formModel = reactive<UserItem>({
     id: '',
     username: '',
+    password: '',
     phone: '',
     email: '',
     roles: undefined,
+    status: 1,
   })
   function clearFormModel() {
     formModel.id = ''
+    formModel.password = ''
     formModel.username = ''
     formModel.phone = ''
     formModel.email = ''
     formModel.roles = undefined
+    formModel.status = 1
   }
-  function setFormModel({ id, username, phone, email, roles }: any) {
+  function setFormModel({ id, username, password, phone, email, roles, status }: UserItem) {
     formModel.id = id || ''
     formModel.username = username || ''
+    formModel.password = password || ''
     formModel.phone = phone || ''
     formModel.email = email || ''
     formModel.roles = roles || undefined
+    formModel.status = status
   }
   return {
     formModel,
