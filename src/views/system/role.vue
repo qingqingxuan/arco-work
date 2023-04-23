@@ -59,36 +59,32 @@
       </template>
     </TableBody>
     <ModalDialog ref="modalDialogRef" :title="actionTitle" @confirm="onDataFormConfirm">
-      <template #content>
-        <a-form :model="formModel">
-          <a-form-item
-            v-for="item of formItems"
-            :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
-            :label="item.label"
-            :key="item.key"
-            :disabled="item.disabled"
-          >
-            <template v-if="item.type === 'input'">
-              <a-input :placeholder="item.placeholder" v-model="(formModel as any)[item.key]">
-                <template #prepend v-if="item.key === 'name'">
-                  {{ ROLE_CODE_FLAG }}
-                </template>
-              </a-input>
-            </template>
-          </a-form-item>
-        </a-form>
-      </template>
+      <a-form :model="formModel">
+        <a-form-item
+          v-for="item of formItems"
+          :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
+          :label="item.label"
+          :key="item.key"
+          :disabled="item.disabled"
+        >
+          <template v-if="item.type === 'input'">
+            <a-input :placeholder="item.placeholder" v-model="(formModel as any)[item.key]">
+              <template #prepend v-if="item.key === 'name'">
+                {{ ROLE_CODE_FLAG }}
+              </template>
+            </a-input>
+          </template>
+        </a-form-item>
+      </a-form>
     </ModalDialog>
     <ModalDialog ref="menuModalDialogRef" title="编辑菜单权限" @confirm="onUpdateRoleMenus">
-      <template #content>
-        <a-tree
-          ref="menuTreeRef"
-          :data="menuData"
-          checkable
-          v-model:expanded-keys="defaultExpandedKeys"
-          v-model:checked-keys="defaultCheckedKeys"
-        />
-      </template>
+      <a-tree
+        ref="menuTreeRef"
+        :data="menuData"
+        checkable
+        v-model:expanded-keys="defaultExpandedKeys"
+        v-model:checked-keys="defaultCheckedKeys"
+      />
     </ModalDialog>
   </div>
 </template>

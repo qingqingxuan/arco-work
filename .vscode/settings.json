@@ -16,5 +16,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "git.ignoreLimitWarning": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vue.features.codeActions.enable": false
 }

@@ -1,12 +1,12 @@
 <template>
-  <a-modal v-model:visible="showModal" :title="title" class="modal-dialog-wrapper">
+  <a-modal v-model:visible="showModal" :title="title" class="modal-dialog-wrapper" draggable>
     <Scrollbar wrap-class="modal-dialog__wrap">
-      <slot name="content"></slot>
+      <slot></slot>
     </Scrollbar>
     <template #footer>
       <a-space>
         <a-button @click="onCancel">取消</a-button>
-        <a-button type="primary" @click="onConfirm">确定</a-button>
+        <a-button type="primary" :loading="loading" @click="onConfirm">确定</a-button>
       </a-space>
     </template>
   </a-modal>
@@ -26,9 +26,13 @@
         type: String,
         default: '30vh',
       },
+      loading: {
+        type: Boolean,
+        default: false,
+      },
     },
     emits: ['confirm', 'cancel'],
-    setup(props, { emit }) {
+    setup(props, { emit, expose }) {
       const showModal = ref(false)
       function toggle() {
         showModal.value = !showModal.value
@@ -49,6 +53,11 @@
         showModal.value = false
         emit('cancel')
       }
+      expose({
+        show,
+        close,
+        toggle,
+      })
       return {
         showModal,
         toggle,

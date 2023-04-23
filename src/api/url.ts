@@ -14,6 +14,8 @@ export const addUser = apiModule + '/createUser'
 
 export const updateUser = apiModule + '/updateUser'
 
+export const changeUserStatus = apiModule + '/changeUserStatus'
+
 export const getMenuListByRoleId = apiModule + '/getMenusByRoleIds'
 
 export const getMenuList = apiModule + '/getAllMenus'

@@ -75,40 +75,38 @@
       @confirm="onConfirm"
       content-height="50vh"
     >
-      <template #content>
-        <a-form :model="{}" :wrapperCol="{ span: 18 }">
-          <a-form-item
-            :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
-            :label="item.label"
-            v-for="item of itemFormOptions"
-            :key="item.key"
-          >
-            <template v-if="item.type === 'tree-select'">
-              <a-tree-select
-                v-model="item.value.value"
-                style="width: 100%"
-                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                :placeholder="item.placeholder"
-                allow-clear
-                :data="treeData"
-              />
-            </template>
-            <template v-if="item.type === 'input'">
-              <a-input
-                v-model="item.value.value"
-                :placeholder="item.placeholder"
-                :disabled="item.disabled ? item.disabled.value : false"
-              />
-            </template>
-            <template v-if="item.type === 'icon'">
-              <IconSelector v-model:value="item.value.value" />
-            </template>
-            <template v-if="item.type === 'switch'">
-              <a-switch v-model="item.value.value" />
-            </template>
-          </a-form-item>
-        </a-form>
-      </template>
+      <a-form :model="{}" :wrapperCol="{ span: 18 }">
+        <a-form-item
+          :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
+          :label="item.label"
+          v-for="item of itemFormOptions"
+          :key="item.key"
+        >
+          <template v-if="item.type === 'tree-select'">
+            <a-tree-select
+              v-model="item.value.value"
+              style="width: 100%"
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :placeholder="item.placeholder"
+              allow-clear
+              :data="treeData"
+            />
+          </template>
+          <template v-if="item.type === 'input'">
+            <a-input
+              v-model="item.value.value"
+              :placeholder="item.placeholder"
+              :disabled="item.disabled ? item.disabled.value : false"
+            />
+          </template>
+          <template v-if="item.type === 'icon'">
+            <IconSelector v-model:value="item.value.value" />
+          </template>
+          <template v-if="item.type === 'switch'">
+            <a-switch v-model="item.value.value" />
+          </template>
+        </a-form-item>
+      </a-form>
     </ModalDialog>
   </div>
 </template>

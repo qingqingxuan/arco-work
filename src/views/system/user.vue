@@ -28,13 +28,20 @@
               :fixed="item.fixed"
               :width="item.width"
             >
-              <template v-if="item.key === 'index'" #cell="{ rowIndex }">
-                {{ rowIndex + 1 }}
+              <template v-if="item.key === 'index'" #cell="dataItem">
+                {{ (dataItem as any).rowIndex + 1 }}
               </template>
               <template v-else-if="item.key === 'gender'" #cell="{ record }">
                 <a-tag :color="record.gender === 1 ? 'green' : 'red'">
                   {{ record.gender === 1 ? '男' : '女' }}
                 </a-tag>
+              </template>
+              <template v-else-if="item.key === 'roleName'" #cell="{ record }">
+                <a-space>
+                  <a-tag v-for="it of record.roles" :key="it.id">
+                    {{ it.description }}
+                  </a-tag>
+                </a-space>
               </template>
               <template v-else-if="item.key === 'avatar'" #cell="{}">
                 <a-avatar :size="30" :style="{ backgroundColor: 'var(--color-primary-light-1)' }">
@@ -71,40 +78,49 @@
         <TableFooter ref="tableFooterRef" :pagination="pagination" />
       </template>
     </TableBody>
-    <ModalDialog ref="modalDialogRef" :title="actionTitle" @confirm="onDataFormConfirm">
-      <template #content>
-        <a-form ref="userFormRef" :model="formModel">
-          <a-form-item v-for="item of formItems" :key="item.formItem.field" v-bind="item.formItem">
-            <FormRender :render="item.render" :options="item.options" />
-          </a-form-item>
-        </a-form>
-      </template>
+    <ModalDialog
+      ref="modalDialogRef"
+      :title="dialogTitle"
+      :loading="submitLoading"
+      @confirm="onDataFormConfirm"
+    >
+      <a-form ref="userFormRef" :model="formModel">
+        <a-form-item v-for="item of formItems" :key="item.formItem.field" v-bind="item.formItem">
+          <FormRender :render="item.render" :options="item.options" />
+        </a-form-item>
+      </a-form>
     </ModalDialog>
   </div>
 </template>
 
 <script lang="ts">
   import { get, post } from '@/api/http'
-  import { getUserList, updateUser, addUser } from '@/api/url'
+  import { getUserList, updateUser, addUser, changeUserStatus } from '@/api/url'
   import { usePagination, useRowKey, useTable, useTableColumn, useTableHeight } from '@/hooks/table'
   import { FormInstance, Message, Modal } from '@arco-design/web-vue'
   import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue'
   import { useUserModel, useUserFormItem, UserItem } from './hooks/userHooks'
-  import { ModalDialogType } from '@/types/components'
+  import { useModelDialog } from '@/components/ModalDialog/useModalDialog'
   import { useRoleList } from './hooks/roleHooks'
   import { omit } from 'lodash-es'
-  import { unref } from 'vue'
   export default defineComponent({
     name: 'UserList',
     setup() {
       const table = useTable()
       const rowKey = useRowKey('id')
-      const actionTitle = ref('添加用户')
-      const modalDialogRef = ref<ModalDialogType | null>()
+      const {
+        modalDialogRef,
+        dialogTitle,
+        setDialogTitle,
+        submitLoading,
+        startDialogLoading,
+        showModalDialog,
+        closeModalDialog,
+      } = useModelDialog()
       const userFormRef = ref<FormInstance | null>()
       const pagination = usePagination(doRefresh)
       const { formModel, clearFormModel, setFormModel } = useUserModel()
-      const { formItems } = useUserFormItem(formModel)
+      const { formItems, setFormItemVisible } = useUserFormItem(formModel)
       const tableColumns = useTableColumn([
         table.indexColumn,
         {
@@ -139,27 +155,44 @@
           dataIndex: 'actions',
         },
       ])
-      const expandAllFlag = ref(true)
       async function doRefresh() {
-        const res = await get({
-          url: getUserList,
-          data: () => {
-            return {
-              page: pagination.page,
-              pageSize: pagination.pageSize,
-            }
-          },
-        })
-        table.handleSuccess(res.data)
-        pagination.setTotalSize((res.data as any).totalSize)
+        try {
+          const res = await get({
+            url: getUserList,
+            data: () => {
+              return {
+                page: pagination.page,
+                pageSize: pagination.pageSize,
+              }
+            },
+          })
+          table.handleSuccess(res.data)
+          pagination.setTotalSize((res.data as any).totalSize)
+        } catch (error: any) {
+          table.tableLoading.value = false
+          Message.error(error.message)
+        }
       }
       function onAddItems() {
+        userFormRef.value?.clearValidate()
+        setDialogTitle('添加用户')
         clearFormModel()
-        modalDialogRef.value?.toggle()
+        setFormItemVisible('password', true)
+        setFormItemVisible('status', true)
+        showModalDialog()
       }
       function onChangeItem(item: UserItem) {
-        setFormModel(item)
-        unref(modalDialogRef)?.toggle()
+        userFormRef.value?.clearValidate()
+        setDialogTitle('编辑用户')
+        setFormItemVisible('password', false)
+        setFormItemVisible('status', false)
+        setFormModel({
+          ...item,
+          roles: (item.roles as Array<any>).map((it: any) => {
+            return it.id
+          }),
+        })
+        showModalDialog()
       }
       function onChangeStatusItem(data: any) {
         Modal.confirm({
@@ -169,7 +202,7 @@
           okText: '确定',
           onOk: () => {
             post({
-              url: updateUser,
+              url: changeUserStatus,
               data: {
                 id: data.id,
                 status: data.status === 1 ? 0 : 1,
@@ -191,28 +224,30 @@
           if (validate) {
             return
           }
+          startDialogLoading()
           const res = await post({
-            url: addUser,
+            url: formModel.id ? updateUser : addUser,
             data: formModel.id
               ? {
-                  ...omit(formModel, 'id'),
+                  ...omit(formModel, ['phone']),
                   roles: (formModel.roles as Array<number>).join(','),
                 }
               : {
-                  ...omit(formModel, ['phone']),
+                  ...omit(formModel, 'id'),
                   roles: (formModel.roles as Array<number>).join(','),
                 },
           })
           if (res.code === 200) {
-            Message.success('添加用户成功')
-            modalDialogRef.value?.toggle()
-            doRefresh()
+            setTimeout(() => {
+              Message.success(dialogTitle.value + '成功')
+              closeModalDialog()
+              doRefresh()
+            }, 2000)
           }
         } catch (error: any) {
           Message.error(error.message)
         }
       }
-
       onMounted(async () => {
         table.tableHeight.value = await useTableHeight(getCurrentInstance())
         doRefresh()
@@ -228,12 +263,12 @@
       return {
         modalDialogRef,
         userFormRef,
-        actionTitle,
+        dialogTitle,
+        submitLoading,
         formModel,
         formItems,
         ...table,
         rowKey,
-        expandAllFlag,
         tableColumns,
         pagination,
         onAddItems,

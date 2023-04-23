@@ -6,11 +6,12 @@ import {
   RadioGroup,
   Select,
 } from '@arco-design/web-vue'
-import { VNode, h, reactive, ref } from 'vue'
+import { VNode, computed, h, reactive, ref } from 'vue'
 
 export interface FormItemProps {
   formItem: FormItemInstance['$props']
   render: (params: any) => VNode
+  visible: boolean
   [propName: string]: any
 }
 
@@ -45,6 +46,7 @@ export function useUserFormItem(formModel: UserItem) {
           },
         })
       },
+      visible: true,
     },
     {
       formItem: {
@@ -66,6 +68,7 @@ export function useUserFormItem(formModel: UserItem) {
           },
         })
       },
+      visible: true,
     },
     {
       formItem: {
@@ -86,6 +89,7 @@ export function useUserFormItem(formModel: UserItem) {
           },
         })
       },
+      visible: true,
     },
     {
       formItem: {
@@ -106,6 +110,7 @@ export function useUserFormItem(formModel: UserItem) {
           },
         })
       },
+      visible: true,
     },
     {
       formItem: {
@@ -129,6 +134,7 @@ export function useUserFormItem(formModel: UserItem) {
         })
       },
       options: [],
+      visible: true,
     },
     {
       formItem: {
@@ -170,10 +176,24 @@ export function useUserFormItem(formModel: UserItem) {
           }
         )
       },
+      visible: true,
     },
   ])
+  function setFormItemVisible(item: FormItemProps | string, visible: boolean) {
+    let tempItem = null
+    if (typeof item === 'string') {
+      tempItem = formItems.value.find((it) => it.formItem.field === item)
+    } else {
+      tempItem = item
+    }
+    if (!tempItem) return
+    tempItem.visible = visible
+  }
   return {
-    formItems,
+    formItems: computed(() => {
+      return formItems.value.filter((it) => it.visible)
+    }),
+    setFormItemVisible,
   }
 }
 
