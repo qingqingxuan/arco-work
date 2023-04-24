@@ -18,7 +18,7 @@
         >
           <template #columns>
             <a-table-column
-              v-for="item of tableColumns"
+              v-for="item of columns"
               :key="item.key"
               :align="item.align"
               :title="(item.title as string)"
@@ -58,22 +58,10 @@
         </a-table>
       </template>
     </TableBody>
-    <ModalDialog ref="modalDialogRef" :title="actionTitle" @confirm="onDataFormConfirm">
-      <a-form :model="formModel">
-        <a-form-item
-          v-for="item of formItems"
-          :class="[item.required ? 'form-item__require' : 'form-item__no_require']"
-          :label="item.label"
-          :key="item.key"
-          :disabled="item.disabled"
-        >
-          <template v-if="item.type === 'input'">
-            <a-input :placeholder="item.placeholder" v-model="(formModel as any)[item.key]">
-              <template #prepend v-if="item.key === 'name'">
-                {{ ROLE_CODE_FLAG }}
-              </template>
-            </a-input>
-          </template>
+    <ModalDialog ref="modalDialogRef" :title="dialogTitle" @confirm="onDataFormConfirm">
+      <a-form ref="roleFormRef" :model="formModel">
+        <a-form-item v-for="item of formItems" :key="item.formItem.field" v-bind="item.formItem">
+          <FormRender :render="item.render" :disabled="item.disabled" />
         </a-form-item>
       </a-form>
     </ModalDialog>
@@ -99,135 +87,56 @@
     getRoleList,
     updateRole,
   } from '@/api/url'
-  import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
-  import type { ModalDialogType, FormItem } from '@/types/components'
+  import { useRowKey, useTable } from '@/hooks/table'
+  import type { ModalDialogType } from '@/types/components'
   import { Message, Modal, TreeInstance } from '@arco-design/web-vue'
-  import { reactive } from 'vue'
-  import { defineComponent, nextTick, onMounted, ref } from 'vue'
-  import { Role } from './hooks/roleHooks'
-  const ROLE_CODE_FLAG = 'ROLE_'
+  import { useModelDialog } from '@/components/ModalDialog/useModalDialog'
+  import { defineComponent, onMounted, ref } from 'vue'
+  import {
+    RoleModel,
+    useTableColumn,
+    useFormItems,
+    useRoleModel,
+    ROLE_CODE_FLAG,
+    handleMenuData,
+    useForm,
+  } from './hooks/roleHooks'
 
-  function handleMenuData(
-    menuData: Array<any>,
-    selectedKeys: number[],
-    defaultExpandedKeys: Array<number>
-  ) {
-    const tempMenus = [] as Array<any>
-    menuData.forEach((it) => {
-      const tempMenu = {} as any
-      tempMenu.key = it.id
-      tempMenu.title = it.title
-
-      if (it.children && it.children.length > 0) {
-        defaultExpandedKeys.push(tempMenu.key)
-        const index = selectedKeys.indexOf(tempMenu.key)
-        if (index !== -1) {
-          selectedKeys.splice(selectedKeys.indexOf(tempMenu.key), 1)
-        }
-        tempMenu.children = handleMenuData(it.children, selectedKeys, defaultExpandedKeys)
-      }
-      tempMenus.push(tempMenu)
-    })
-    return tempMenus
-  }
   export default defineComponent({
     name: 'Role',
     setup() {
-      const modalDialogRef = ref<ModalDialogType | null>(null)
       const menuModalDialogRef = ref<ModalDialogType | null>(null)
       const menuTreeRef = ref<TreeInstance | null>(null)
       const table = useTable()
       const rowKey = useRowKey('id')
-      const actionTitle = ref('添加角色')
-      const menuData = ref<Array<any>>([])
-      const tableColumns = useTableColumn([
-        table.indexColumn,
-        {
-          title: '角色名称',
-          key: 'name',
-          dataIndex: 'name',
-        },
-        {
-          title: '角色标识',
-          key: 'code',
-          dataIndex: 'code',
-        },
-        {
-          title: '角色状态',
-          key: 'status',
-          dataIndex: 'status',
-        },
-        {
-          title: '创建时间',
-          key: 'createdAt',
-          dataIndex: 'createdAt',
-        },
-        {
-          title: '操作',
-          key: 'actions',
-          dataIndex: 'actions',
-        },
-      ])
+      const { columns } = useTableColumn()
+      const { formModel, clearFormModel, setFormModel } = useRoleModel()
+      const { formItems, setFormItemDisabled } = useFormItems(formModel)
+      const { roleFormRef, clearValidate } = useForm()
+      const { modalDialogRef, dialogTitle, setDialogTitle, showModalDialog } = useModelDialog()
       const defaultCheckedKeys = ref<Array<number>>([])
       const defaultExpandedKeys = ref<Array<number>>([])
-      let tempRole: { id: any } | null = null
-      const formItems = reactive<FormItem[]>([
-        {
-          label: '角色名称',
-          key: 'name',
-          type: 'input',
-          required: true,
-          disabled: false,
-          placeholder: '请输入角色名称',
-          validator: function () {
-            if (!formModel.name) {
-              Message.error(this.placeholder || '')
-              return false
-            }
-            return true
-          },
-        },
-        {
-          label: '角色描述',
-          key: 'description',
-          required: true,
-          type: 'input',
-          placeholder: '请输入角色描述',
-          validator: function () {
-            if (!formModel.description) {
-              Message.error(this.placeholder || '')
-              return false
-            }
-            return true
-          },
-        },
-      ])
-      const formModel = reactive({
-        id: 0,
-        name: '',
-        description: '',
-      })
+      const menuData = ref<Array<any>>([])
+      let tempRole: RoleModel | null = null
+
       function doRefresh() {
-        get<Role[]>({ url: getRoleList }).then(table.handleSuccess).catch(console.log)
+        get<RoleModel[]>({ url: getRoleList }).then(table.handleSuccess).catch(console.log)
       }
       function onAddItem() {
-        actionTitle.value = '添加角色'
-        modalDialogRef.value?.toggle()
-        formModel.name = ''
-        formModel.description = ''
-        formItems[0].disabled = false
+        clearValidate()
+        setDialogTitle('添加角色')
+        clearFormModel()
+        setFormItemDisabled('code', false)
+        showModalDialog()
       }
-      function onUpdateItem(item: any) {
-        actionTitle.value = '编辑角色'
-        modalDialogRef.value?.toggle()
-        nextTick(() => {
-          formItems[0].disabled = true
-          formModel.id = item.id
-          formModel.name = item.name.replace(ROLE_CODE_FLAG, '')
-          formModel.description = item.description
-        })
+      function onUpdateItem(item: RoleModel) {
+        clearValidate()
+        setDialogTitle('编辑角色')
+        setFormItemDisabled('code', true)
+        setFormModel(item)
+        showModalDialog()
       }
-      function onChangeStatus(data: any) {
+      function onChangeStatus(data: RoleModel) {
         Modal.confirm({
           title: '提示',
           content: data.status === 1 ? '是否要禁用此角色？' : '是否要启用此角色？',
@@ -251,34 +160,33 @@
           },
         })
       }
-      function onDataFormConfirm() {
-        if (formItems.every((it) => (it.validator ? it.validator() : true))) {
-          post({
+      async function onDataFormConfirm() {
+        try {
+          const validate = await roleFormRef.value?.validate()
+          if (validate) {
+            return
+          }
+          const res = await post({
             url: formModel.id ? updateRole : createRole,
             data: formModel.id
               ? {
                   id: formModel.id,
-                  description: formModel.description,
+                  name: formModel.name,
                 }
               : {
-                  name: ROLE_CODE_FLAG + formModel.name,
-                  description: formModel.description,
+                  code: ROLE_CODE_FLAG + formModel.code,
+                  name: formModel.name,
                 },
           })
-            .then((res) => {
-              formModel.id = 0
-              formModel.name = ''
-              formModel.description = ''
-              modalDialogRef.value?.toggle()
-              Message.success(res.msg)
-              doRefresh()
-            })
-            .catch((error: Error) => {
-              Message.error(error.message)
-            })
+          clearFormModel()
+          modalDialogRef.value?.toggle()
+          Message.success(res.msg)
+          doRefresh()
+        } catch (error: any) {
+          Message.error(error.message)
         }
       }
-      async function onShowMenu(item: any) {
+      async function onShowMenu(item: RoleModel) {
         try {
           tempRole = item
           const res = await get({
@@ -333,12 +241,13 @@
         modalDialogRef,
         menuModalDialogRef,
         menuTreeRef,
+        roleFormRef,
         rowKey,
         formModel,
         menuData,
-        tableColumns,
+        columns,
         formItems,
-        actionTitle,
+        dialogTitle,
         defaultCheckedKeys,
         defaultExpandedKeys,
         ...table,

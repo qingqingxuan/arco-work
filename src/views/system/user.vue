@@ -20,7 +20,7 @@
         >
           <template #columns>
             <a-table-column
-              v-for="item of tableColumns"
+              v-for="item of columns"
               :key="item.key"
               :align="item.align"
               :title="(item.title as string)"
@@ -96,10 +96,10 @@
 <script lang="ts">
   import { get, post } from '@/api/http'
   import { getUserList, updateUser, addUser, changeUserStatus } from '@/api/url'
-  import { usePagination, useRowKey, useTable, useTableColumn, useTableHeight } from '@/hooks/table'
+  import { usePagination, useRowKey, useTable, useTableHeight } from '@/hooks/table'
   import { FormInstance, Message, Modal } from '@arco-design/web-vue'
   import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue'
-  import { useUserModel, useUserFormItem, UserItem } from './hooks/userHooks'
+  import { useUserModel, useFormItems, UserModel, useTableColumn } from './hooks/userHooks'
   import { useModelDialog } from '@/components/ModalDialog/useModalDialog'
   import { useRoleList } from './hooks/roleHooks'
   import { omit } from 'lodash-es'
@@ -117,44 +117,11 @@
         showModalDialog,
         closeModalDialog,
       } = useModelDialog()
-      const userFormRef = ref<FormInstance | null>()
       const pagination = usePagination(doRefresh)
       const { formModel, clearFormModel, setFormModel } = useUserModel()
-      const { formItems, setFormItemVisible } = useUserFormItem(formModel)
-      const tableColumns = useTableColumn([
-        table.indexColumn,
-        {
-          title: '名称',
-          key: 'username',
-          dataIndex: 'username',
-        },
-        {
-          title: '手机号',
-          key: 'phone',
-          dataIndex: 'phone',
-        },
-        {
-          title: '邮箱',
-          key: 'email',
-          dataIndex: 'email',
-          width: 200,
-        },
-        {
-          title: '角色',
-          key: 'roleName',
-          dataIndex: 'roleName',
-        },
-        {
-          title: '状态',
-          key: 'status',
-          dataIndex: 'status',
-        },
-        {
-          title: '操作',
-          key: 'actions',
-          dataIndex: 'actions',
-        },
-      ])
+      const { formItems, setFormItemVisible } = useFormItems(formModel)
+      const { columns } = useTableColumn()
+      const userFormRef = ref<FormInstance | null>()
       async function doRefresh() {
         try {
           const res = await get({
@@ -181,7 +148,7 @@
         setFormItemVisible('status', true)
         showModalDialog()
       }
-      function onChangeItem(item: UserItem) {
+      function onChangeItem(item: UserModel) {
         userFormRef.value?.clearValidate()
         setDialogTitle('编辑用户')
         setFormItemVisible('password', false)
@@ -194,7 +161,7 @@
         })
         showModalDialog()
       }
-      function onChangeStatusItem(data: any) {
+      function onChangeStatusItem(data: UserModel) {
         Modal.confirm({
           title: '提示',
           content: data.status === 1 ? '是否要禁用此用户？' : '是否要启用此用户？',
@@ -269,7 +236,7 @@
         formItems,
         ...table,
         rowKey,
-        tableColumns,
+        columns,
         pagination,
         onAddItems,
         onChangeItem,

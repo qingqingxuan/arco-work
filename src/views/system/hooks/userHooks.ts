@@ -1,21 +1,9 @@
-import {
-  FormItemInstance,
-  Input,
-  InputPassword,
-  Radio,
-  RadioGroup,
-  Select,
-} from '@arco-design/web-vue'
-import { VNode, computed, h, reactive, ref } from 'vue'
+import { FormItemProps } from '@/hooks/form'
+import { TableColumnPops, useTableIndexColumn } from '@/hooks/table'
+import { Input, InputPassword, Radio, RadioGroup, Select } from '@arco-design/web-vue'
+import { computed, h, reactive, ref } from 'vue'
 
-export interface FormItemProps {
-  formItem: FormItemInstance['$props']
-  render: (params: any) => VNode
-  visible: boolean
-  [propName: string]: any
-}
-
-export type UserItem = {
+export type UserModel = {
   id: string | number
   username: string
   password: string
@@ -25,7 +13,7 @@ export type UserItem = {
   status: number
 }
 
-export function useUserFormItem(formModel: UserItem) {
+export function useFormItems(formModel: UserModel) {
   const formItems = ref<FormItemProps[]>([
     {
       formItem: {
@@ -197,8 +185,48 @@ export function useUserFormItem(formModel: UserItem) {
   }
 }
 
+export function useTableColumn() {
+  const columns = ref<TableColumnPops[]>([
+    useTableIndexColumn(),
+    {
+      title: '名称',
+      key: 'username',
+      dataIndex: 'username',
+    },
+    {
+      title: '手机号',
+      key: 'phone',
+      dataIndex: 'phone',
+    },
+    {
+      title: '邮箱',
+      key: 'email',
+      dataIndex: 'email',
+      width: 200,
+    },
+    {
+      title: '角色',
+      key: 'roleName',
+      dataIndex: 'roleName',
+    },
+    {
+      title: '状态',
+      key: 'status',
+      dataIndex: 'status',
+    },
+    {
+      title: '操作',
+      key: 'actions',
+      dataIndex: 'actions',
+    },
+  ])
+  return {
+    columns,
+  }
+}
+
 export function useUserModel() {
-  const formModel = reactive<UserItem>({
+  const formModel = reactive<UserModel>({
     id: '',
     username: '',
     password: '',
@@ -216,7 +244,7 @@ export function useUserModel() {
     formModel.roles = undefined
     formModel.status = 1
   }
-  function setFormModel({ id, username, password, phone, email, roles, status }: UserItem) {
+  function setFormModel({ id, username, password, phone, email, roles, status }: UserModel) {
     formModel.id = id || ''
     formModel.username = username || ''
     formModel.password = password || ''

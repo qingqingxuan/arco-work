@@ -1,9 +1,9 @@
-import { reactive, Ref, ref, shallowReactive } from 'vue'
+import { reactive, Ref, ref } from 'vue'
 
 import { TableFooterType, TableHeaderType } from '@/types/components'
 import { TableColumnData } from '@arco-design/web-vue/es/table/interface'
 
-type TableColumnPops = TableColumnData & { key: string | number }
+export type TableColumnPops = TableColumnData & { key: string | number }
 
 interface Table {
   dataList: Array<any>
@@ -47,7 +47,7 @@ export const useTableHeight = async function (currentIns: any): Promise<number> 
 }
 
 export const useTable = function (): Table {
-  const dataList = shallowReactive<Array<any>>([])
+  const dataList = reactive<Array<any>>([])
   const tableHeaderRef = ref<TableHeaderType | null>(null)
   const tableFooterRef = ref<TableFooterType | null>(null)
   const tableHeight = ref(200)
