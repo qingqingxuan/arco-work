@@ -1,4 +1,4 @@
-import { ModalDialogType } from '@/types/components'
+import type { ModalDialogType } from '@/types/components'
 import { ref, unref } from 'vue'
 
 export function useModelDialog() {

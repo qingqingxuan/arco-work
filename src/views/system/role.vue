@@ -26,8 +26,8 @@
               :data-index="(item.key as string)"
               :fixed="item.fixed"
             >
-              <template v-if="item.key === 'index'" #cell="{ rowIndex }">
-                {{ rowIndex + 1 }}
+              <template v-if="item.key === 'index'" #cell="dataItem">
+                {{ (dataItem as any).rowIndex + 1 }}
               </template>
               <template v-else-if="item.key === 'status'" #cell="{ record }">
                 <a-tag v-if="record.status === 1" color="green"> 正常 </a-tag>
@@ -100,10 +100,11 @@
     updateRole,
   } from '@/api/url'
   import { useRowKey, useTable, useTableColumn } from '@/hooks/table'
-  import { ModalDialogType, FormItem } from '@/types/components'
-  import { Message, Modal } from '@arco-design/web-vue'
+  import type { ModalDialogType, FormItem } from '@/types/components'
+  import { Message, Modal, TreeInstance } from '@arco-design/web-vue'
   import { reactive } from 'vue'
   import { defineComponent, nextTick, onMounted, ref } from 'vue'
+  import { Role } from './hooks/roleHooks'
   const ROLE_CODE_FLAG = 'ROLE_'
 
   function handleMenuData(
@@ -134,7 +135,7 @@
     setup() {
       const modalDialogRef = ref<ModalDialogType | null>(null)
       const menuModalDialogRef = ref<ModalDialogType | null>(null)
-      const menuTreeRef = ref<ModalDialogType | null>(null)
+      const menuTreeRef = ref<TreeInstance | null>(null)
       const table = useTable()
       const rowKey = useRowKey('id')
       const actionTitle = ref('添加角色')
@@ -147,9 +148,9 @@
           dataIndex: 'name',
         },
         {
-          title: '角色描述',
-          key: 'description',
-          dataIndex: 'description',
+          title: '角色标识',
+          key: 'code',
+          dataIndex: 'code',
         },
         {
           title: '角色状态',
@@ -158,8 +159,8 @@
         },
         {
           title: '创建时间',
-          key: 'createTime',
-          dataIndex: 'createTime',
+          key: 'createdAt',
+          dataIndex: 'createdAt',
         },
         {
           title: '操作',
@@ -207,7 +208,7 @@
         description: '',
       })
       function doRefresh() {
-        get({ url: getRoleList }).then(table.handleSuccess).catch(console.log)
+        get<Role[]>({ url: getRoleList }).then(table.handleSuccess).catch(console.log)
       }
       function onAddItem() {
         actionTitle.value = '添加角色'
@@ -301,8 +302,8 @@
       }
       async function onUpdateRoleMenus() {
         try {
-          const haflfNodes = menuTreeRef.value.getHalfCheckedNodes()
-          const checkNodes = menuTreeRef.value.getCheckedNodes()
+          const haflfNodes = menuTreeRef.value!.getHalfCheckedNodes()
+          const checkNodes = menuTreeRef.value!.getCheckedNodes()
           const res = await post({
             url: updateMenuByRoleId,
             data: {

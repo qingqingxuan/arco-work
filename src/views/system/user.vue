@@ -39,7 +39,7 @@
               <template v-else-if="item.key === 'roleName'" #cell="{ record }">
                 <a-space>
                   <a-tag v-for="it of record.roles" :key="it.id">
-                    {{ it.description }}
+                    {{ it.name }}
                   </a-tag>
                 </a-space>
               </template>
@@ -166,8 +166,8 @@
               }
             },
           })
-          table.handleSuccess(res.data)
-          pagination.setTotalSize((res.data as any).totalSize)
+          table.handleSuccess(res)
+          pagination.setTotalSize(res.pageInfo?.totalSize || 0)
         } catch (error: any) {
           table.tableLoading.value = false
           Message.error(error.message)
@@ -253,9 +253,9 @@
         doRefresh()
         const item = formItems.value.find((it) => it.formItem.field === 'roles')
         const roleList = await useRoleList()
-        item!.options = roleList.map((it: { description: string; id: any }) => {
+        item!.options = roleList.map((it) => {
           return {
-            label: it.description,
+            label: it.name,
             value: it.id,
           }
         })
