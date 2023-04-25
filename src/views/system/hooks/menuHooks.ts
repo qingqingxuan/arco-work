@@ -1,15 +1,21 @@
 import { FormItemProps } from '@/hooks/form'
 import { TableColumnPops } from '@/hooks/table'
 import {
+  Button,
   FormInstance,
   Input,
   RadioGroup,
+  Space,
   Switch,
+  Tag,
   TreeNodeData,
   TreeSelect,
 } from '@arco-design/web-vue'
 import IconSelector from '@/components/IconSelector.vue'
 import { ref, h, reactive, computed, unref } from 'vue'
+import { resolve } from 'path-browserify'
+import * as Icons from '@arco-design/web-vue/es/icon'
+import { isExternal, toHump } from '@/utils'
 
 export type MenuModel = {
   id: number
@@ -31,12 +37,22 @@ export type MenuModel = {
   children?: MenuModel[]
 }
 
+export interface ITreeNodeData extends TreeNodeData {
+  path: string
+  children: ITreeNodeData[]
+}
+
+export interface TableAction<T = any> {
+  onUpdate: (t: T) => void
+  onDelete: (t: T) => void
+}
+
 function handleParentList(models: MenuModel[]) {
-  const parentList: TreeNodeData[] = []
+  const parentList: ITreeNodeData[] = []
   models.forEach((it) => {
     if (it.type === 0) {
-      const item: TreeNodeData = { key: it.id, title: it.title, children: [] }
-      if (item.children) {
+      const item: ITreeNodeData = { key: it.id, title: it.title, children: [], path: it.path }
+      if (it.children) {
         item.children = handleParentList(it.children!)
       }
       parentList.push(item)
@@ -45,24 +61,21 @@ function handleParentList(models: MenuModel[]) {
   return parentList
 }
 
-function getParentMenuPath(models: MenuModel[], id: number) {
+function getParentMenuPath(models: ITreeNodeData[], id: number) {
   let path = ''
   for (const it of models) {
-    if (it.type === 0) {
-      if (it.id === id) {
-        path = it.path
-        return path
-      }
-      if (it.children) {
-        path = getParentMenuPath(it.children, id)
-        return path
-      }
+    if (it.key === id) {
+      path = it.path
+      break
+    }
+    if (it.children) {
+      path = getParentMenuPath(it.children, id)
     }
   }
   return path
 }
 
-export function useTableColumn() {
+export function useTableColumn(actions?: TableAction<MenuModel>) {
   const columns = ref<TableColumnPops[]>([
     {
       title: '菜单名称',
@@ -75,40 +88,129 @@ export function useTableColumn() {
       dataIndex: 'path',
     },
     {
-      title: '组件地址',
+      title: '菜单类型',
+      key: 'type',
+      dataIndex: 'type',
+      render({ record }) {
+        return h(
+          Tag,
+          {
+            color: record.type === 0 ? 'red' : 'green',
+            size: 'small',
+          },
+          {
+            default: () => (record.type === 0 ? '目录' : '页面'),
+          }
+        )
+      },
+    },
+    {
+      title: '页面地址',
       key: 'component',
       dataIndex: 'component',
-      width: 100,
+      render({ record }) {
+        return h(
+          'div',
+          {},
+          {
+            default: () => record.component || '-',
+          }
+        )
+      },
     },
     {
       title: '路由name',
       key: 'routeName',
       dataIndex: 'routeName',
-      width: 100,
+      render({ record }) {
+        return h(
+          'div',
+          {},
+          {
+            default: () => record.routeName || '-',
+          }
+        )
+      },
     },
     {
       title: '菜单图标',
       key: 'icon',
       dataIndex: 'icon',
-      width: 100,
+      render({ record }) {
+        if (record.icon) {
+          return h((Icons as any)[toHump(record.icon)], {
+            style: {
+              color: 'var(--color-primary-light-1)',
+              fontSize: '18px',
+            },
+          })
+        }
+        return h('span')
+      },
     },
     {
       title: '是否缓存',
       key: 'cacheable',
       dataIndex: 'cacheable',
-      width: 100,
+      render({ record }) {
+        return h(Switch, {
+          checkedValue: 1,
+          uncheckedValue: 0,
+          modelValue: record.cacheable,
+          size: 'small',
+        })
+      },
     },
     {
       title: '是否固定',
       key: 'affix',
       dataIndex: 'affix',
-      width: 100,
+      render({ record }) {
+        return h(Switch, {
+          checkedValue: 1,
+          uncheckedValue: 0,
+          modelValue: record.affix,
+          size: 'small',
+        })
+      },
     },
     {
       title: '操作',
       key: 'actions',
       dataIndex: 'actions',
       fixed: 'right',
+      render({ record }) {
+        return h(
+          Space,
+          {},
+          {
+            default: () => [
+              h(
+                Button,
+                {
+                  size: 'mini',
+                  status: 'success',
+                  onClick: () => actions?.onUpdate(record as MenuModel),
+                },
+                {
+                  default: () => '编辑',
+                }
+              ),
+              h(
+                Button,
+                {
+                  size: 'mini',
+                  status: 'danger',
+                  onClick: () => actions?.onDelete(record as MenuModel),
+                },
+                {
+                  default: () => '删除',
+                }
+              ),
+            ],
+          }
+        )
+      },
     },
   ])
   return {
@@ -172,7 +274,8 @@ export function useFormItems(formModel: MenuModel) {
         },
         validateTrigger: 'blur',
         tooltip: `菜单的地址会以父地址加上此属性值为最终菜单地址，如父级菜单地址为：/system 而且此属性值设置成了 menu，则最终地址为：/system/menu，系统会以此地址作为文件地址去/src/views/下寻找对应的.vue文件。
-          \n总之，在设置此属性的时候一定要以系统在/src/views/目录下能找到本地文件路径为准则。如果地址以 / 开头如 /menu，则不会自动拼接父级菜单路径，最终路径为：/menu`,
+          \n总之，在设置此属性的时候一定要以系统在/src/views/目录下能找到本地文件路径为准则。如果地址以 / 开头如 /menu，则不会自动拼接父级菜单路径，最终路径为：/menu。 
+          \n如果是外部链接请输入以 http:// 或者 https:// 开头的完整链接，如：http://www.vueadminwork.com`,
       },
       visible: true,
       render: (props) => {
@@ -206,7 +309,7 @@ export function useFormItems(formModel: MenuModel) {
       formItem: {
         label: '菜单类型',
         field: 'type',
-        tooltip: '菜单类型可以是目录也可以是组件',
+        tooltip: '菜单类型可以是目录也可以是页面',
       },
       visible: true,
       disabled: false,
@@ -224,7 +327,7 @@ export function useFormItems(formModel: MenuModel) {
               value: 0,
             },
             {
-              label: '组件',
+              label: '页面',
               value: 1,
             },
           ],
@@ -251,7 +354,7 @@ export function useFormItems(formModel: MenuModel) {
     },
     {
       formItem: {
-        label: '组件路径',
+        label: '页面路径',
         field: 'component',
         tooltip:
           '默认与菜单地址属性一致，如果想单独设置本地文件路径则需要用此属性，如设置为： /system/local-path/department。则系统会此此路径在/src/views目录下进行寻找对应的.vue文件。注意不要带有.vue文件后缀',
@@ -259,7 +362,7 @@ export function useFormItems(formModel: MenuModel) {
       visible: false,
       render: (props) => {
         return h(Input, {
-          placeholder: '请输入组件路径',
+          placeholder: '请输入页面路径',
           modelValue: formModel.component,
           disabled: props.disabled,
           onInput(value) {
@@ -280,6 +383,7 @@ export function useFormItems(formModel: MenuModel) {
           modelValue: formModel.cacheable,
           checkedValue: 1,
           uncheckedValue: 0,
+          size: 'small',
           onChange(value) {
             formModel.cacheable = value as number
           },
@@ -298,6 +402,7 @@ export function useFormItems(formModel: MenuModel) {
           modelValue: formModel.affix,
           checkedValue: 1,
           uncheckedValue: 0,
+          size: 'small',
           onChange(value) {
             formModel.affix = value as number
           },
@@ -332,6 +437,7 @@ export function useFormItems(formModel: MenuModel) {
     }),
     setFormItemDisabled,
     setParentOptions,
+    onChangeType,
   }
 }
 
@@ -372,20 +478,35 @@ export function useMenuModel() {
     formModel.sort = 0
     formModel.status = 0
   }
-  function setFormModel(model: MenuModel) {
+  function setFormModel(model: MenuModel, formItem: FormItemProps) {
     Object.keys(model).forEach((it: string) => {
       if (it !== 'children') {
         ;(formModel as any)[it] = (model as any)[it]
       }
-      if (it === 'pid' && (model as any)[it] === 0) {
-        formModel.pid = ''
-      }
     })
+    if (formModel.pid === 0) {
+      formModel.pid = ''
+    } else {
+      const parentPath = getParentMenuPath(formItem.options, formModel.pid as number)
+      formModel.path = formModel.path.replace(parentPath, '').replace('/', '')
+    }
   }
-  function getFormModel() {
+  function getFormModel(formItem: FormItemProps) {
     const model = { ...formModel } as any
     delete model.children
     model.pid = formModel.pid === '' ? 0 : formModel.pid
+    if (formModel.pid) {
+      if (!isExternal(formModel.path)) {
+        model.path = resolve(
+          getParentMenuPath(formItem.options, formModel.pid as number),
+          formModel.path
+        )
+      }
+    } else {
+      if (!isExternal(formModel.path)) {
+        model.path = resolve('/', formModel.path)
+      }
+    }
     if (formModel.id === 0) {
       // 新增模式
       delete model.id

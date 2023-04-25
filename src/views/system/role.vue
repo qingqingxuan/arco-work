@@ -70,7 +70,7 @@
         ref="menuTreeRef"
         :data="menuData"
         checkable
-        v-model:expanded-keys="defaultExpandedKeys"
+        :expanded-keys="defaultExpandedKeys"
         v-model:checked-keys="defaultCheckedKeys"
       />
     </ModalDialog>
@@ -210,20 +210,19 @@
       }
       async function onUpdateRoleMenus() {
         try {
-          const haflfNodes = menuTreeRef.value!.getHalfCheckedNodes()
-          const checkNodes = menuTreeRef.value!.getCheckedNodes()
+          const checkNodes = menuTreeRef.value!.getCheckedNodes({
+            includeHalfChecked: true,
+          })
+          const keys = new Set(checkNodes.map((it) => it?.key))
+          if (keys.size === 0) {
+            Message.error('请至少选择一个菜单')
+            return
+          }
           const res = await post({
             url: updateMenuByRoleId,
             data: {
               roleId: tempRole?.id,
-              menus: [
-                ...haflfNodes.map((it: any) => {
-                  return it.key
-                }),
-                ...checkNodes.map((it: any) => {
-                  return it.key
-                }),
-              ].join(','),
+              menus: Array.from(keys).join(','),
             },
             headers: {
               [CONTENT_TYPE]: FORM_URLENCODED,

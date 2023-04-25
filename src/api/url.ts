@@ -24,6 +24,8 @@ export const createMenu = apiModule + '/createMenu'
 
 export const updateMenu = apiModule + '/updateMenu'
 
+export const deleteMenu = apiModule + '/deleteMenu'
+
 export const getSelectedMenusByRoleId = apiModule + '/getSelectedMenusByRoleId'
 
 export const getRoleList = apiModule + '/getAllRoles'
