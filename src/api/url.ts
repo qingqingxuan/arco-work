@@ -20,6 +20,10 @@ export const getMenuListByRoleId = apiModule + '/getMenusByRoleIds'
 
 export const getMenuList = apiModule + '/getAllMenus'
 
+export const createMenu = apiModule + '/createMenu'
+
+export const updateMenu = apiModule + '/updateMenu'
+
 export const getSelectedMenusByRoleId = apiModule + '/getSelectedMenusByRoleId'
 
 export const getRoleList = apiModule + '/getAllRoles'

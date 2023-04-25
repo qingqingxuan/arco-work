@@ -237,7 +237,6 @@
       }
       onMounted(doRefresh)
       return {
-        ROLE_CODE_FLAG,
         modalDialogRef,
         menuModalDialogRef,
         menuTreeRef,

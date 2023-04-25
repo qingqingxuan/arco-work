@@ -23,14 +23,7 @@ export interface Response<T = any> {
   pageInfo?: PageInfo
 }
 
-function http<T extends Record<string, any>>({
-  url,
-  data,
-  method,
-  headers,
-  beforeRequest,
-  afterRequest,
-}: HttpOption) {
+function http<T = any>({ url, data, method, headers, beforeRequest, afterRequest }: HttpOption) {
   const successHandler = (res: AxiosResponse<Response<T>>) => {
     if (res.data.code === 200) {
       return res.data
@@ -49,7 +42,7 @@ function http<T extends Record<string, any>>({
     : request.post(url, params, { headers: headers }).then(successHandler, failHandler)
 }
 
-export function get<T extends Record<string, any>>({
+export function get<T = any>({
   url,
   data,
   method = 'GET',
@@ -65,7 +58,7 @@ export function get<T extends Record<string, any>>({
   })
 }
 
-export function post<T extends Record<string, any>>({
+export function post<T = any>({
   url,
   data,
   method = 'POST',
@@ -100,7 +93,7 @@ export default {
 declare module 'vue' {
   // 为 `this.$` 提供类型声明
   interface ComponentCustomProperties {
-    $get: <T extends Record<string, any>>(options: HttpOption) => Promise<Response<T>>
-    $post: <T extends Record<string, any>>(options: HttpOption) => Promise<Response<T>>
+    $get: <T = any>(options: HttpOption) => Promise<Response<T>>
+    $post: <T = any>(options: HttpOption) => Promise<Response<T>>
   }
 }

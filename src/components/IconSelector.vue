@@ -47,7 +47,7 @@
   import { useClipboard } from '@vueuse/core'
   import { Message } from '@arco-design/web-vue'
   import { ref, watch } from 'vue'
-  const emit = defineEmits(['onSelect', 'update:value'])
+  const emit = defineEmits(['select', 'update:value'])
   const props = defineProps({
     value: {
       type: String,
@@ -98,7 +98,7 @@
     }
   }
   async function onSelectItem(item: string) {
-    emit('onSelect', item)
+    emit('select', item)
     emit('update:value', item)
     seletedItem.value = item
     visible.value = false
