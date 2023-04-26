@@ -1,27 +1,8 @@
 import { AxiosResponse } from 'axios'
 import type { App } from 'vue'
 import request from './axios.config'
-
-export interface HttpOption {
-  url: string
-  data?: any
-  method?: string
-  headers?: any
-  beforeRequest?: () => void
-  afterRequest?: () => void
-}
-
-type PageInfo = {
-  page: number
-  totalSize: number
-}
-
-export interface Response<T = any> {
-  code: number
-  msg: string
-  data: T
-  pageInfo?: PageInfo
-}
+import { Message } from '@arco-design/web-vue'
+import { HttpOption, Response } from './types'
 
 export function http<T = any>({
   url,
@@ -34,15 +15,12 @@ export function http<T = any>({
   const successHandler = (res: AxiosResponse<Response<T>>) => {
     if (res.data.code === 200) {
       return res.data
-    } else {
-      throw new Error(
-        res.data.msg || '返回的状态码不是200，请到/src/api/http.ts中进行修改后端返回正确的状态码'
-      )
     }
+    Message.error(res.data.msg)
   }
-  const failHandler = (error: Response<Error>) => {
+  const failHandler = (error: Error) => {
     afterRequest && afterRequest()
-    throw new Error(error.msg || '请求失败，未知异常')
+    return Promise.reject(error)
   }
   beforeRequest && beforeRequest()
   method = method || 'GET'

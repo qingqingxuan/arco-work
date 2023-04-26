@@ -1,4 +1,5 @@
 import { useUserStoreContext } from '@/store/modules/user'
+import { Message } from '@arco-design/web-vue'
 import Axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 
@@ -50,18 +51,27 @@ Object.keys(resInterceptors).forEach((it) => {
 
 service.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
-    console.log(response)
     if (response.status === 200) {
       return response
     } else {
       throw new Error(response.status.toString())
     }
   },
-  (error) => {
+  (error: Error) => {
     if (import.meta.env.MODE === 'development') {
       console.log(error)
     }
-    return Promise.reject({ code: 500, msg: '服务器异常，请稍后重试…' })
+    try {
+      const errorObj = JSON.parse(error.message)
+      if (errorObj.code === 401) {
+        Message.error(errorObj.message)
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
+      }
+    } catch (e) {
+      return Promise.reject({ code: 500, message: error.message || '服务器异常，请稍后重试…' })
+    }
   }
 )
 

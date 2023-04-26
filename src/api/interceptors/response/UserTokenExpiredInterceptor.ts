@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios'
-import { Message } from '@arco-design/web-vue'
+import { Response } from '../../types'
 
-export default function (response: AxiosResponse): AxiosResponse {
-  console.log(response)
+export default function (response: AxiosResponse<Response>): AxiosResponse {
   if (response.status === 200) {
-    Message.error('当前用户登录已过期，请重新登录')
-    throw new Error('11')
+    if (response.data.code === 401) {
+      throw new Error(JSON.stringify({ code: 401, message: '当前登录已过期，请重新登录' }))
+    }
+    return response
   }
   return response
 }

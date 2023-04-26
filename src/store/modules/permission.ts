@@ -48,9 +48,6 @@ const usePermissionStore = defineStore('permission-route', {
           return generatorRoutes(defaultRoutes)
         }
       } catch (error) {
-        console.log(
-          '路由加载失败了，请清空一下Cookie和localStorage，重新登录；如果已经采用真实接口的，请确保菜单接口地址真实可用并且返回的数据格式和mock中的一样'
-        )
         return []
       }
     },
@@ -78,6 +75,7 @@ const usePermissionStore = defineStore('permission-route', {
         },
       })
       this.permissionRoutes = [...constantRoutes, ...accessRoutes]
+      return Promise.resolve(accessRoutes.length !== 0)
     },
     isEmptyPermissionRoute() {
       return !this.permissionRoutes || this.permissionRoutes.length === 0

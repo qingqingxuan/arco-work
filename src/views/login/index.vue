@@ -56,7 +56,8 @@
   import { useRoute, useRouter } from 'vue-router'
   import ImageBg1 from '@/assets/img_login_bg_01.png'
   import logo from '@/assets/logo.png'
-  import { post, Response } from '@/api/http'
+  import { post } from '@/api/http'
+  import { Response } from '@/api/types'
   import { login } from '@/api/url'
   import { Message } from '@arco-design/web-vue'
   import setting from '../../setting'
@@ -86,13 +87,13 @@
           .then(({ data }: Response) => {
             userStore
               .saveUser(data.userInfo, data.roles || null, data.token)
-              .then(() => {
+              .then((userInfo) => {
                 router
                   .replace({
                     path: route.query.redirect ? (route.query.redirect as string) : '/',
                   })
                   .then(() => {
-                    Message.success('登录成功，欢迎：' + username.value)
+                    Message.success('登录成功，欢迎：' + userInfo.username)
                     loading.value = false
                   })
               })
@@ -101,11 +102,8 @@
                 Message.error(error.message)
               })
           })
-          .catch((error) => {
-            console.log(error)
-
+          .catch(() => {
             loading.value = false
-            Message.error(error.message)
           })
       }
       return {

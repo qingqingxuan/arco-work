@@ -14,13 +14,22 @@ function usePermissionGuard() {
       return {
         path: '/login',
         query: { redirect: to.fullPath },
+        replace: true,
       }
     }
     const permissionStore = usePermissionStore()
     const isEmptyRoute = permissionStore.isEmptyPermissionRoute()
     if (isEmptyRoute) {
-      await permissionStore.initPermissionRoute()
-      return { ...to, replace: true }
+      const result = await permissionStore.initPermissionRoute()
+      if (result) {
+        return { ...to, replace: true }
+      } else {
+        return {
+          path: '/login',
+          query: { redirect: to.fullPath },
+          replace: true,
+        }
+      }
     }
     return true
   })

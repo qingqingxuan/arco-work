@@ -94,13 +94,11 @@ export function useTableColumn(actions?: TableAction<MenuModel>) {
       title: '菜单名称',
       key: 'title',
       dataIndex: 'title',
-      width: 200,
     },
     {
       title: '菜单地址',
       key: 'path',
       dataIndex: 'path',
-      width: 200,
     },
     {
       title: '菜单图标',
@@ -149,7 +147,6 @@ export function useTableColumn(actions?: TableAction<MenuModel>) {
       title: '页面地址',
       key: 'component',
       dataIndex: 'component',
-      width: 150,
       render({ record }) {
         return h(
           'div',
