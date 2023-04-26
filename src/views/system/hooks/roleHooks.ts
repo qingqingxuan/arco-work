@@ -2,8 +2,9 @@ import { get } from '@/api/http'
 import { getRoleList } from '@/api/url'
 import { FormItemProps } from '@/hooks/form'
 import { TableColumnPops, useTableIndexColumn } from '@/hooks/table'
-import { FormInstance, Input } from '@arco-design/web-vue'
+import { FormInstance, Input, TreeNodeData } from '@arco-design/web-vue'
 import { ref, h, reactive, unref } from 'vue'
+import { MenuModel } from './menuHooks'
 
 export const ROLE_CODE_FLAG = 'ROLE_'
 
@@ -157,20 +158,21 @@ export function useRoleModel() {
 }
 
 export function handleMenuData(
-  menuData: Array<any>,
+  menuData: Array<MenuModel>,
   selectedKeys: number[],
   defaultExpandedKeys: Array<number>
 ) {
-  const tempMenus = [] as Array<any>
+  const tempMenus: Array<TreeNodeData> = []
   menuData.forEach((it) => {
-    const tempMenu = {} as any
+    const tempMenu: TreeNodeData = {}
     tempMenu.key = it.id
     tempMenu.title = it.title
+    tempMenu.disabled = it.children && it.children.length === 0 && it.type === 0
     if (it.children && it.children.length > 0) {
-      defaultExpandedKeys.push(tempMenu.key)
-      const index = selectedKeys.indexOf(tempMenu.key)
+      defaultExpandedKeys.push(tempMenu.key as number)
+      const index = selectedKeys.indexOf(tempMenu.key as number)
       if (index !== -1) {
-        selectedKeys.splice(selectedKeys.indexOf(tempMenu.key), 1)
+        selectedKeys.splice(selectedKeys.indexOf(tempMenu.key as number), 1)
       }
       tempMenu.children = handleMenuData(it.children, selectedKeys, defaultExpandedKeys)
     }

@@ -2,6 +2,9 @@ import { useUserStoreContext } from '@/store/modules/user'
 import Axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 
+const reqInterceptors = import.meta.glob('./interceptors/request/*.ts', { eager: true })
+const resInterceptors = import.meta.glob('./interceptors/response/*.ts', { eager: true })
+
 export const baseURL = import.meta.env.VITE_PROXY_API
 
 export const CONTENT_TYPE = 'Content-Type'
@@ -37,8 +40,17 @@ service.interceptors.request.use(
   }
 )
 
+Object.keys(reqInterceptors).forEach((it) => {
+  service.interceptors.request.use((reqInterceptors as any)[it].default)
+})
+
+Object.keys(resInterceptors).forEach((it) => {
+  service.interceptors.response.use((resInterceptors as any)[it].default)
+})
+
 service.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
+    console.log(response)
     if (response.status === 200) {
       return response
     } else {

@@ -42,26 +42,25 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from 'vue'
+  import { defineComponent, onMounted } from 'vue'
   import { get, post } from '@/api/http'
   import { getMenuList, createMenu, updateMenu, deleteMenu } from '@/api/url'
   import { useRowKey, useTable } from '@/hooks/table'
   import { Message, Modal } from '@arco-design/web-vue'
-  import { reactive } from 'vue'
-  import { MenuModel, useTableColumn, useFormItems, useMenuModel, useForm } from './hooks/menuHooks'
+  import {
+    MenuModel,
+    getExpandedMenus,
+    useTableColumn,
+    useFormItems,
+    useMenuModel,
+    useForm,
+    useExpandedKeys,
+  } from './hooks/menuHooks'
   import { useModelDialog } from '@/components/ModalDialog/useModalDialog'
-  interface TreeItem {
-    title: string
-    key: string
-    children?: TreeItem[]
-  }
   export default defineComponent({
     name: 'Menu',
     setup() {
-      const expandedKeys = reactive<number[]>([])
       const table = useTable()
-      const treeData = ref<Array<TreeItem>>([])
-      const dataForm = ref()
       const rowKey = useRowKey('id')
       const { formModel, clearFormModel, setFormModel, getFormModel } = useMenuModel()
       const { columns } = useTableColumn({
@@ -71,6 +70,7 @@
       const { formItems, setParentOptions, setFormItemDisabled, onChangeType } =
         useFormItems(formModel)
       const { menuFormRef, clearValidate } = useForm()
+      const { keys: expandedKeys, setExpandKeys } = useExpandedKeys()
       const {
         submitLoading,
         startDialogLoading,
@@ -83,19 +83,9 @@
       } = useModelDialog()
       async function doRefresh() {
         const res = await get<MenuModel[]>({ url: getMenuList })
-        handleData(res.data)
+        setExpandKeys(getExpandedMenus(res.data))
         setParentOptions(res.data)
         table.handleSuccess(res)
-      }
-      function handleData(data: Array<any>) {
-        data.forEach((it) => {
-          if (it.children && it.children.length > 0) {
-            expandedKeys.push(it.id)
-            handleData(it.children)
-          } else {
-            delete it.children
-          }
-        })
       }
       function onAddItem() {
         setDialogTitle('添加菜单')
@@ -163,17 +153,17 @@
           },
         })
       }
-      onMounted(doRefresh)
+      onMounted(() => {
+        doRefresh()
+      })
       return {
         rowKey,
         dialogTitle,
         submitLoading,
         expandedKeys,
         modalDialogRef,
-        dataForm,
         menuFormRef,
         ...table,
-        treeData,
         columns,
         formItems,
         formModel,
@@ -185,8 +175,3 @@
     },
   })
 </script>
-<style lang="less" scoped>
-  :deep(.arco-table-cell-expand-icon) {
-    justify-content: space-around;
-  }
-</style>

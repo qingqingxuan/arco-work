@@ -73,9 +73,12 @@
         }
       }
     }
-    :deep(.arco-menu-dark .arco-menu-item:hover, .arco-menu-dark
-        .arco-menu-group-title:hover, .arco-menu-dark .arco-menu-pop-header:hover, .arco-menu-dark
-        .arco-menu-inline-header:hover) {
+    :deep(
+        .arco-menu-dark .arco-menu-item:hover,
+        .arco-menu-dark .arco-menu-group-title:hover,
+        .arco-menu-dark .arco-menu-pop-header:hover,
+        .arco-menu-dark .arco-menu-inline-header:hover
+      ) {
       color: rgb(var(--primary-6)) !important;
       & .arco-menu-icon {
         color: rgb(var(--primary-6)) !important;
@@ -118,9 +121,12 @@
         }
       }
     }
-    :deep(.arco-menu-dark .arco-menu-item:hover, .arco-menu-dark
-        .arco-menu-group-title:hover, .arco-menu-dark .arco-menu-pop-header:hover, .arco-menu-dark
-        .arco-menu-inline-header:hover) {
+    :deep(
+        .arco-menu-dark .arco-menu-item:hover,
+        .arco-menu-dark .arco-menu-group-title:hover,
+        .arco-menu-dark .arco-menu-pop-header:hover,
+        .arco-menu-dark .arco-menu-inline-header:hover
+      ) {
       color: var(--color-white) !important;
       & .arco-menu-icon {
         color: var(--color-white) !important;

@@ -4,6 +4,7 @@ import {
   Button,
   FormInstance,
   Input,
+  InputNumber,
   RadioGroup,
   Space,
   Switch,
@@ -21,7 +22,6 @@ export type MenuModel = {
   id: number
   pid: number | string
   title: string
-  routeName: string
   iconPrefix: string
   icon: string
   type: number
@@ -75,22 +75,56 @@ function getParentMenuPath(models: ITreeNodeData[], id: number) {
   return path
 }
 
+export function getExpandedMenus(data: Array<MenuModel>) {
+  const expandedKeys: number[] = []
+  data.forEach((it) => {
+    if (it.children && it.children.length > 0) {
+      expandedKeys.push(it.id)
+      expandedKeys.push(...getExpandedMenus(it.children))
+    } else {
+      delete it.children
+    }
+  })
+  return expandedKeys
+}
+
 export function useTableColumn(actions?: TableAction<MenuModel>) {
   const columns = ref<TableColumnPops[]>([
     {
       title: '菜单名称',
       key: 'title',
       dataIndex: 'title',
+      width: 200,
     },
     {
       title: '菜单地址',
       key: 'path',
       dataIndex: 'path',
+      width: 200,
+    },
+    {
+      title: '菜单图标',
+      key: 'icon',
+      dataIndex: 'icon',
+      width: 100,
+      align: 'center',
+      render({ record }) {
+        if (record.icon) {
+          return h((Icons as any)[toHump(record.icon)], {
+            style: {
+              color: 'var(--color-primary-light-1)',
+              fontSize: '18px',
+            },
+          })
+        }
+        return h('span')
+      },
     },
     {
       title: '菜单类型',
       key: 'type',
       dataIndex: 'type',
+      width: 100,
       render({ record }) {
         return h(
           Tag,
@@ -105,9 +139,17 @@ export function useTableColumn(actions?: TableAction<MenuModel>) {
       },
     },
     {
+      title: '菜单权重',
+      key: 'sort',
+      dataIndex: 'sort',
+      align: 'center',
+      width: 100,
+    },
+    {
       title: '页面地址',
       key: 'component',
       dataIndex: 'component',
+      width: 150,
       render({ record }) {
         return h(
           'div',
@@ -119,39 +161,10 @@ export function useTableColumn(actions?: TableAction<MenuModel>) {
       },
     },
     {
-      title: '路由name',
-      key: 'routeName',
-      dataIndex: 'routeName',
-      render({ record }) {
-        return h(
-          'div',
-          {},
-          {
-            default: () => record.routeName || '-',
-          }
-        )
-      },
-    },
-    {
-      title: '菜单图标',
-      key: 'icon',
-      dataIndex: 'icon',
-      render({ record }) {
-        if (record.icon) {
-          return h((Icons as any)[toHump(record.icon)], {
-            style: {
-              color: 'var(--color-primary-light-1)',
-              fontSize: '18px',
-            },
-          })
-        }
-        return h('span')
-      },
-    },
-    {
       title: '是否缓存',
       key: 'cacheable',
       dataIndex: 'cacheable',
+      width: 100,
       render({ record }) {
         return h(Switch, {
           checkedValue: 1,
@@ -165,6 +178,7 @@ export function useTableColumn(actions?: TableAction<MenuModel>) {
       title: '是否固定',
       key: 'affix',
       dataIndex: 'affix',
+      width: 100,
       render({ record }) {
         return h(Switch, {
           checkedValue: 1,
@@ -307,6 +321,23 @@ export function useFormItems(formModel: MenuModel) {
     },
     {
       formItem: {
+        label: '菜单权重',
+        field: 'sort',
+        tooltip: '菜单权重可以在进行排序的时候用到',
+      },
+      visible: true,
+      render: () => {
+        return h(InputNumber, {
+          modelValue: formModel.sort,
+          min: 0,
+          onChange(value) {
+            formModel.sort = value as number
+          },
+        })
+      },
+    },
+    {
+      formItem: {
         label: '菜单类型',
         field: 'type',
         tooltip: '菜单类型可以是目录也可以是页面',
@@ -331,24 +362,6 @@ export function useFormItems(formModel: MenuModel) {
               value: 1,
             },
           ],
-        })
-      },
-    },
-    {
-      formItem: {
-        label: '路由名称',
-        field: 'routeName',
-        tooltip: '方便通过名称进行跳转，如 router.push({ name: "routeName" })',
-      },
-      visible: false,
-      render: (props) => {
-        return h(Input, {
-          placeholder: '请输入路由名称',
-          modelValue: formModel.routeName,
-          disabled: props.disabled,
-          onInput(value) {
-            formModel.routeName = value
-          },
         })
       },
     },
@@ -422,7 +435,6 @@ export function useFormItems(formModel: MenuModel) {
   }
   function onChangeType(type: number) {
     //如果是目录 则有些设置是不需要展示的
-    formItems.value.find((it) => it.formItem.field === 'routeName')!.visible = type === 1
     formItems.value.find((it) => it.formItem.field === 'component')!.visible = type === 1
     formItems.value.find((it) => it.formItem.field === 'cacheable')!.visible = type === 1
     formItems.value.find((it) => it.formItem.field === 'affix')!.visible = type === 1
@@ -446,7 +458,6 @@ export function useMenuModel() {
     id: 0,
     pid: '',
     title: '',
-    routeName: '',
     iconPrefix: '',
     icon: '',
     type: 0,
@@ -464,7 +475,6 @@ export function useMenuModel() {
     formModel.id = 0
     formModel.pid = ''
     formModel.title = ''
-    formModel.routeName = ''
     formModel.iconPrefix = ''
     formModel.icon = ''
     formModel.type = 0
@@ -497,10 +507,11 @@ export function useMenuModel() {
     model.pid = formModel.pid === '' ? 0 : formModel.pid
     if (formModel.pid) {
       if (!isExternal(formModel.path)) {
-        model.path = resolve(
-          getParentMenuPath(formItem.options, formModel.pid as number),
-          formModel.path
-        )
+        let path = formModel.path
+        if (path.startsWith('/')) {
+          path = path.replace('/', '')
+        }
+        model.path = resolve(getParentMenuPath(formItem.options, formModel.pid as number), path)
       }
     } else {
       if (!isExternal(formModel.path)) {
@@ -531,5 +542,17 @@ export function useForm() {
   return {
     menuFormRef,
     clearValidate,
+  }
+}
+
+export function useExpandedKeys() {
+  const keys = reactive<number[]>([])
+  function setExpandKeys(mKeys: number[]) {
+    keys.length = 0
+    keys.push(...mKeys)
+  }
+  return {
+    keys,
+    setExpandKeys,
   }
 }
