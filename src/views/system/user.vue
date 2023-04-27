@@ -31,22 +31,12 @@
               <template v-if="item.key === 'index'" #cell="dataItem">
                 {{ (dataItem as any).rowIndex + 1 }}
               </template>
-              <template v-else-if="item.key === 'gender'" #cell="{ record }">
-                <a-tag :color="record.gender === 1 ? 'green' : 'red'">
-                  {{ record.gender === 1 ? '男' : '女' }}
-                </a-tag>
-              </template>
               <template v-else-if="item.key === 'roleName'" #cell="{ record }">
                 <a-space>
                   <a-tag v-for="it of record.roles" :key="it.id">
                     {{ it.name }}
                   </a-tag>
                 </a-space>
-              </template>
-              <template v-else-if="item.key === 'avatar'" #cell="{}">
-                <a-avatar :size="30" :style="{ backgroundColor: 'var(--color-primary-light-1)' }">
-                  <IconUser />
-                </a-avatar>
               </template>
               <template v-else-if="item.key === 'status'" #cell="{ record }">
                 <a-tag color="blue" size="small" v-if="record.status === 1">正常</a-tag>
