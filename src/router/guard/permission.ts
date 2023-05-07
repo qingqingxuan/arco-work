@@ -13,7 +13,7 @@ function usePermissionGuard() {
     if (userStore.isTokenExpire()) {
       return {
         path: '/login',
-        query: { redirect: to.fullPath },
+        // query: { redirect: to.fullPath },
         replace: true,
       }
     }
@@ -26,7 +26,7 @@ function usePermissionGuard() {
       } else {
         return {
           path: '/login',
-          query: { redirect: to.fullPath },
+          // query: { redirect: to.fullPath },
           replace: true,
         }
       }

@@ -58,9 +58,13 @@ const usePermissionStore = defineStore('permission-route', {
       mapRoutes.forEach((it: any) => {
         router.addRoute(it)
       })
+      if (router.hasRoute('rootRouteName')) {
+        router.removeRoute('rootRouteName')
+      }
       // 配置 `/` 路由的默认跳转地址
       router.addRoute({
         path: '/',
+        name: 'rootRouteName',
         redirect: findRootPathRoute(accessRoutes),
         meta: {
           hidden: true,
