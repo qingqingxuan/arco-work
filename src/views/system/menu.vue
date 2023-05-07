@@ -15,6 +15,7 @@
           :data="dataList"
           :row-key="rowKey"
           :pagination="false"
+          :stripe="true"
           :columns="columns"
           :default-expanded-keys="expandedKeys"
         />

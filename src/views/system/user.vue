@@ -16,6 +16,7 @@
           :pagination="false"
           :rowKey="rowKey"
           table-layout-fixed
+          :stripe="true"
           :scroll="{ y: tableHeight }"
         >
           <template #columns>

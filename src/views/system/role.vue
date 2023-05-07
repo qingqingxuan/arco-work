@@ -12,6 +12,7 @@
         <a-table
           :bordered="false"
           :loading="tableLoading"
+          :stripe="true"
           :data="dataList"
           :pagination="false"
           :row-key="rowKey"
