@@ -87,7 +87,6 @@
       })
       total.value = searchList.value.length
       iconNames.value = searchList.value.slice(0, pageSize)
-      console.log(iconNames.value)
     } else {
       searchList.value = []
       total.value = iconList.length

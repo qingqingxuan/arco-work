@@ -171,6 +171,9 @@
         color: #fff;
       }
     }
+    .tab-split-menu-wrapper {
+      background-color: var(--color-menu-dark-bg);
+    }
   }
   .sidebar-bg-light {
     background-color: #fff;
@@ -182,14 +185,6 @@
       .vaw-tab-split-item-is-active {
         color: #fff;
       }
-    }
-  }
-  .light .sidebar-bg-dark {
-    background-color: @--dark-color;
-  }
-  .dark .sidebar-bg-dark {
-    :deep(.ant-menu) {
-      background: transparent !important;
     }
   }
   .open-status {
