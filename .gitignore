@@ -6,3 +6,4 @@ dist
 dist-staging
 package-lock.json
 yarn.lock
+.idea
