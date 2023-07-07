@@ -1,6 +1,6 @@
 {
   "name": "arco-work",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
@@ -12,7 +12,7 @@
     "@logicflow/core": "^0.7.13-alpha.1",
     "@logicflow/extension": "^0.7.13-alpha.1",
     "@vueuse/core": "^7.1.2",
-    "axios": "^0.24.0",
+    "axios": "^1.4.0",
     "cropperjs": "^1.5.12",
     "echarts": "^5.1.2",
     "lodash-es": "^4.17.21",
@@ -33,7 +33,7 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.44.2",
+    "@arco-design/web-vue": "^2.47.1",
     "@types/lodash-es": "^4.17.6",
     "@types/nprogress": "^0.2.0",
     "@types/path-browserify": "^1.0.0",
