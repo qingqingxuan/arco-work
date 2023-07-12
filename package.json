@@ -33,7 +33,7 @@
     "xlsx": "^0.17.4"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.47.1",
+    "@arco-design/web-vue": "^2.48.0",
     "@types/lodash-es": "^4.17.6",
     "@types/nprogress": "^0.2.0",
     "@types/path-browserify": "^1.0.0",
@@ -59,7 +59,7 @@
     "tailwindcss": "^2.2.19",
     "typescript": "^4.5.3",
     "unplugin-vue-components": "^0.17.21",
-    "vite": "^3.1.8",
+    "vite": "^3.2.5",
     "vite-plugin-svg-icons": "^1.0.5",
     "vue-eslint-parser": "^9.1.0",
     "vue-tsc": "^0.3.0"
