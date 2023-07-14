@@ -62,89 +62,75 @@
       </a-col>
     </a-row>
     <div class="mt-3"></div>
-    <a-row :gutter="[20, 10]">
-      <a-col
-        :xs="24"
-        :sm="24"
-        :md="24"
-        :lg="8"
-        :xl="8"
-        v-for="(item, index) of dataItems"
-        :key="index"
-      >
-        <a-card class="card-border-radius" size="small" :bordered="false">
-          <ProjectItem class="flex-1 ml-2" :item="item" />
-        </a-card>
-      </a-col>
-    </a-row>
-    <div class="mt-3">
-      <a-row :gutter="20">
-        <a-col :xs="24" :sm="16" :md="16" :lg="16" :xl="16">
-          <a-card
-            :body-style="{ padding: '0px' }"
-            :bordered="false"
-            class="card-border-radius"
-            title="项目进度"
-          >
-            <a-table :data="dataList" :pagination="false" :bordered="false">
-              <template #columns>
-                <a-table-column data-index="projectName" title="项目名" />
-                <a-table-column data-index="beginTime" title="开始时间" />
-                <a-table-column data-index="endTime" title="结束时间" />
-                <a-table-column data-index="progress" title="进度">
-                  <template #cell="{ record }">
-                    <a-tag>
-                      {{ record.progress + '%' }}
-                    </a-tag>
-                  </template>
-                </a-table-column>
-                <a-table-column data-index="status" title="状态">
-                  <template #cell="{ record }">
-                    <a-tag
-                      :color="record.progress < 100 ? 'red' : 'green'"
-                      :loading="record.progress < 100"
-                    >
-                      {{ record.status }}
-                    </a-tag>
-                  </template>
-                </a-table-column>
-              </template>
-            </a-table>
-          </a-card>
-        </a-col>
-        <a-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-          <a-card
-            :body-style="{ padding: '0px' }"
-            :bordered="false"
-            class="card-border-radius"
-            title="消息列表"
-          >
-            <a-list :bordered="false">
-              <a-list-item>
-                <a-list-item-meta
-                  v-for="(item, index) of messageList"
-                  :key="index"
-                  :title="item.name"
-                  :description="item.content"
-                >
-                  <template #avatar>
-                    <a-avatar :size="32" :style="{ backgroundColor: '#3370ff' }">
-                      <IconUser />
-                    </a-avatar>
-                  </template>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </a-card>
-        </a-col>
-      </a-row>
-    </div>
+    <a-card
+      :body-style="{ padding: '0px' }"
+      :bordered="false"
+      class="card-border-radius"
+      title="AdminWork各版本说明"
+    >
+      <a-table :data="dataList" :pagination="false" :bordered="false">
+        <template #columns>
+          <a-table-column data-index="projectName" width="150" title="项目名" />
+          <a-table-column title="版权">
+            <template #cell="{ record }">
+              <a-tag :color="record.isEmpower ? 'red' : ''">
+                {{ record.isEmpower ? '付费授权' : '免费开源' }}
+              </a-tag>
+            </template>
+          </a-table-column>
+          <a-table-column title="状态">
+            <template #cell="{ record }">
+              <a-tag :color="record.status === '持续更新' ? 'blue' : 'red'">
+                {{ record.status }}
+              </a-tag>
+            </template>
+          </a-table-column>
+          <a-table-column title="标签">
+            <template #cell="{ record }">
+              <a-tag
+                v-for="tag of record.tags"
+                color="arcoblue"
+                :key="tag"
+                style="margin-right: 10px"
+              >
+                {{ tag }}
+              </a-tag>
+            </template>
+          </a-table-column>
+          <a-table-column data-index="status" title="操作">
+            <template #cell="{ record }">
+              <a-button
+                size="mini"
+                type="primary"
+                status="success"
+                style="margin-right: 10px"
+                @click="onPreview(record)"
+              >
+                预览
+              </a-button>
+              <a-popover position="left">
+                <template #content>
+                  <div v-if="!record.isEmpower" style="text-align: center">
+                    <img style="width: 150px" :src="WeiXin" />
+                    <div> 关注公众号《知码前端》获取源码下载链接 </div>
+                  </div>
+                  <div v-else style="text-align: center">
+                    <img style="width: 150px" :src="WeiXinCustom" />
+                    <div> 咨询获取授权详情，请添加微信好友 </div>
+                  </div>
+                </template>
+                <a-button size="mini" type="primary" status="warning"> 获取源码 </a-button>
+              </a-popover>
+            </template>
+          </a-table-column>
+        </template>
+      </a-table>
+    </a-card>
   </div>
 </template>
-
 <script lang="ts">
-  import ProjectItem from './components/ProjectItem.vue'
-  import TodoItem from './components/TodoItem.vue'
+  import WeiXin from '@/assets/qrcode.jpg'
+  import WeiXinCustom from '@/assets/custom_weixin.jpg'
   import { computed, defineComponent, reactive } from 'vue'
   import { useRouter } from 'vue-router'
   import { random } from 'lodash-es'
@@ -153,10 +139,6 @@
   const date = new Date()
   export default defineComponent({
     name: 'WorkPlace',
-    components: {
-      ProjectItem,
-      TodoItem,
-    },
     setup() {
       const userStore = useUserStore()
       const avatar = computed(() => userStore.avatar)
@@ -168,89 +150,59 @@
       const dataList = [
         {
           key: '1',
-          projectName: 'Vue Admin Work A 开发',
-          beginTime: '2021-12-01',
-          endTime: '2021-12-31',
-          progress: 100,
-          status: '完成',
+          projectName: 'Admin Work Pro',
+          tags: ['vue3', 'vite', 'naive-ui', 'typescript'],
+          isEmpower: true,
+          status: '持续更新',
+          target: 'http://p.vueadminwork.com',
         },
         {
           key: '2',
-          projectName: '官网开发',
-          beginTime: '2021-12-01',
-          endTime: '2021-12-31',
-          progress: 90,
-          status: '进行中',
+          projectName: 'Arco Work',
+          tags: ['vue3', 'vite', 'arco-design', 'typescript'],
+          isEmpower: false,
+          status: '持续更新',
+          target: 'http://arco.vueadminwork.com',
         },
         {
           key: '3',
-          projectName: '文档编写',
-          beginTime: '2021-12-01',
-          endTime: '2021-12-31',
-          progress: 80,
-          status: '进行中',
+          projectName: 'Admin Work',
+          tags: ['vue3', 'vite', 'naive-ui', 'typescript'],
+          isEmpower: false,
+          status: '持续更新',
+          target: 'http://aw.vueadminwork.com',
         },
         {
           key: '4',
-          projectName: 'X 版升级',
-          beginTime: '2021-12-01',
-          endTime: '2025-12-31',
-          progress: 50,
-          status: '进行中',
+          projectName: 'Admin Work X',
+          tags: ['vue3', 'vite/webpack', 'element-plus', 'typescript'],
+          isEmpower: false,
+          status: '持续更新',
+          target: 'http://x.vueadminwork.com',
         },
         {
           key: '5',
-          projectName: 'Admin Work版升级',
-          beginTime: '2021-12-01',
-          endTime: '2025-12-31',
-          progress: 50,
-          status: '进行中',
+          projectName: 'Admin Work A',
+          tags: ['vue3', 'vite', 'ant-design', 'typescript'],
+          isEmpower: false,
+          status: '持续更新',
+          target: 'http://a.vueadminwork.com',
         },
         {
           key: '6',
-          projectName: '基础版升级',
-          beginTime: '2021-12-01',
-          endTime: '2025-12-31',
-          progress: 50,
-          status: '进行中',
+          projectName: 'Admin Work Basic',
+          tags: ['vue2', 'webpack', 'element-ui', 'javascript'],
+          isEmpower: false,
+          status: '停止维护',
+          target: 'http://qingqingxuan.gitee.io/arco-work',
         },
       ]
       return {
         tempWaitingItems,
+        WeiXin,
+        WeiXinCustom,
         avatar,
         currentDate: date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate(),
-        dataItems: [
-          {
-            title: 'Vue Admin Work A',
-            target: 'http://a.vueadminwork.com',
-            tags: ['Vue3', 'Vite2', 'Typescript', 'Antd'],
-          },
-          {
-            title: 'Admin Work Pro',
-            target: 'http://p.vueadminwork.com',
-            tags: ['Vue3', 'Vite2', 'Typescript', 'NaiveUI'],
-          },
-          {
-            title: 'Arco Work',
-            target: 'http://arco.vueadminwork.com',
-            tags: ['Vue3', 'Vite2', 'Typescript', 'ArcoDesign'],
-          },
-          {
-            title: 'Vue Admin Work X',
-            target: 'http://x.vueadminwork.com',
-            tags: ['Vue3', 'Webpack', 'Typescript', 'ElementPlus'],
-          },
-          {
-            title: 'Admin Work',
-            target: 'http://aw.vueadminwork.com',
-            tags: ['Vue3', 'Vite2', 'Typescript', 'NaiveUI'],
-          },
-          {
-            title: 'Vue Admin Work',
-            target: 'http://qingqingxuan.gitee.io/arco-work',
-            tags: ['Vue2', 'Webpack', 'Javsscript', 'ElementUI'],
-          },
-        ],
         fastActions: [
           {
             title: '首页',
@@ -290,29 +242,10 @@
           },
         ],
         dataList,
-        messageList: [
-          {
-            name: '杰轮',
-            content: '哎哟，不错哦~',
-          },
-          {
-            name: 'Thomas',
-            content: '继续加油，给大家带来更好的作品',
-          },
-          {
-            name: '主管',
-            content: '下班不准走，今天要996……',
-          },
-          {
-            name: '老板',
-            content: '天天要996，你们加油，我再买个大房子',
-          },
-          {
-            name: '铁子',
-            content: '晚上8点，记得搓澡',
-          },
-        ],
         fastActionClick,
+        onPreview: function (item: any) {
+          window.open(item.target)
+        },
       }
     },
   })

@@ -97,6 +97,13 @@
                   { offset: 1, color: '#00FDAD' },
                 ]),
               },
+              areaStyle: {
+                color: new graphic.LinearGradient(1, 0, 0, 0, [
+                  { offset: 0, color: 'rgba(216, 96, 255, 0.1)' },
+                  { offset: 0.5, color: 'rgba(60, 166, 255, 0.1)' },
+                  { offset: 1, color: 'rgba(0, 253, 173, 0.1)' },
+                ]),
+              },
             },
           ],
         }

@@ -22,7 +22,7 @@
           <div class="center">ArcoWork 平台管理</div>
           <div class="right">
             <div>15020</div>
-            <div style={{ color: '#333', fontSize: '12px' }}>当前在线人数</div>
+            <div style={{ fontSize: '12px' }}>当前在线人数</div>
           </div>
         </div>
       )
@@ -54,8 +54,8 @@
       padding: 5px;
       align-items: center;
       font-weight: bold;
-      background: rgba(var(--primary-1), 0.8);
-      color: #fff;
+      border: 1px solid rgba(var(--primary-1), 0.8);
+      color: rgb(var(--primary-1));
       border-radius: 5px;
     }
     .right {
