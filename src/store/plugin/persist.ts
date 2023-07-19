@@ -21,6 +21,8 @@ declare module 'pinia' {
 
 export default ({ options, store }: PiniaPluginContext) => {
   const presist = options.presist
+  console.log(options)
+
   if (presist && isObject(presist) && presist.enable) {
     // 设置默认值
     !presist.option && (presist.option = {})

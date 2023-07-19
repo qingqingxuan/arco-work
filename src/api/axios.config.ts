@@ -18,7 +18,8 @@ const service = Axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    !config.headers && (config.headers = {})
+    console.log(config)
+
     if (!config.headers[CONTENT_TYPE]) {
       config.headers[CONTENT_TYPE] = APPLICATION_JSON
     }
