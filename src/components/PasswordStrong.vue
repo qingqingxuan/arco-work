@@ -1,6 +1,11 @@
 <template>
-  <a-input v-model="password" placeholder="请输入密码" />
-  <div v-if="password !== '' && password.length < 6" class="mt-1">{{ shortTip }}</div>
+  <a-input-password v-model="password" placeholder="请输入密码" />
+  <div
+    v-if="password !== '' && password.length < 6"
+    class="mt-1"
+    style="color: rgb(var(--danger-6)); font-size: 12px"
+    >{{ shortTip }}</div
+  >
   <div class="flex justify-between items-center mt-1.5">
     <span class="tip" :class="[item.status]" v-for="(item, index) of stronger" :key="index"></span>
     <span class="ml-1 mr-1">{{ tipValue }}</span>
@@ -102,7 +107,6 @@
      * 3---密码包含其中之三
      * 4---密码包含其中之四
      */
-    console.log(checkStrong(pwd))
     return checkStrong(pwd)
   }
 </script>
