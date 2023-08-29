@@ -1,67 +1,121 @@
 <template>
-  <div>
-    <a-card v-for="item of dataList" :key="item.id" content-style="{ padding: '10px' }">
-      <a-row class="item-wrapper" :x-gap="10" :y-gap="10" :cols="2">
-        <a-col :span="6">
-          <div class="header-wrapper">
-            <div class="avatar-wrapper">
-              <img class="avatar" :src="item.avatar" />
-            </div>
-            <div class="nick-wrapper">
-              <span class="nick-name">{{ item.nickName }}</span>
-              <a-rate :default-value="4" readonly />
-              <div class="content">
-                {{ item.content }}
-              </div>
-            </div>
-          </div>
-        </a-col>
-        <a-col :span="6">
-          <div class="content-wrapper">
-            <div>时间</div>
-            <div>{{ item.time }}</div>
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <a-progress :percent="0.5" status="success" />
-        </a-col>
-      </a-row>
-    </a-card>
-    <TableFooter :pagination="pagination" />
-  </div>
+  <a-space direction="vertical" size="large" fill>
+    <a-table
+      :columns="columns"
+      :bordered="{ wrapper: true, cell: true }"
+      :stripe="true"
+      :data="data"
+      :pagination="false"
+    />
+  </a-space>
 </template>
 
 <script lang="ts">
-  import { post } from '@/api/http'
-  import { getCommentList } from '@/api/url'
-  import { usePagination, useTable } from '@/hooks/table'
-  import { defineComponent, onMounted } from 'vue'
+  import { defineComponent } from 'vue'
+  import { reactive, ref } from 'vue'
 
   export default defineComponent({
-    name: 'List',
     setup() {
-      const table = useTable()
-      const pagination = usePagination(doRefresh)
-      function doRefresh() {
-        post({
-          url: getCommentList,
-          data: () => {
-            return {
-              page: pagination.page,
-              pageSize: pagination.pageSize,
-            }
+      const alignLeft = ref(false)
+
+      const columns = [
+        {
+          title: 'Name',
+          dataIndex: 'name',
+          sortable: {
+            sortDirections: ['ascend', 'descend'],
           },
-        })
-          .then((res) => {
-            table.handleSuccess(res)
-            pagination.setTotalSize(res.totalSize || 10)
-          })
-          .catch(console.log)
+        },
+        {
+          title: 'Salary',
+          dataIndex: 'salary',
+          sortable: {
+            sortDirections: ['ascend'],
+          },
+          filterable: {
+            filters: [
+              {
+                text: '> 20000',
+                value: '20000',
+              },
+              {
+                text: '> 30000',
+                value: '30000',
+              },
+            ],
+            filter: (value, record) => record.salary > value,
+            multiple: true,
+          },
+        },
+        {
+          title: 'Address',
+          dataIndex: 'address',
+          filterable: {
+            filters: [
+              {
+                text: 'London',
+                value: 'London',
+              },
+              {
+                text: 'Paris',
+                value: 'Paris',
+              },
+            ],
+            filter: (value, row) => row.address.includes(value),
+          },
+        },
+        {
+          title: 'Email',
+          dataIndex: 'email',
+        },
+      ]
+      const data = reactive([
+        {
+          key: '1',
+          name: 'Jane Doe',
+          salary: 23000,
+          address: '32 Park Road, London',
+          email: 'jane.doe@example.com',
+        },
+        {
+          key: '2',
+          name: 'Alisa Ross',
+          salary: 25000,
+          address: '35 Park Road, London',
+          email: 'alisa.ross@example.com',
+        },
+        {
+          key: '3',
+          name: 'Kevin Sandra',
+          salary: 22000,
+          address: '31 Park Road, London',
+          email: 'kevin.sandra@example.com',
+        },
+        {
+          key: '4',
+          name: 'Ed Hellen',
+          salary: 17000,
+          address: '42 Park Road, London',
+          email: 'ed.hellen@example.com',
+        },
+        {
+          key: '5',
+          name: 'William Smith',
+          salary: 27000,
+          address: '62 Park Road, London',
+          email: 'william.smith@example.com',
+        },
+      ])
+
+      const handleChange = (data, extra, currentDataSource) => {
+        console.log('change', data, extra, currentDataSource)
       }
-      onMounted(doRefresh)
+
       return {
-        ...table,
-        pagination,
+        alignLeft,
+        columns,
+        data,
+        handleChange,
       }
     },
   })

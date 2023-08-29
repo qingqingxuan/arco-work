@@ -28,12 +28,9 @@
           <template #columns>
             <a-table-column
               v-for="item of tableColumns"
-              :key="item.key"
-              :align="item.align"
-              :title="(item.title as string)"
-              :width="item.width"
               :data-index="(item.key as string)"
-              :fixed="item.fixed"
+              v-bind="item"
+              :key="item.key"
             >
               <template v-if="item.key === 'index'" #cell="{ rowIndex }">
                 {{ rowIndex + 1 }}
@@ -82,6 +79,9 @@
             title: '名称',
             key: 'nickName',
             dataIndex: 'nickName',
+            sortable: {
+              sortDirections: ['ascend', 'descend'],
+            },
           },
           {
             title: '性别',
@@ -115,6 +115,8 @@
           },
         ])
       )
+      console.log(tableColumns)
+
       function doRefresh() {
         post({
           url: getTableList,
