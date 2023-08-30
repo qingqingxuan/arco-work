@@ -5,6 +5,7 @@ dist-ssr
 dist
 dist-staging
 package-lock.json
-pnpm-lock.yaml
 yarn.lock
 .idea
+pnpm-lock.yaml
+
