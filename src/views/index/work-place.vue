@@ -70,7 +70,7 @@
     >
       <a-table :data="dataList" :pagination="false" :bordered="false">
         <template #columns>
-          <a-table-column data-index="projectName" :width="150" title="项目名" />
+          <a-table-column data-index="projectName" :width="180" title="项目名" />
           <a-table-column title="版权">
             <template #cell="{ record }">
               <a-tag :color="record.isEmpower ? 'red' : ''">
