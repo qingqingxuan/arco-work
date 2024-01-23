@@ -21,7 +21,7 @@
     >
       <ExpandIcon />
     </span>
-    <span class="action-item" @click="onShowSetting">
+    <span v-if="appStore.actionBar.isShowSetting" class="action-item" @click="onShowSetting">
       <SettingIcon />
     </span>
   </div>

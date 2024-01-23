@@ -20,5 +20,6 @@ export default {
     isShowMessage: true,
     isShowRefresh: true,
     isShowFullScreen: true,
+    isShowSetting: false,
   },
 }
