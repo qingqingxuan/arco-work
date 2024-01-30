@@ -148,7 +148,7 @@ Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，
 
 | **[🚀 vue3.x](https://cn.vuejs.org/)**                     |
 | ---------------------------------------------------------- |
-| **[🚀 naive-ui](https://www.Arco Design.com/)**            |
+| **[🚀 arco desgin](https://arco.design/)**            |
 | **[🚀 vue-router-next](https://next.router.vuejs.org/)**   |
 | **[🚀 pinia](https://pinia.vuejs.org/)**                   |
 | **[🚀 axios](http://www.axios-js.com/)**                   |
