@@ -20,7 +20,7 @@
 
 Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，全面的系统配置，优质模板，常用组件，真正一站式开箱即用 采用时下最流行的 Vue3 UI 库--Arco Design
 
-使用了当今最流行的技术框架： `Vue3 + Vite2 + Typescript + Arco Design`
+使用了当今最流行的技术框架： `Vue3 + Vite + Typescript + Arco Design + Pinia`
 
 ## 特性：
 
@@ -63,13 +63,8 @@ Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，
 
 - [🎉 Admin Work 演示地址（Vue3.x + Typescript + NaiveUI + Vite2)](http://aw.vueadminwork.com)
 
-## 现在微信技术交流群需要添加好友之后邀请，如需要入群讨论请关注微信公众号添加好友。
 
-<div  align="center">
-<img width="30%" src="http://www.vueadminwork.com/weixin-custom.jpg"/>
-</div>
-
-## 请关注我们的微信公众号 `知码前端` ，里面包含了各个版本的源码和进入微信福利群的方式
+## 请关注微信公众号 `知码前端` ，包含了各个版本的源码和进入微信福利群的方式
 
 <div  align="center">
 <img width="30%" src="http://qingqingxuan.gitee.io/img/wx-service.jpg"/>
@@ -148,7 +143,7 @@ Arco Work，是 Vue Admini Work 系列中最成熟和完善的中后台框架，
 
 | **[🚀 vue3.x](https://cn.vuejs.org/)**                     |
 | ---------------------------------------------------------- |
-| **[🚀 naive-ui](https://www.Arco Design.com/)**            |
+| **[🚀 arco desgin](https://arco.design/)**            |
 | **[🚀 vue-router-next](https://next.router.vuejs.org/)**   |
 | **[🚀 pinia](https://pinia.vuejs.org/)**                   |
 | **[🚀 axios](http://www.axios-js.com/)**                   |

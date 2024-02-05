@@ -56,16 +56,16 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       open: true,
+      // 如果需要本地代理解决跨域问题，则需要把下面代码注释关闭
+      // proxy: {
+      //   '/api': {
+      //     // 以下为实际请求地址，注意域名部分不要写成 localhost 要用 ip：127.0.0.1 代替
+      //     // 如：http://localhost:8888 要写成：http://127.0.0.1:8888
+      //     target: 'http://xxxx',
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/api/, ''),
+      //   },
+      // },
     },
-    // optimizeDeps: {
-    //   include: [
-    //     'vue',
-    //     'lodash',
-    //     '@arco-design/web-vue',
-    //     '@arco-design/web-vue/es/icon',
-    //     'pinia',
-    //     'vue-router',
-    //   ],
-    // },
   }
 })

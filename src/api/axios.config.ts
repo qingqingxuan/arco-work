@@ -1,6 +1,11 @@
 import Axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 
+// 在开发阶段如果需要使用 Proxy 代理解决跨域问题，则需要把下面代码注释关闭
+// 对应着 `vite.config.ts`中的 `server`配置选项
+// export const baseURL = '/api'
+
+// 在开发阶段如果需要使用 Proxy 代理解决跨域问题，则需要把下面代码注释打开
 export const baseURL = 'http://localhost:8080/'
 
 export const CONTENT_TYPE = 'Content-Type'

@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --menu-width: 210px;
 }
@@ -66,6 +67,9 @@ object {
   background-color: rgba(var(--primary-1), 0.6) !important;
 }
 
-/* .arco-trigger-popup{
-  width: 150px;
-} */
+.arco-switch {
+  background-color: var(--color-fill-4);
+}
+.arco-switch-checked{
+  background-color: rgb(var(--primary-6));
+}
