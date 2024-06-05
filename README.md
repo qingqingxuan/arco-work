@@ -77,7 +77,7 @@
 
 ## 适合人群
 
-- 正在以及想使用 vue/naive-ui 开发，最好是有一定的编程知识，或者原来只从事切图写静态页的人想提高自己的前端能力。
+- 正在以及想使用 vue/arco design 开发，最好是有一定的编程知识，或者原来只从事切图写静态页的人想提高自己的前端能力。
 - 熟悉 Vue.js 技术栈，使用它开发过几个实际项目。
 - 对原理技术感兴趣，想进阶和提升的同学。
 
@@ -86,12 +86,12 @@
 - 下载
 
   ```bash
-  git clone -b master https://github.com/qingqingxuan/admin-work.git
+  git clone -b master https://github.com/qingqingxuan/arco-work.git
   ```
 
 - 进入项目目录
   ```bash
-  cd admin-work
+  cd arco-work
   ```
 - 安装依赖
 
@@ -106,7 +106,7 @@
 
 ## 如何贡献
 
-非常欢迎你的加入！[提一个 Issue](https://github.com/qingqingxuan/admin-work/issues/new) 或者提交一个 Pull Request。
+非常欢迎你的加入！[提一个 Issue](https://github.com/qingqingxuan/arco-work/issues/new) 或者提交一个 Pull Request。
 
 **Pull Request:**
 
