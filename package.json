@@ -1,6 +1,7 @@
 {
   "name": "arco-work",
   "version": "3.0.6",
+  "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
@@ -59,7 +60,7 @@
     "typescript": "^4.5.3",
     "unplugin-vue-components": "^0.26.0",
     "vite": "^5.2.13",
-    "vite-plugin-svg-icons": "^1.0.5",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue-eslint-parser": "^9.1.0",
     "vue-tsc": "^0.3.0"
   }

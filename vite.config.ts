@@ -1,5 +1,5 @@
 import vue from '@vitejs/plugin-vue'
-import viteSvgIcons from 'vite-plugin-svg-icons'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import path from 'path'
 import { defineConfig } from 'vite'
 import dotenv from 'dotenv'
@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       vue(),
-      viteSvgIcons({
+      createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'src/icons')],
         symbolId: 'icon-[dir]-[name]',
       }),
