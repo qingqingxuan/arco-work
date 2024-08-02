@@ -4,6 +4,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import dotenv from 'dotenv'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import apiServe from 'vite-plugin-api-serve'
 // 在正式打包的时候，可以把这两行代码放开
 // import Components from 'unplugin-vue-components/vite'
 // import { ArcoResolver } from 'unplugin-vue-components/resolvers'
@@ -32,6 +33,7 @@ export default defineConfig(({ mode }) => {
         symbolId: 'icon-[dir]-[name]',
       }),
       vueJsx(),
+      apiServe()
       // 在正式打包的时候，可以把这三行代码放开
       // Components({
       //   resolvers: [ArcoResolver()],
