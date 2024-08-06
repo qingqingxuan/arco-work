@@ -1,15 +1,15 @@
 <div align="center">
-<img src="http://www.vueadminwork.com/assets/logo.e3a501dd.png" align="center" width="150" height="150"/>
+<img src="http://www.vueadminwork.com/static/logo/logo.png" align="center" width="150" height="150"/>
 </div>
 
 <p align="center">
     <a href="./LICENSE">
-        <img src="https://img.shields.io/github/license/qingqingxuan/admin-work" alt="MIT License" />
+        <img src="https://img.shields.io/github/license/qingqingxuan/arco-work" alt="MIT License" />
     </a>
     <a href="https://v3.cn.vuejs.org/">
         <img src="https://img.shields.io/badge/vue.js-3.0-green" alt="Vue3.0">
     </a>
-    <a href="http://p.vueadminwork.com">
+    <a href="http://arco.vueadminwork.com">
         <img src="https://img.shields.io/badge/🚀-open--in--browser-blueviolet" alt="Live Demo">
     </a>
 </p>
@@ -18,22 +18,22 @@
 
 ## 简介：
 
-[Arco Work](http://arco.vueadminwork.com)，是 Vue Admini Work 系列中最成熟和完善的中后台框架，全面的系统配置，优质模板，常用组件，真正一站式开箱即用 采用时下最流行的 Vue3 UI 库--ArcoDesign
+[Arco Work](http://www.vueadminwork.com)，是 Vue Admini Work 系列中最成熟和完善的中后台框架，全面的系统配置，优质模板，常用组件，真正一站式开箱即用 采用时下最流行的 Vue3 UI 库--NaiveUI
 
-使用了当今最流行的技术框架： `Vue3 + Vite5 + TypeScript + ArcoDesign + Pinia`
+使用了当今最流行的技术框架： `Vue3 + Vite5 + TypeScript + Arco Desgin + Pinia`
 
 ## 特性：
 
 - 常用模板
   - 内置常用模板，无需考虑交互排版，助你高效开发
 - 预设样式
-  - 样式美观大方，无缝对接 Naive Ui，随意组合页面，随心所欲
+  - 样式美观大方，无缝对接 Arco Desgin，随意组合页面，随心所欲
 - 布局方案
   - 丰富的布局模式，具有高可配性，满足您的各类布局需求
 - 技术支持
   - 优质的售后技术支持，完善的文档，让您事半功倍
 - 最新技术栈
-  - 基于 Vue3、Vite2、TypeScript、NaiveUI、Pinia 等最新技术栈开发
+  - 基于 Vue3、Vite5、TypeScript、Arco Desgin、Pinia 等最新技术栈开发
 - 轻量快速的热重载
   - 无论应用程序大小如何，都始终极快的模块热重载（HMR）
 - 丰富的示例
@@ -49,24 +49,12 @@
 
 - [🎉 文档地址](http://www.vueadminwork.com)
 
-- [🎉 演示地址（Vuex.x + Typescript + Navie UI + Vite2)](http://arco.vueadminwork.com)
+- [🎉 演示地址](http://arco.vueadminwork.com)
 
-## Vue Admin Work 系列中其它开源项目的演示地址
-
-- [🎉 Vue Admin Work 演示地址（Vue2.x + Javascript + Element UI + Webpack）](http://x.vueadminwork.com)
-
-- [🎉 Vue Admin Work X 演示地址（Vue3.x + Typescript + Element Plus + Webpack）](http://x.vueadminwork.com)
-
-- [🎉 Admin Work Pro 演示地址（Vue3.x + Typescript + Navie UI + Vite2)](http://p.vueadminwork.com)
-
-- [🎉 Vue Admin Work A 演示地址（Vue3.x + Typescript + Antd + Vite2)](http://a.vueadminwork.com)
-
-- [🎉 Arco Work 演示地址（Vue3.x + Typescript + Arco Design + Vite2)](http://arco.vueadminwork.com)
-
-## 请关注我们的微信公众号 `知码前端` ，里面包含了各个版本的源码和进入微信福利群的方式
+## 请关注公众号 `知码前端` ，获取更多版本的源码
 
 <div  align="center">
-<img width="30%" src="http://www.vueadminwork.com/assets/zhimaqianduan.3a926537.jpg"/>
+<img width="30%" src="http://www.vueadminwork.com/static/logo/zhimaqianduan.jpg"/>
 </div>
 
 ## 适合人群
@@ -152,7 +140,7 @@
 ## 优势及注意事项
 
 ```tex
-arco-work 有如下优势:
+vue-admin-work 有如下优势:
 1. 支持前端控制路由权限和后端控制路由模式
 2. 支持 mock ，完全独立于后台
 3. 内置了大量常用的组件，比如，上传，消息提示等
