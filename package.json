@@ -12,8 +12,8 @@
   "dependencies": {
     "@logicflow/core": "^0.7.16",
     "@logicflow/extension": "^0.7.16",
-    "@vueuse/core": "^10.7.2",
-    "axios": "1.6.2",
+    "@vueuse/core": "^11.1.0",
+    "axios": "1.7.7",
     "cropperjs": "^1.6.1",
     "echarts": "^5.4.3",
     "lodash-es": "^4.17.21",
@@ -34,7 +34,7 @@
     "xlsx": "^0.17.5"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.56.0",
+    "@arco-design/web-vue": "^2.56.2",
     "@types/lodash-es": "^4.17.10",
     "@types/mockjs": "^1.0.10",
     "@types/nprogress": "^0.2.2",
